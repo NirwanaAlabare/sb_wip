@@ -1,0 +1,87 @@
+/* General */
+.bg-success {
+    background: #12be60 !important;
+}
+
+.bg-warning {
+    background: #ffa600 !important;
+}
+
+.bg-pale {
+    background-color: #ebebeb;
+}
+
+.btn-pale {
+    background-color: #ebebeb;
+    color: #212529;
+}
+
+.btn-pale:hover {
+    background-color: #c0c0c0;
+}
+
+/* Navbar */
+.navbar .dropdown-toggle {
+    border: var(--bs-border-width) solid var(--bs-border-color) !important;
+}
+
+.navbar .dropdown-toggle:hover {
+    border: var(--bs-border-width) solid var(--bs-border-color) !important;
+}
+
+.navbar .dropdown-toggle:active {
+    border: var(--bs-border-width) solid var(--bs-border-color) !important;
+}
+
+.navbar .dropdown-toggle:focus {
+    border: var(--bs-border-width) solid var(--bs-border-color) !important;
+}
+
+.navbar .dropdown-item:focus {
+    background-color: inherit;
+}
+
+/* Production Info */
+.production-info {
+    font-size: 13px;
+}
+
+/* Production Panel */
+.production-panel .card-custom {
+    background: #0ed869;
+    border-radius: 15px 0 0 15px;
+    padding: 50px;
+    box-shadow: 3px 6px 9px -3px rgba(0, 0, 0, 0.1);
+}
+
+.production-panel .card-custom:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.production-panel .card-custom p {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.production-panel .card-custom-footer {
+    border-radius: 0 15px 15px 0;
+}
+
+.production-panel .card-custom-footer p {
+    border-radius: 0 15px 15px 0;
+    font-weight: 600;
+}
+
+.production-panel .card-custom-footer .single-item {
+    border-radius: 0 15px 15px 0 !important;
+}
+
+.production-panel .card-custom-footer .multi-item.upper {
+    border-radius: 0 15px 0 0 !important;
+}
+
+.production-panel .card-custom-footer .multi-item.lower {
+    border-radius: 0 0 15px 0 !important;
+}
