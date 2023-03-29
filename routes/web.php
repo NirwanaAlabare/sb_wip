@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::controller(LoginController::class)->prefix('login')->group(function () {
+    Route::get('/', 'index');
+    Route::post('/authenticate', 'authenticate');
+});
+
 Route::get('/', function () {
     return view('dashboard');
-});
+})->middleware('auth');
 
 Route::get('/rft', function () {
     return view('rft');
+});
+
+Route::get('/defect', function () {
+    return view('defect');
+});
+
+Route::get('/defect-history', function () {
+    return view('defect-history');
+});
+
+Route::get('/reject', function () {
+    return view('reject');
+});
+
+Route::get('/rework', function () {
+    return view('rework');
 });

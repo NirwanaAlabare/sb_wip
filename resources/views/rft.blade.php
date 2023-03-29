@@ -41,11 +41,11 @@
         </div>
     </div>
 
-    {{-- Input Production --}}
-    <div class="row">
+    {{-- Production Input --}}
+    <div class="production-input row row-gap-3">
         <div class="col-md-4">
             <div class="card h-100">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center bg-rft text-light">
                     <p class="mb-0 fs-5">QTY</p>
                     <button class="btn btn-dark">
                         <i class="fa-regular fa-plus"></i>
@@ -65,12 +65,13 @@
         </div>
         <div class="col-md-8">
             <div class="card h-100">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center bg-rft text-light">
                     <p class="mb-0 fs-5">Size</p>
                     <div class="d-flex justify-content-end align-items-center gap-1">
                         <div class="d-flex align-items-center gap-3 me-3">
-                            <p class="mb-0 fs-5">RFT</p>
-                            <p id="rft-qty" class="mb-0 fs-5">0</p>
+                            <p class="mb-1 fs-5">RFT</p>
+                            <p class="mb-1 fs-5">:</p>
+                            <p id="rft-qty" class="mb-1 fs-5">0</p>
                         </div>
                         <button class="btn btn-dark">
                             <i class="fa-regular fa-rotate-left"></i>
@@ -83,33 +84,33 @@
                 <div class="card-body">
                     <input type="hidden" class="form-control mb-3">
                     <div class="row h-100 row-gap-3">
-                        <div class="col-3">
-                            <button class="btn btn-primary w-100 h-100">
+                        <div class="col-md-3">
+                            <button class="btn btn-rft w-100 h-100 fs-3">
                                 XS
                             </button>
                         </div>
-                        <div class="col-3">
-                            <button class="btn btn-primary w-100 h-100">
+                        <div class="col-md-3">
+                            <button class="btn btn-rft w-100 h-100 fs-3">
                                 S
                             </button>
                         </div>
-                        <div class="col-3">
-                            <button class="btn btn-primary w-100 h-100">
+                        <div class="col-md-3">
+                            <button class="btn btn-rft w-100 h-100 fs-3">
                                 M
                             </button>
                         </div>
-                        <div class="col-3">
-                            <button class="btn btn-primary w-100 h-100">
+                        <div class="col-md-3">
+                            <button class="btn btn-rft w-100 h-100 fs-3">
                                 L
                             </button>
                         </div>
-                        <div class="col-3">
-                            <button class="btn btn-primary w-100 h-100">
+                        <div class="col-md-3">
+                            <button class="btn btn-rft w-100 h-100 fs-3">
                                 XL
                             </button>
                         </div>
-                        <div class="col-3">
-                            <button class="btn btn-primary w-100 h-100">
+                        <div class="col-md-3">
+                            <button class="btn btn-rft w-100 h-100 fs-3">
                                 XXL
                             </button>
                         </div>
@@ -118,4 +119,14 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('footer')
+    <footer class="footer fixed-bottom py-3">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-dark btn-lg ms-auto fs-3">SELESAI</button>
+            </div>
+        </div>
+    </footer>
 @endsection

@@ -11,10 +11,14 @@
 <body>
     @include('layouts.navbar')
 
-    <div class="container-fluid mt-3">
+    <main role="main" class="main flex-shrink-0 container-fluid mt-3">
         @yield('content')
-    </div>
+    </main>
+
+    @yield('footer')
 
     @include('layouts.script')
+
+    @yield('custom-script')
 </body>
 </html>
