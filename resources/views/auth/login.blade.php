@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +9,7 @@
 
     @include('layouts.link')
 </head>
+
 <body>
     <div class="login-card card">
         <div class="row align-items-center g-0">
@@ -38,4 +40,5 @@
 
     @include('layouts.script')
 </body>
+
 </html>

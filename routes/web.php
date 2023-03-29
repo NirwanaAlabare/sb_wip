@@ -15,13 +15,13 @@ use App\Http\Controllers\Auth\LoginController;
 */
 
 Route::controller(LoginController::class)->prefix('login')->group(function () {
-    Route::get('/', 'index');
+    Route::get('/', 'index')->name('login');
     Route::post('/authenticate', 'authenticate');
 });
 
 Route::get('/', function () {
     return view('dashboard');
-})->middleware('auth');
+});
 
 Route::get('/rft', function () {
     return view('rft');
