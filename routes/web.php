@@ -15,30 +15,41 @@ use App\Http\Controllers\Auth\LoginController;
 */
 
 Route::controller(LoginController::class)->prefix('login')->group(function () {
-    Route::get('/', 'index')->name('login');
-    Route::post('/authenticate', 'authenticate');
+    Route::middleware('guest')->group(function () {
+        Route::get('/', 'index')->name('login');
+        Route::post('/authenticate', 'authenticate');
+    });
+
+    Route::post('/unauthenticate', 'unauthenticate')->middleware('auth');
 });
 
-Route::get('/', function () {
-    return view('dashboard');
-});
 
-Route::get('/rft', function () {
-    return view('rft');
-});
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('index');
+    });
 
-Route::get('/defect', function () {
-    return view('defect');
-});
+    Route::get('/production-panel', function () {
+        return view('production-panel');
+    });
 
-Route::get('/defect-history', function () {
-    return view('defect-history');
-});
+    Route::get('/rft', function () {
+        return view('rft');
+    });
 
-Route::get('/reject', function () {
-    return view('reject');
-});
+    Route::get('/defect', function () {
+        return view('defect');
+    });
 
-Route::get('/rework', function () {
-    return view('rework');
+    Route::get('/defect-history', function () {
+        return view('defect-history');
+    });
+
+    Route::get('/reject', function () {
+        return view('reject');
+    });
+
+    Route::get('/rework', function () {
+        return view('rework');
+    });
 });

@@ -1,27 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
     showTime();
+
+    $('#input-type').hide();
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 });
 
-// Redirect
-function toRft() {
-    location.href = "/rft";
-}
-
-function toDefect() {
-    location.href = "/defect";
-}
-
-function toDefectHistory() {
-    location.href = "/defect-history";
-}
-
-function toReject() {
-    location.href = "/reject";
-}
-
-function toRework() {
-    location.href = "/rework";
-}
+// General
 
 // show time
 function showTime(){
@@ -77,7 +66,133 @@ function setDateFormat(date) {
     return [year, month, day].join("-");
 }
 
-// defect
+// Authentication
+function login(e, evt) {
+    evt.preventDefault();
+
+    $.ajax({
+        url: e.getAttribute('action'),
+        type: e.getAttribute('method'),
+        data: new FormData(e),
+        processData: false,
+        contentType: false,
+        success: function(res) {
+            if (res.status == 200) {
+                console.log(res.message);
+                location.href = res.redirect;
+            } else {
+                console.error(res.message);
+                for(let i = 0;i < res.additional.length;i++) {
+                    document.getElementById(res.additional[i]).classList.add('is-invalid');
+                }
+                iziToast.error({
+                    title: 'Error',
+                    message: res.message,
+                    position: 'topCenter'
+                });
+            }
+        }, error: function (jqXHR) {
+            let res = jqXHR.responseJSON;
+            let message = '';
+            console.log(res.message);
+            for (let key in res.errors) {
+                message += res.errors[key]+' ';
+                document.getElementById(key).classList.add('is-invalid');
+            };
+            iziToast.error({
+                title: 'Error',
+                message: message,
+                position: 'topCenter'
+            });
+        }
+    });
+}
+
+function logout() {
+    Swal.fire({
+        title: 'Logout?',
+        showConfirmButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Logout',
+        confirmButtonColor: '#535394',
+        denyButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/login/unauthenticate',
+                type: 'post',
+                data: {confirmed : result.isConfirmed},
+                success: function(res) {
+                    if (res.status == 200) {
+                        console.log(res.message);
+                        location.href = res.redirect;
+                    }
+                }
+            });
+        }
+    });
+}
+
+// Production Panel View Change
+function toProductionPanel(id) {
+    $(id).hide();
+    $('#input-type').hide();
+    $('#rft-input').val(1);
+    $('#defect-input').val(1);
+    $('#reject-input').val(1);
+    $('#production-panel').show();
+    $('.footer').hide();
+}
+
+function toRft() {
+    $('#input-type').removeClass()
+    $('#input-type').addClass('bg-rft w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
+    $('#input-type').html('RFT');
+    $('#input-type').show();
+    $('#production-panel').hide();
+    $('#rft-container').show();
+    $('.footer').show();
+}
+
+function toDefect() {
+    $('#input-type').removeClass()
+    $('#input-type').addClass('bg-defect w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
+    $('#input-type').html('DEFECT');
+    $('#input-type').show();
+    $('#production-panel').hide();
+    $('#defect-container').show();
+    $('.footer').show();
+}
+
+function toDefectHistory() {
+    $('#input-type').removeClass()
+    $('#input-type').addClass('bg-defect w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
+    $('#input-type').html('DEFECT');
+    $('#input-type').show();
+    $('#production-panel').hide();
+    $('#defect-history-container').show();
+}
+
+function toReject() {
+    $('#input-type').removeClass()
+    $('#input-type').addClass('bg-reject w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
+    $('#input-type').html('REJECT');
+    $('#input-type').show();
+    $('#production-panel').hide();
+    $('#reject-container').show();
+    $('.footer').show();
+}
+
+function toRework() {
+    $('#input-type').removeClass()
+    $('#input-type').addClass('bg-rework w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
+    $('#input-type').html('REWORK');
+    $('#input-type').show();
+    $('#production-panel').hide();
+    $('#rework-container').show();
+}
+
+// defect modal
 function showDefectModal() {
     $("#defect-modal").modal("show");
 }
@@ -113,9 +228,8 @@ function reworkConfirmation() {
         showDenyButton: true,
         confirmButtonText: 'Rework',
         confirmButtonColor: '#447efa',
-        denyButtonText: `Batal`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
+        denyButtonText: 'Batal',
+    }).then((result) => {
         if (result.isConfirmed) {
             location.reload;
         } else if (result.isDenied) {
@@ -126,5 +240,16 @@ function reworkConfirmation() {
                 confirmButtonColor: '#447efa',
             })
         }
-      })
+    });
+}
+
+// qty input
+function increment(id) {
+    let element = document.getElementById(id);
+    element.value = parseInt(element.value) + 1;
+}
+
+function decrement(id) {
+    let element = document.getElementById(id);
+    element.value = parseInt(element.value) - 1;
 }
