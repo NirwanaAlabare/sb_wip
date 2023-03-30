@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use App\Models\Line;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,5 +16,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+
+        // Lines Dummy
+        for ($i = 0;$i < 10;$i++) {
+            Line::create([
+                'name' => 'line '.sprintf("%02d", $i),
+                'username' => 'line_'.sprintf("%02d", $i),
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'remember_token' => Str::random(10)
+            ]);
+        }
     }
 }

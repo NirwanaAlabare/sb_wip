@@ -42,7 +42,7 @@
     </div>
 
     {{-- Panel --}}
-    <div class="production-panel row row-gap-3">
+    <div class="production-panel row row-gap-3" id="production-panel">
         <div class="col-md-6" id="rft-panel">
             <div class="d-flex h-100">
                 <div class="card-custom bg-rft d-flex justify-content-between align-items-center w-75 h-100" onclick="toRft()">
@@ -133,4 +133,33 @@
             </div>
         </div>
     </div>
+
+    <div id="rft-container">
+        @include('rft')
+    </div>
+    <div id="defect-container">
+        @include('defect')
+    </div>
+    <div id="defect-history-container">
+        @include('defect-history')
+    </div>
+    <div id="reject-container">
+        @include('reject')
+    </div>
+    <div id="rework-container">
+        @include('rework')
+    </div>
+@endsection
+
+@section('custom-script')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            $('#rft-container').hide();
+            $('#defect-container').hide();
+            $('#defect-history-container').hide();
+            $('#reject-container').hide();
+            $('#rework-container').hide();
+            $('.footer').hide();
+        })
+    </script>
 @endsection
