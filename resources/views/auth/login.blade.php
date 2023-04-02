@@ -20,24 +20,28 @@
             <div class="col-md-6">
                 <div class="card-body my-5">
                     <h2 class="text-center text-sb fw-bold mb-3">LOGIN</h2>
-                    <form method="POST" action="{{ url('login/authenticate') }}" onsubmit="login(this, event)" class="login-form mx-3">
+                    <form method="POST" action="{{ url('login/authenticate') }}" onsubmit="login(this, event)"
+                        class="login-form mx-3">
                         @csrf
                         <div class="mb-3 position-relative">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" id="username">
+                            <input type="text" class="form-control @error('username') is-invalid @enderror"
+                                name="username" id="username">
                             @error('username')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="mb-3 position-relative">
                             <label for="username">Password</label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                name="password" id="password">
                             @error('password')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="mb-3 position-relative form-check">
-                            <input type="checkbox" class="form-check-input @error('remember') is-invalid @enderror" value="true" name="remember" id="remember">
+                            <input type="checkbox" class="form-check-input @error('remember') is-invalid @enderror"
+                                value="true" name="remember" id="remember" checked>
                             <label class="form-check-label">
                                 Remember Me
                             </label>
@@ -55,6 +59,10 @@
     </div>
 
     @include('layouts.script')
+
+    <script>
+        $('#remember').prop('checked', true);
+    </script>
 </body>
 
 </html>

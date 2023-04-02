@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\Line as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class Line extends Authenticatable
+class Order extends Model
 {
     use HasFactory;
 
     protected $connection = 'mysql_sb_wip';
 
-    protected $table = 'lines';
+    protected $table = 'orders';
 
     protected $fillable = [
         'name',
