@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\LineProduction;
 use Livewire\Component;
-use App\Models\Line;
 
 class OrderList extends Component
 {
@@ -11,6 +11,15 @@ class OrderList extends Component
 
     public function render()
     {
-        return view('livewire.order-list', ['items' => Line::where('name', 'LIKE', '%'.$this->search.'%')->get()]);
+        $orders = LineProduction::where('line_id', session('user_id'))
+        ->whereHas('order', function($q) {
+            $q->where('ws_number', 'LIKE', '%'.$this->search.'%');
+            $q->orWhere('buyer_name', 'LIKE', '%'.$this->search.'%');
+            $q->orWhere('style_name', 'LIKE', '%'.$this->search.'%');
+            $q->orWhere('product_type', 'LIKE', '%'.$this->search.'%');
+        })
+        ->get();
+
+        return view('livewire.order-list', ['orders' => $orders]);
     }
 }

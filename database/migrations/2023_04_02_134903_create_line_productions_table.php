@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDefectsTable extends Migration
+class CreateLineProductionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateDefectsTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_sb_wip')->create('defects', function (Blueprint $table) {
+        Schema::connection('mysql_sb_wip')->create('line_productions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('line_id')->constrained('lines')->onDelete('cascade');
-            $table->foreignId('order_detail_size_id')->constrained('order_detail_sizes')->onDelete('cascade');
-            $table->foreignId('defect_type_id')->constrained('defect_types')->onDelete('cascade');
-            $table->foreignId('defect_area_id')->constrained('defect_areas')->onDelete('cascade');
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+            $table->integer('qty');
+            $table->integer('qty_output');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateDefectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('defects');
+        Schema::dropIfExists('orders');
     }
 }

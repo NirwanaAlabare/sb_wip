@@ -14,13 +14,21 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-        'name',
-        'username',
-        'password',
+        'ws_number',
+        'buyer_name',
+        'style_name',
+        'product_type',
+        'qty',
+        'qty_output',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function lineProductions()
+    {
+        return $this->hasMany(LineProduction::class);
+    }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(orderDetail::class);
+    }
 }

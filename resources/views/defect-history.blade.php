@@ -101,7 +101,7 @@
 </div>
 
 {{-- Back --}}
-<a onclick="toProductionPanel('#rft-container')" class="back bg-sb text-light text-center w-auto">
+<a onclick="toProductionPanel('#defect-history-container')" class="back bg-sb text-light text-center w-auto">
     <i class="fa-regular fa-reply"></i>
 </a>
 

@@ -4,53 +4,64 @@
         <button class="btn btn-sb" type="button" id="button-search-order"><i class="fa-regular fa-magnifying-glass"></i></button>
     </div>
 
-    <div class="row row-gap-3 mb-3">
-        @foreach ($items as $item)
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body row justify-content-start">
-                        <h3 text-center>{{ $item->name }}</h3>
-                        {{-- <div class="col-lg-6">
-                            <table class="table">
-                                <tr>
-                                    <td class="fw-bold">Buyer</td>
-                                    <td class="fw-bold">:</td>
-                                    <td class="fw-bold">?????????</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold">WS Number</td>
-                                    <td class="fw-bold">:</td>
-                                    <td class="fw-bold">?????????</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold">OP Number</td>
-                                    <td class="fw-bold">:</td>
-                                    <td class="fw-bold">?????????</td>
-                                </tr>
-                            </table>
+    <div class="order-list row row-gap-3 mb-3">
+        @if ($orders->isEmpty())
+            <h5 class="text-center text-muted mt-3"><i class="fa-solid fa-circle-exclamation"></i> Order not found</h5>
+        @else
+            @foreach ($orders as $order)
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body row justify-content-start">
+                            <div class="col-lg-6">
+                                <table class="table table-borderless mb-1">
+                                    <tr>
+                                        <td>Buyer</td>
+                                        <td>:</td>
+                                        <td class="fw-bold">{{ ucwords($order->order->buyer_name) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>WS Number</td>
+                                        <td>:</td>
+                                        <td class="fw-bold">{{ $order->order->ws_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>OP Number</td>
+                                        <td>:</td>
+                                        <td class="fw-bold">{{ $order->order->ws_number }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+                                <table class="table table-borderless mb-1">
+                                    <tr>
+                                        <td>Product Type</td>
+                                        <td>:</td>
+                                        <td class="fw-bold">{{ ucwords($order->order->product_type) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Style</td>
+                                        <td>:</td>
+                                        <td class="fw-bold">{{ ucwords($order->order->style_name) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Color</td>
+                                        <td>:</td>
+                                        <td class="fw-bold">
+                                            @foreach ($order->order->orderDetails as $detail)
+                                                @if ($loop->iteration <= 1)
+                                                    {{ ucwords($detail->product_color) }}
+                                                @else
+                                                    {{ ",".ucwords($detail->product_color) }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                        <div class="col-lg-6">
-                            <table class="table">
-                                <tr>
-                                    <td>Product Type</td>
-                                    <td>:</td>
-                                    <td>?????????</td>
-                                </tr>
-                                <tr>
-                                    <td>Style</td>
-                                    <td>:</td>
-                                    <td>?????????</td>
-                                </tr>
-                                <tr>
-                                    <td>Color</td>
-                                    <td>:</td>
-                                    <td>?????????</td>
-                                </tr>
-                            </table>
-                        </div> --}}
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
 </div>

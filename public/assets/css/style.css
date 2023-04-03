@@ -292,6 +292,11 @@
     padding: 45px 0;
 }
 
+/* Order List */
+.order-list .card {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
 /* Footer */
 .footer {
     border-top: 1px solid #d2d2d2;

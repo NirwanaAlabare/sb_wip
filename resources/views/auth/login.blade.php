@@ -37,9 +37,8 @@
                                 name="password" id="password">
                             @error('password')
                                 <small class="text-danger">{{ $message }}</small>
+                            @enderror
                             <input type="checkbox" class="form-check-input @error('remember') is-invalid @enderror" value="true" name="remember" id="remember">
-                            <input type="checkbox" class="form-check-input @error('remember') is-invalid @enderror"
-                                value="true" name="remember" id="remember" checked>
                             <label class="form-check-label">
                                 Remember Me
                             </label>

@@ -23,4 +23,9 @@ class Line extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function lineProductions()
+    {
+        return $this->hasMany(LineProduction::class);
+    }
 }
