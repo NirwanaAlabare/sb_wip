@@ -24,7 +24,7 @@ class LoginController extends Controller
     {
         $credentials = $request->validated();
 
-        $remember = isset($credentials['remember']) && $credentials['remember'] == "true" ? true : false;
+        $remember = isset($credentials['remember']) ? ($credentials['remember'] == "true" ? true : false) : false;
 
         if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']], $remember)) {
             $request->session()->regenerate();
