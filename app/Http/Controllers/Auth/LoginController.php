@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\SignalBit\UserPassword;
 
 class LoginController extends Controller
 {
@@ -24,12 +25,14 @@ class LoginController extends Controller
     {
         $credentials = $request->validated();
 
-        $remember = isset($credentials['remember']) ? ($credentials['remember'] == "true" ? true : false) : false;
+        $user = UserPassword::where('username', $credentials['username'])->where('Password', $credentials['password'])->first();
 
-        if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']], $remember)) {
+        if ($user) {
+            Auth::login($user);
+
             $request->session()->regenerate();
 
-            session(['user_id' => Auth::user()->id, 'user_name' => Auth::user()->name]);
+            session(['user_id' => Auth::user()->id, 'user_name' => Auth::user()->username]);
 
             return array(
                 'status' => '200',

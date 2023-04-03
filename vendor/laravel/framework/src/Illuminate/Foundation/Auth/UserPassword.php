@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Database\Eloquent\Model;
 
-class UsernamePassword extends Model implements
+class UserPassword extends Model implements
     AuthenticatableContract,
     AuthorizableContract
 {

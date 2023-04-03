@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'lines',
+        'passwords' => 'userpasswords',
     ],
 
     /*
@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'lines',
+            'provider' => 'userpasswords',
         ],
     ],
 
@@ -68,6 +68,11 @@ return [
         'lines' => [
             'driver' => 'eloquent',
             'model' => App\Models\Line::class,
+        ],
+
+        'userpasswords' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\SignalBit\UserPassword::class,
         ]
     ],
 

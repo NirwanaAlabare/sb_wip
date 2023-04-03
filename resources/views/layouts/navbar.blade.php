@@ -26,7 +26,7 @@
                                 <span>{{ strtoupper(session('user_name')) }}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#"><i class="fa-regular fa-gear"></i> {{ strtoupper(session('user_name')) }}</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fa-regular fa-gear"></i> {{ strtoupper(Auth::user()->username) }}</a></li>
                                 <li><a class="dropdown-item" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a></li>
                             </ul>
                         </li>

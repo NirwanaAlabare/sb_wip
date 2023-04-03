@@ -2,7 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\LineProduction;
+use App\Models\SignalBit\MasterPlan;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class OrderList extends Component
@@ -11,14 +12,30 @@ class OrderList extends Component
 
     public function render()
     {
-        $orders = LineProduction::where('line_id', session('user_id'))
-        ->whereHas('order', function($q) {
-            $q->where('ws_number', 'LIKE', '%'.$this->search.'%');
-            $q->orWhere('buyer_name', 'LIKE', '%'.$this->search.'%');
-            $q->orWhere('style_name', 'LIKE', '%'.$this->search.'%');
-            $q->orWhere('product_type', 'LIKE', '%'.$this->search.'%');
-        })
-        ->get();
+        $orders = MasterPlan::select(
+                'master_plan.tgl_plan as plan_date',
+                'act_costing.kpno as ws_number',
+                'mastersupplier.supplier as buyer_name',
+                'act_costing.styleno as style_name',
+                'so.qty as qty_order'
+            )
+            ->leftJoin('so_det', 'so_det.id', '=', 'master_plan.id_so_det')
+            ->leftJoin('so', 'so.id', '=', 'so_det.id_so')
+            ->leftJoin('act_costing', 'act_costing.id', '=', 'so.id_cost')
+            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
+            ->where('master_plan.sewing_line', Auth::user()->username)
+            ->where('so_det.cancel', 'N')
+            ->whereRaw("
+                (
+                    act_costing.kpno LIKE '%".$this->search."%'
+                    OR
+                    mastersupplier.supplier LIKE '%".$this->search."%'
+                    OR
+                    act_costing.styleno LIKE '%".$this->search."%'
+                )
+            ")
+            ->groupBy('act_costing.kpno', 'master_plan.tgl_plan', 'mastersupplier.supplier', 'act_costing.styleno', 'so.qty')
+            ->get();
 
         return view('livewire.order-list', ['orders' => $orders]);
     }

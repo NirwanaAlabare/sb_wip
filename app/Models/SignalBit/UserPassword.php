@@ -9,7 +9,9 @@ class UserPassword extends Authenticatable
 {
     use HasFactory;
 
-    protected $connection = 'mysql_sb_wip';
+    protected $primaryKey = 'username';
+
+    protected $connection = 'mysql_sb';
 
     protected $table = 'userpassword';
 
@@ -19,6 +21,10 @@ class UserPassword extends Authenticatable
         'Password',
         'Locked'
     ];
+
+    public function getAuthPassword() {
+        return $this->Password;
+    }
 
     public function masterPlans()
     {

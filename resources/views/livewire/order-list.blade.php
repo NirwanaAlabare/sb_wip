@@ -17,17 +17,17 @@
                                     <tr>
                                         <td>Buyer</td>
                                         <td>:</td>
-                                        <td class="fw-bold">{{ ucwords($order->order->buyer_name) }}</td>
+                                        <td class="fw-bold">{{ ucwords($order->buyer_name) }}</td>
                                     </tr>
                                     <tr>
                                         <td>WS Number</td>
                                         <td>:</td>
-                                        <td class="fw-bold">{{ $order->order->ws_number }}</td>
+                                        <td class="fw-bold">{{ $order->ws_number }}</td>
                                     </tr>
                                     <tr>
                                         <td>OP Number</td>
                                         <td>:</td>
-                                        <td class="fw-bold">{{ $order->order->ws_number }}</td>
+                                        <td class="fw-bold">{{ $order->ws_number }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -36,25 +36,17 @@
                                     <tr>
                                         <td>Product Type</td>
                                         <td>:</td>
-                                        <td class="fw-bold">{{ ucwords($order->order->product_type) }}</td>
+                                        <td class="fw-bold">???</td>
                                     </tr>
                                     <tr>
                                         <td>Style</td>
                                         <td>:</td>
-                                        <td class="fw-bold">{{ ucwords($order->order->style_name) }}</td>
+                                        <td class="fw-bold">{{ ucwords($order->style_name) }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Color</td>
+                                        <td>Plan Date</td>
                                         <td>:</td>
-                                        <td class="fw-bold">
-                                            @foreach ($order->order->orderDetails as $detail)
-                                                @if ($loop->iteration <= 1)
-                                                    {{ ucwords($detail->product_color) }}
-                                                @else
-                                                    {{ ",".ucwords($detail->product_color) }}
-                                                @endif
-                                            @endforeach
-                                        </td>
+                                        <td class="fw-bold">{{ $order->plan_date }}</td>
                                     </tr>
                                 </table>
                             </div>
