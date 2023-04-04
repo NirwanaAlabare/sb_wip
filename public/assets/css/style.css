@@ -295,6 +295,16 @@
 /* Order List */
 .order-list .card {
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    transition: 0.3s;
+}
+
+.order-list .card:hover {
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.order {
+    text-decoration: none;
 }
 
 /* Footer */

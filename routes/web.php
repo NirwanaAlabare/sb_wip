@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProductionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +30,9 @@ Route::middleware('auth')->group(function () {
         return view('index');
     });
 
-    Route::get('/production-panel', function () {
-        return view('production-panel');
+    Route::controller(ProductionController::class)->prefix('production-panel')->group(function () {
+        Route::get('/{id}', 'index');
+        Route::post('/unauthenticate', 'unauthenticate')->middleware('auth');
     });
 
     Route::get('/rft', function () {

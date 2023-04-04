@@ -32,7 +32,7 @@ class LoginController extends Controller
 
             $request->session()->regenerate();
 
-            session(['user_id' => Auth::user()->id, 'user_name' => Auth::user()->username]);
+            session(['user_username' => Auth::user()->username, 'user_name' => Auth::user()->FullName]);
 
             return array(
                 'status' => '200',

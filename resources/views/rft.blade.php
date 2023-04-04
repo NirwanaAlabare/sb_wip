@@ -46,6 +46,11 @@
                             XS
                         </button>
                     </div>
+                    {{-- <div class="col-md-3">
+                        <button class="btn btn-rft w-100 h-100 fs-3">
+                            XS
+                        </button>
+                    </div>
                     <div class="col-md-3">
                         <button class="btn btn-rft w-100 h-100 fs-3">
                             S
@@ -70,7 +75,7 @@
                         <button class="btn btn-rft w-100 h-100 fs-3">
                             XXL
                         </button>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

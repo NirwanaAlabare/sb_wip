@@ -9,7 +9,7 @@
             <h5 class="text-center text-muted mt-3"><i class="fa-solid fa-circle-exclamation"></i> Order not found</h5>
         @else
             @foreach ($orders as $order)
-                <div class="col-md-6">
+                <a href="/production-panel/{{ $order->id }}" class="order col-md-6">
                     <div class="card">
                         <div class="card-body row justify-content-start">
                             <div class="col-lg-6">
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </a href="/production-panel/{{ $order->id }}">
             @endforeach
         @endif
     </div>
