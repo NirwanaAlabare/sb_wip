@@ -13,18 +13,20 @@ class OrderList extends Component
     public function render()
     {
         $orders = MasterPlan::selectRaw("
-                DISTINCT act_costing.kpno, master_plan.tgl_plan, mastersupplier.supplier, act_costing.styleno, so.qty,
+                DISTINCT master_plan.id_ws, master_plan.tgl_plan, mastersupplier.supplier, act_costing.styleno, so_det.styleno_prod, so.qty,
                 master_plan.id as id,
                 master_plan.tgl_plan as plan_date,
                 act_costing.kpno as ws_number,
                 mastersupplier.supplier as buyer_name,
                 act_costing.styleno as style_name,
+                so_det.styleno_prod as reff_number,
                 so.qty as qty_order
             ")
-            ->leftJoin('so_det', 'so_det.id', '=', 'master_plan.id_so_det')
-            ->leftJoin('so', 'so.id', '=', 'so_det.id_so')
-            ->leftJoin('act_costing', 'act_costing.id', '=', 'so.id_cost')
+            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
+            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
+            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
             ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
+            ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
             ->where('master_plan.sewing_line', Auth::user()->username)
             ->where('so_det.cancel', 'N')
             ->whereRaw("

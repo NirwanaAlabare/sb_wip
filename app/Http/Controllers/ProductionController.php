@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SignalBit\MasterPlan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ProductionController extends Controller
@@ -14,24 +15,10 @@ class ProductionController extends Controller
      */
     public function index($id)
     {
-        $orderSql = MasterPlan::selectRaw("
-                DISTINCT act_costing.kpno, master_plan.tgl_plan, mastersupplier.supplier, act_costing.styleno, so.qty,
-                master_plan.id as id,
-                master_plan.tgl_plan as plan_date,
-                mastersupplier.supplier as buyer_name,
-                act_costing.kpno as ws_number,
-                act_costing.styleno as style_name,
-                so.id as id,
-                so.qty as qty_order,
-                so_det.color as color,
-                so_det.size as size
-            ")
-            ->leftJoin('so_det', 'so_det.id', '=', 'master_plan.id_so_det')
-            ->leftJoin('so', 'so.id', '=', 'so_det.id_so')
-            ->leftJoin('act_costing', 'act_costing.id', '=', 'so.id_cost')
-            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer');
+        $orderInfo = $orderSql->where('master_plan.id', $id)->first();
+        $orderWsDetails = $orderSql->where('master_plan.sewing_line', Auth::user()->username)->where('act_costing.kpno', $orderInfo->ws_number)->get();
 
-        return view('production-panel', ['orderSql' => $orderSql, 'plan_id' => $id]);
+        return view('production-panel', ['orderInfo' => $orderInfo, 'orderWsDetails' => $orderWsDetails]);
     }
 
     /**

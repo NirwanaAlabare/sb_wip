@@ -41,11 +41,13 @@
             <div class="card-body">
                 <input type="hidden" class="form-control mb-3">
                 <div class="row h-100 row-gap-3">
-                    <div class="col-md-3">
-                        <button class="btn btn-rft w-100 h-100 fs-3">
-                            XS
-                        </button>
-                    </div>
+                    @foreach ($orderWsDetailSizes as $order)
+                        <div class="col-md-3">
+                            <button class="btn btn-rft w-100 h-100 fs-3">
+                                {{ $order->size }}
+                            </button>
+                        </div>
+                    @endforeach
                     {{-- <div class="col-md-3">
                         <button class="btn btn-rft w-100 h-100 fs-3">
                             XS
