@@ -3,28 +3,55 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
 use App\Models\SignalBit\MasterPlan;
+use Illuminate\Session\SessionManager;
+use Illuminate\Support\Facades\Auth;
 
 class ProductionPanel extends Component
 {
+    // Data
     public $orderInfo;
     public $orderWsDetails;
+    public $orderWsDetailSizes;
 
+    // Filter
     public $selectedColor;
 
-    public $panels = true;
-    public $rft = false;
-    public $defect = false;
-    public $defectHistory = false;
-    public $reject = false;
-    public $rework = false;
+    // Panel views
+    public $panels;
+    public $rft;
+    public $defect;
+    public $defectHistory;
+    public $reject;
+    public $rework;
 
-    public function mount()
+    // Event listeners
+    protected $listeners = [
+        'toProductionPanel' => 'toProductionPanel',
+        'toRft' => 'toRft',
+        'toDefect' => 'toDefect',
+        'toDefectHistory' => 'toDefectHistory',
+        'toReject' => 'toReject',
+        'toRework' => 'toRework'
+    ];
+
+    public function mount(SessionManager $session, $orderInfo, $orderWsDetails)
     {
-        $this->orderInfo = $this->orderInfo;
-        $this->orderWsDetails = $this->orderWsDetails;
+        $this->orderInfo = $orderInfo;
+        $this->orderWsDetails = $orderWsDetails;
+
+        // Put data on session
+        $session->put("orderInfo", $orderInfo);
+        $session->put("orderWsDetails", $orderWsDetails);
+
+        // Default value
         $this->selectedColor = $this->orderWsDetails[0]->color;
+        $this->panels = true;
+        $this->rft = false;
+        $this->defect = false;
+        $this->defectHistory = false;
+        $this->reject = false;
+        $this->rework = false;
     }
 
     public function toRft() {
@@ -61,9 +88,13 @@ class ProductionPanel extends Component
         $this->rework = false;
     }
 
-    public function render()
+    public function render(SessionManager $session)
     {
-        $orderWsDetailSizes = MasterPlan::selectRaw("
+        // Keep this data with session
+        $this->orderInfo = $session->get('orderInfo', $this->orderInfo);
+        $this->orderWsDetails = $session->get('orderWsDetails', $this->orderWsDetails);
+
+        $this->orderWsDetailSizes = MasterPlan::selectRaw("
             DISTINCT master_plan.id_ws, master_plan.tgl_plan, mastersupplier.supplier, act_costing.styleno, so_det.styleno_prod, so.qty,
             master_plan.id as id,
             master_plan.tgl_plan as plan_date,
@@ -80,13 +111,18 @@ class ProductionPanel extends Component
         ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
         ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
         ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
-        ->where('master_plan.sewing_line', Auth::user()->username)->where('act_costing.kpno', $this->orderInfo->ws_number)
+        ->where('master_plan.sewing_line', Auth::user()->username)
+        ->where('act_costing.kpno', $this->orderInfo->ws_number)
         ->where('so_det.color', $this->selectedColor)
         ->get();
 
         return view('livewire.production-panel', [
+            // Data
+            'orderInfo' => $this->orderInfo,
             'orderWsDetails' => $this->orderWsDetails,
-            'orderWsDetailSizes' => $orderWsDetailSizes,
+            'orderWsDetailSizes' => $this->orderWsDetailSizes,
+
+            // Panel views
             'panels' => $this->panels,
             'rft' => $this->rft,
             'defect' => $this->defect,

@@ -1,9 +1,4 @@
 <div>
-    @php
-        $orderInfo = $orderInfo;
-        $orderWsDetails = $orderWsDetails;
-    @endphp
-
     {{-- Production Info --}}
     <div class="production-info row row-gap-1 align-items-center mb-3">
         <div class="col-md-2">
@@ -37,10 +32,10 @@
             </div>
         </div>
         <div class="col-md-2">
-            <div class="mb-1">
+            <div class="mb-1" wire:ignore>
                 <label class="form-label mb-0">Color</label>
                 {{-- <input type="text" class="form-control form-control-sm" id="product-color" readonly> --}}
-                <select class="select2 form-select-sm" name="state" id="product-color" wire:change='selectedColor'>
+                <select class="select2 form-select-sm" name="state" id="product-color" wire:model='selectedColor'>
                     @foreach ($orderWsDetails as $order)
                         <option value="{{ $order->color }}">{{ $order->color }}</option>
                     @endforeach
@@ -55,7 +50,7 @@
             <div class="row row-gap-3">
                 <div class="col-md-6" id="rft-panel">
                     <div class="d-flex h-100">
-                        <div class="card-custom bg-rft d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toRft()" --}} wire:click='toRft($orderInfo = $orderInfo;)'>
+                        <div class="card-custom bg-rft d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toRft()" --}} wire:click='toRft'>
                             <div class="d-flex flex-column gap-3">
                                 <p class="text-light"><i class="fa-regular fa-circle-check fa-2xl"></i></p>
                                 <p class="text-light">RFT</p>
@@ -85,7 +80,7 @@
                 </div>
                 <div class="col-md-6" id="defect-panel">
                     <div class="d-flex h-100">
-                        <div class="card-custom bg-defect d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toDefect()" --}} wire:click='toDefect($orderInfo = $orderInfo;)'>
+                        <div class="card-custom bg-defect d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toDefect()" --}} wire:click='toDefect'>
                             <div class="d-flex flex-column gap-3">
                                 <p class="text-light"><i class="fa-regular fa-circle-exclamation fa-2xl"></i></p>
                                 <p class="text-light">DEFECT</p>
@@ -94,7 +89,7 @@
                         </div>
                         <div class="card-custom-footer bg-light w-25 h-100">
                             <div class="d-flex flex-column justify-content-center align-items-stretch h-100 gap-1">
-                                <button class="history multi-item upper btn btn-pale h-50" {{-- onclick="toDefectHistory()" --}} wire:click='toDefectHistory($orderInfo = $orderInfo;)'>
+                                <button class="history multi-item upper btn btn-pale h-50" {{-- onclick="toDefectHistory()" --}} wire:click='toDefectHistory'>
                                     <div class="d-flex flex-column justify-content-center align-items-center w-100 h-100">
                                         <p class="mb-1">HISTORY</p>
                                         <p class="mb-0"><i class="fa-regular fa-clock-rotate-left fa-xl"></i></p>
@@ -112,7 +107,7 @@
                 </div>
                 <div class="col-md-6" id="reject-panel">
                     <div class="d-flex h-100">
-                        <div class="card-custom bg-reject d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toReject()" --}} wire:click='toReject($orderInfo = $orderInfo;)'>
+                        <div class="card-custom bg-reject d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toReject()" --}} wire:click='toReject'>
                             <div class="d-flex flex-column gap-3">
                                 <p class="text-light"><i class="fa-regular fa-circle-xmark fa-2xl"></i></p>
                                 <p class="text-light">REJECT</p>
@@ -128,7 +123,7 @@
                 </div>
                 <div class="col-md-6" id="rework-panel">
                     <div class="d-flex h-100">
-                        <div class="card-custom bg-rework d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toRework()" --}} wire:click='toRework($orderInfo = $orderInfo;)'>
+                        <div class="card-custom bg-rework d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toRework()" --}} wire:click='toRework'>
                             <div class="d-flex flex-column gap-3">
                                 <p class="text-light"><i class="fa-regular fa-arrows-rotate fa-2xl"></i></p>
                                 <p class="text-light">REWORK</p>
@@ -145,32 +140,51 @@
             </div>
         @endif
 
-        {{-- Production Panel --}}
-        <div id="rft-container">
-            @if ($rft)
-                @include('rft', ["orderWsDetailSizes" => $orderWsDetailSizes])
-            @endif
-        </div>
-        <div id="defect-container">
+        {{-- Rft --}}
+        @if ($rft)
+            @livewire('rft', ["orderWsDetailSizes" => $orderWsDetailSizes])
+        @endif
+
+        {{-- Defect --}}
+        @if ($defect)
+            @livewire('defect', ["orderWsDetailSizes" => $orderWsDetailSizes])
+        @endif
+
+        {{-- Defect History --}}
+        @if ($defectHistory)
+            @livewire('defect-history', ["orderWsDetailSizes" => $orderWsDetailSizes])
+        @endif
+
+        {{-- Reject --}}
+        @if ($reject)
+            @livewire('reject', ["orderWsDetailSizes" => $orderWsDetailSizes])
+        @endif
+
+        {{-- Rework --}}
+        @if ($rework)
+            @livewire('rework', ["orderWsDetailSizes" => $orderWsDetailSizes])
+        @endif
+
+        {{-- <div id="defect-container">
             @if ($defect)
-                @include('defect', ["orderWsDetailSizes" => $orderWsDetailSizes])
+                @livewire('defect', ["orderWsDetailSizes" => $orderWsDetailSizes])
             @endif
         </div>
         <div id="defect-history-container">
             @if ($defectHistory)
-                @include('defect-history', ["orderWsDetailSizes" => $orderWsDetailSizes])
+                @livewire('defectHistory', ["orderWsDetailSizes" => $orderWsDetailSizes])
             @endif
         </div>
         <div id="reject-container">
             @if ($reject)
-                @include('reject', ["orderWsDetailSizes" => $orderWsDetailSizes])
+                @livewire('reject', ["orderWsDetailSizes" => $orderWsDetailSizes])
             @endif
         </div>
         <div id="rework-container">
             @if ($rework)
-                @include('rework', ["orderWsDetailSizes" => $orderWsDetailSizes])
+                @livewire('rework', ["orderWsDetailSizes" => $orderWsDetailSizes])
             @endif
-        </div>
+        </div> --}}
     </div>
 
     {{-- <script>

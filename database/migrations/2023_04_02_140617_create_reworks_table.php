@@ -15,8 +15,7 @@ class CreateReworksTable extends Migration
     {
         Schema::connection('mysql_sb_wip')->create('reworks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('line_id')->constrained('lines')->onDelete('cascade');
-            $table->foreignId('defect_id')->constrained('defects')->onDelete('cascade');
+            $table->foreignId('line_production_id')->constrained('line_productions')->onDelete('cascade');
             $table->timestamps();
         });
     }

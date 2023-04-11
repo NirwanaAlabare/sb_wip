@@ -15,8 +15,7 @@ class CreateRftsTable extends Migration
     {
         Schema::connection('mysql_sb_wip')->create('rfts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('line_id')->constrained('lines')->onDelete('cascade');
-            $table->foreignId('order_detail_size_id')->constrained('order_detail_sizes')->onDelete('cascade');
+            $table->foreignId('line_production_id')->constrained('line_productions')->onDelete('cascade');
             $table->timestamps();
         });
     }

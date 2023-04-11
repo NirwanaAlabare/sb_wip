@@ -25,7 +25,7 @@
     bottom: 20px;
     left: 30px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    z-index: 10000;
+    z-index: 1050;
     transition: 0.3s;
 }
 
@@ -101,9 +101,11 @@
     transition: 0.3s;
 }
 
-.btn-rft:hover {
+.btn-rft:hover, .btn-rft:focus {
     scale: 1.03;
     transition: 0.3s;
+    color: var(--light-color) !important;
+    background: var(--rft-color) !important;
 }
 
 .btn-defect {
@@ -113,9 +115,11 @@
     transition: 0.3s;
 }
 
-.btn-defect:hover {
+.btn-defect:hover, .btn-defect:focus {
     scale: 1.03;
     transition: 0.3s;
+    color: var(--light-color) !important;
+    background: var(--defect-color) !important;
 }
 
 .btn-reject {
@@ -125,9 +129,11 @@
     transition: 0.3s;
 }
 
-.btn-reject:hover {
+.btn-reject:hover, .btn-reject:focus {
     scale: 1.03;
     transition: 0.3s;
+    color: var(--light-color) !important;
+    background: var(--reject-color) !important;
 }
 
 .btn-rework {
@@ -137,9 +143,11 @@
     transition: 0.3s;
 }
 
-.btn-rework:hover {
+.btn-rework:hover, .btn-rework:focus {
     scale: 1.03;
     transition: 0.3s;
+    color: var(--light-color) !important;
+    background: var(--rework-color) !important;
 }
 
 .btn-pale {

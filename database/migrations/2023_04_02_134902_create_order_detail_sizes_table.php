@@ -15,8 +15,6 @@ class CreateOrderDetailSizesTable extends Migration
     {
         Schema::connection('mysql_sb_wip')->create('order_detail_sizes', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('buyer_id')->constrained('buyers')->onDelete('cascade');
-            // temporary field :
             $table->foreignId('order_detail_id')->constrained('order_details')->onDelete('cascade');
             $table->string('product_size');
             $table->integer('qty');
