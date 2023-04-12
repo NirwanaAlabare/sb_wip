@@ -101,7 +101,7 @@
     transition: 0.3s;
 }
 
-.btn-rft:hover, .btn-rft:focus {
+.btn-rft:hover, .btn-rft:focus, .btn-rft.active {
     scale: 1.03;
     transition: 0.3s;
     color: var(--light-color) !important;
@@ -115,7 +115,7 @@
     transition: 0.3s;
 }
 
-.btn-defect:hover, .btn-defect:focus {
+.btn-defect:hover, .btn-defect:focus, .btn-defect.active {
     scale: 1.03;
     transition: 0.3s;
     color: var(--light-color) !important;
@@ -129,7 +129,7 @@
     transition: 0.3s;
 }
 
-.btn-reject:hover, .btn-reject:focus {
+.btn-reject:hover, .btn-reject:focus, .btn-reject.active {
     scale: 1.03;
     transition: 0.3s;
     color: var(--light-color) !important;
@@ -143,7 +143,7 @@
     transition: 0.3s;
 }
 
-.btn-rework:hover, .btn-rework:focus {
+.btn-rework:hover, .btn-rework:focus, .btn-rework.active {
     scale: 1.03;
     transition: 0.3s;
     color: var(--light-color) !important;

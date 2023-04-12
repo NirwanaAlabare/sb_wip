@@ -10,6 +10,8 @@
 @endsection
 
 @section('custom-script')
+    @livewireScripts
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             $('.select2').select2({
@@ -18,7 +20,21 @@
                 placeholder: $( this ).data( 'placeholder' ),
             });
         })
-    </script>
 
-    @livewireScripts
+        Livewire.on('alert', (type, message) => {
+            showNotification(type, message);
+        })
+
+        Livewire.on('showModal', (type) => {
+            if (type == 'defect') {
+                showDefectModal();
+            }
+        })
+
+        Livewire.on('hideModal', (type) => {
+            if (type == 'defect') {
+                hideDefectModal();
+            }
+        })
+    </script>
 @endsection

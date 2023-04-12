@@ -8,6 +8,12 @@
                         <i class="fa-regular fa-plus"></i>
                     </button>
                 </div>
+                @error('outputInput')
+                    <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                        <strong>Error</strong> {{$message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @enderror
                 <div class="card-body">
                     <div class="mb-3">
                         <h3 class="text-center"><i class="fa-regular fa-shirt"></i> Piece</h3>
@@ -46,7 +52,7 @@
                             <p class="mb-1 fs-5">:</p>
                             <p id="rft-qty" class="mb-1 fs-5">0</p>
                         </div>
-                        <button class="btn btn-dark">
+                        <button class="btn btn-dark" wire:click='clearInput'>
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
                         <button class="btn btn-dark">
@@ -54,12 +60,18 @@
                         </button>
                     </div>
                 </div>
+                @error('sizeInput')
+                    <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                        <strong>Error</strong> {{$message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @enderror
                 <div class="card-body">
-                    <input type="hidden" class="form-control mb-3">
+                    <input type="hidden" class="form-control mb-3" id="size-input" value="{{ $sizeInput }}" wire:model='sizeInput'>
                     <div class="row h-100 row-gap-3">
                         @foreach ($orderWsDetailSizes as $order)
                             <div class="col-md-4">
-                                <button class="btn btn-defect w-100 h-100 fs-3" onclick="showDefectModal()" wire:click="setSizeInput('{{ $order->size }}')">
+                                <button class="btn btn-defect w-100 h-100 fs-3 {{ $sizeInput == $order->size ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->size }}')">
                                     {{ $order->size }}
                                 </button>
                             </div>
@@ -74,36 +86,42 @@
     <div class="modal" tabindex="-1" id="defect-modal" wire:ignore.self>
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header bg-defect text-light">
-                <h5 class="modal-title">DEFECT</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Defect Type</label>
-                        <select class="form-select">
-                            <option selected>Select defect type</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Defect Area</label>
-                        <select class="form-select">
-                            <option selected>Select defect area</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Selesai</button>
-            </div>
+                <div class="modal-header bg-defect text-light">
+                    <h5 class="modal-title">DEFECT</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Defect Type</label>
+                            <select class="form-select" id="defect-type" wire:model='defectType'>
+                                <option value="" selected>Select defect type</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            @error('defectType')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Defect Area</label>
+                            <select class="form-select" id="defect-area" wire:model='defectArea' {{ $defectType == '' ? 'disabled' : '' }}>
+                                <option value="" selected>Select defect area</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            @error('defectArea')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-success" wire:click='submitInput'>Selesai</button>
+                </div>
             </div>
         </div>
     </div>
@@ -117,7 +135,7 @@
     <footer class="footer fixed-bottom py-3">
         <div class="container-fluid">
             <div class="d-flex justify-content-end">
-                <button class="btn btn-dark btn-lg ms-auto fs-3">SELESAI</button>
+                <button class="btn btn-dark btn-lg ms-auto fs-3" wire:click='preSubmitInput'>LANJUT</button>
             </div>
         </div>
     </footer>

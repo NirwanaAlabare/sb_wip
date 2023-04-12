@@ -9,6 +9,12 @@
                         <i class="fa-regular fa-plus"></i>
                     </button>
                 </div>
+                @error('outputInput')
+                    <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                        <strong>Error</strong> {{$message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @enderror
                 <div class="card-body">
                     <div class="mb-3">
                         <h3 class="text-center"><i class="fa-regular fa-shirt"></i> Piece</h3>
@@ -31,7 +37,7 @@
                             <p class="mb-1 fs-5">:</p>
                             <p id="rft-qty" class="mb-1 fs-5">0</p>
                         </div>
-                        <button class="btn btn-dark">
+                        <button class="btn btn-dark" wire:click='clearInput'>
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
                         <button class="btn btn-dark">
@@ -39,12 +45,18 @@
                         </button>
                     </div>
                 </div>
+                @error('sizeInput')
+                    <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                        <strong>Error</strong> {{$message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @enderror
                 <div class="card-body">
                     <input type="hidden" class="form-control mb-3" id="size-input" value="{{ $sizeInput }}" wire:model='sizeInput'>
                     <div class="row h-100 row-gap-3">
                         @foreach ($orderWsDetailSizes as $order)
                             <div class="col-md-4">
-                                <button class="btn btn-rft w-100 h-100 fs-3" wire:click="setSizeInput('{{ $order->size }}')">
+                                <button class="btn btn-rft w-100 h-100 fs-3 {{ $sizeInput == $order->size ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->size }}')">
                                     {{ $order->size }}
                                 </button>
                             </div>
@@ -69,20 +81,3 @@
         </div>
     </footer>
 </div>
-
-@push('scripts')
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function () {
-            Livewire.on('alert', (type, message) => {
-                alert(message);
-                if (type == 'warning') {
-                    iziToast.warning({
-                        title: 'Error',
-                        message: res.message,
-                        position: 'topCenter'
-                    });
-                }
-            })
-        })
-    </script>
-@endpush

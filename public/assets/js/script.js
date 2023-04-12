@@ -203,6 +203,10 @@ function showDefectModal() {
     $("#defect-modal").modal("show");
 }
 
+function hideDefectModal() {
+    $("#defect-modal").modal("hide");
+}
+
 // rework
 function reworkConfirmation() {
     Swal.fire({
@@ -258,4 +262,38 @@ function increment(id) {
 function decrement(id) {
     let element = document.getElementById(id);
     element.value = parseInt(element.value) - 1;
+}
+
+// popup notification
+function showNotification(type, message) {
+    switch (type) {
+        case 'info' :
+            iziToast.info({
+                title: 'Information',
+                message: message,
+                position: 'topCenter'
+            });
+            break;
+        case 'success' :
+            iziToast.success({
+                title: 'Success',
+                message: message,
+                position: 'topCenter'
+            });
+            break;
+        case 'warning' :
+            iziToast.warning({
+                title: 'Warning',
+                message: message,
+                position: 'topCenter'
+            });
+            break;
+        case 'error' :
+            iziToast.error({
+                title: 'Error',
+                message: message,
+                position: 'topCenter'
+            });
+            break;
+    }
 }

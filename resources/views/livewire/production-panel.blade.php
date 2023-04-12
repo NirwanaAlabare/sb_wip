@@ -28,7 +28,7 @@
         <div class="col-md-2">
             <div class="mb-1">
                 <label class="form-label mb-0">Product Type</label>
-                <input type="text" class="form-control form-control-sm" id="product-type" value="-" readonly>
+                <input type="text" class="form-control form-control-sm" id="product-type" value="{{ $orderInfo->product_type }}" readonly>
             </div>
         </div>
         <div class="col-md-2">
@@ -62,11 +62,10 @@
                                 <div class="filter multi-item upper h-50 bg-pale">
                                     <div class="d-flex flex-column justify-content-between w-100 h-100">
                                         <select class="form-select" style="border-radius: 0 15px 0 0">
-                                            <option selected>All Size</option>
-                                            <option value="s">S</option>
-                                            <option value="m">M</option>
-                                            <option value="l">L</option>
-                                            <option value="xl">XL</option>
+                                            <option value="all">All Sizes</option>
+                                            @foreach ($orderWsDetailSizes as $order)
+                                                <option value="{{ $order->size }}">{{ $order->size }}</option>
+                                            @endforeach
                                         </select>
                                         <p class="text-center fs-3 mt-auto mb-auto">313</p>
                                     </div>
@@ -164,46 +163,5 @@
         @if ($rework)
             @livewire('rework', ["orderWsDetailSizes" => $orderWsDetailSizes])
         @endif
-
-        {{-- <div id="defect-container">
-            @if ($defect)
-                @livewire('defect', ["orderWsDetailSizes" => $orderWsDetailSizes])
-            @endif
-        </div>
-        <div id="defect-history-container">
-            @if ($defectHistory)
-                @livewire('defectHistory', ["orderWsDetailSizes" => $orderWsDetailSizes])
-            @endif
-        </div>
-        <div id="reject-container">
-            @if ($reject)
-                @livewire('reject', ["orderWsDetailSizes" => $orderWsDetailSizes])
-            @endif
-        </div>
-        <div id="rework-container">
-            @if ($rework)
-                @livewire('rework', ["orderWsDetailSizes" => $orderWsDetailSizes])
-            @endif
-        </div> --}}
     </div>
-
-    {{-- <script>
-        $(document).ready(function() {
-            window.initSelectProductColorDrop=()=>{
-                $('#product-color').select2({
-                    allowClear: true
-                });
-            }
-
-            initSelectProductColorDrop();
-
-            $('#product-color').on('change', function (e) {
-                livewire.emit('selectedProductColor', e.target.value)
-            });
-
-            window.livewire.on('select2',()=>{
-                initSelectProductColorDrop();
-            });
-        });
-    </script> --}}
 </div>
