@@ -9,7 +9,7 @@ class UserPassword extends Authenticatable
 {
     use HasFactory;
 
-    protected $primaryKey = 'username';
+    protected $primaryKey = 'id_line';
 
     protected $connection = 'mysql_sb';
 
@@ -19,15 +19,15 @@ class UserPassword extends Authenticatable
         'username',
         'FullName',
         'Password',
-        'Locked'
+        'password_encrypt'
     ];
 
     public function getAuthPassword() {
-        return $this->Password;
+        return $this->password_encrypt;
     }
 
     public function masterPlans()
     {
-        return $this->hasMany(MasterPlan::class, 'sewing_line', 'username');
+        return $this->hasMany(MasterPlan::class, 'username', 'sewing_line');
     }
 }

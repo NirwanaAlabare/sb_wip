@@ -27,4 +27,9 @@ class MasterPlan extends Model
     {
         return $this->hasMany(UserPassword::class, 'sewing_line', 'username');
     }
+
+    public function Rfts()
+    {
+        return $this->hasMany(Rft::class, 'id', 'master_plan_id');
+    }
 }

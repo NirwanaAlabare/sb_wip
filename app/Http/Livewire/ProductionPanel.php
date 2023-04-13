@@ -13,6 +13,11 @@ class ProductionPanel extends Component
     public $orderInfo;
     public $orderWsDetails;
     public $orderWsDetailSizes;
+    public $outputRft;
+    public $outputDefect;
+    public $outputReject;
+    public $outputRework;
+    public $outputFiltered;
 
     // Filter
     public $selectedColor;
@@ -57,26 +62,31 @@ class ProductionPanel extends Component
     public function toRft() {
         $this->panels = false;
         $this->rft = !($this->rft);
+        $this->emit('toInputPanel', 'rft');
     }
 
     public function toDefect() {
         $this->panels = false;
         $this->defect = !($this->defect);
+        $this->emit('toInputPanel', 'defect');
     }
 
     public function toDefectHistory() {
         $this->panels = false;
         $this->defectHistory = !($this->defectHistory);
+        $this->emit('toInputPanel', 'defectHistory');
     }
 
     public function toReject() {
         $this->panels = false;
         $this->reject = !($this->reject);
+        $this->emit('toInputPanel', 'reject');
     }
 
     public function toRework() {
         $this->panels = false;
         $this->rework = !($this->rework);
+        $this->emit('toInputPanel', 'rework');
     }
 
     public function toProductionPanel() {
@@ -86,6 +96,7 @@ class ProductionPanel extends Component
         $this->defectHistory = false;
         $this->reject = false;
         $this->rework = false;
+        $this->emit('fromInputPanel');
     }
 
     public function render(SessionManager $session)
@@ -115,6 +126,8 @@ class ProductionPanel extends Component
         ->where('act_costing.kpno', $this->orderInfo->ws_number)
         ->where('so_det.color', $this->selectedColor)
         ->get();
+
+        $getRft;
 
         return view('livewire.production-panel', [
             // Data

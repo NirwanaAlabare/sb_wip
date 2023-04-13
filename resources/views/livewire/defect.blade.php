@@ -50,7 +50,7 @@
                         <div class="d-flex align-items-center gap-3 me-3">
                             <p class="mb-1 fs-5">DEFECT</p>
                             <p class="mb-1 fs-5">:</p>
-                            <p id="rft-qty" class="mb-1 fs-5">0</p>
+                            <p id="defect-qty" class="mb-1 fs-5">0</p>
                         </div>
                         <button class="btn btn-dark" wire:click='clearInput'>
                             <i class="fa-regular fa-rotate-left"></i>

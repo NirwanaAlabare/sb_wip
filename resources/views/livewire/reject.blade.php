@@ -19,7 +19,7 @@
                     <div class="mb-3">
                         <h3 class="text-center"><i class="fa-regular fa-shirt"></i> Piece</h3>
                     </div>
-                    <input type="text" class="qty-input" id="rft-input" value="{{ $outputInput }}" wire:model='outputInput'>
+                    <input type="text" class="qty-input" id="reject-input" value="{{ $outputInput }}" wire:model='outputInput'>
                     <div class="d-flex justify-content-between gap-1 mt-3">
                         <button class="btn btn-danger w-50 fs-3" id="decrement" wire:click="outputDecrement">-1</button>
                         <button class="btn btn-success w-50 fs-3" id="increment" wire:click="outputIncrement">+1</button>
@@ -33,9 +33,9 @@
                     <p class="mb-0 fs-5">Size</p>
                     <div class="d-flex justify-content-end align-items-center gap-1">
                         <div class="d-flex align-items-center gap-3 me-3">
-                            <p class="mb-1 fs-5">RFT</p>
+                            <p class="mb-1 fs-5">Reject</p>
                             <p class="mb-1 fs-5">:</p>
-                            <p id="rft-qty" class="mb-1 fs-5">0</p>
+                            <p id="reject-qty" class="mb-1 fs-5">0</p>
                         </div>
                         <button class="btn btn-dark" wire:click='clearInput'>
                             <i class="fa-regular fa-rotate-left"></i>

@@ -55,7 +55,7 @@
                                 <p class="text-light"><i class="fa-regular fa-circle-check fa-2xl"></i></p>
                                 <p class="text-light">RFT</p>
                             </div>
-                            <p class="text-light fs-1">313</p>
+                            <p class="text-light fs-1">{{ $outputRft }}</p>
                         </div>
                         <div class="card-custom-footer bg-light w-25 h-100">
                             <div class="d-flex flex-column justify-content-center align-items-stretch h-100 gap-1">
@@ -67,7 +67,7 @@
                                                 <option value="{{ $order->size }}">{{ $order->size }}</option>
                                             @endforeach
                                         </select>
-                                        <p class="text-center fs-3 mt-auto mb-auto">313</p>
+                                        <p class="text-center fs-3 mt-auto mb-auto">{{ $outputFiltered }}</p>
                                     </div>
                                 </div>
                                 <button class="reset multi-item lower btn btn-pale h-50">
@@ -84,7 +84,7 @@
                                 <p class="text-light"><i class="fa-regular fa-circle-exclamation fa-2xl"></i></p>
                                 <p class="text-light">DEFECT</p>
                             </div>
-                            <p class="text-light fs-1">313</p>
+                            <p class="text-light fs-1">{{ $outputDefect }}</p>
                         </div>
                         <div class="card-custom-footer bg-light w-25 h-100">
                             <div class="d-flex flex-column justify-content-center align-items-stretch h-100 gap-1">
@@ -111,7 +111,7 @@
                                 <p class="text-light"><i class="fa-regular fa-circle-xmark fa-2xl"></i></p>
                                 <p class="text-light">REJECT</p>
                             </div>
-                            <p class="text-light fs-1">313</p>
+                            <p class="text-light fs-1">{{ $outputReject }}</p>
                         </div>
                         <div class="card-custom-footer bg-light w-25 h-100">
                             <button class="reset single-item btn btn-pale w-100 h-100">
@@ -127,7 +127,7 @@
                                 <p class="text-light"><i class="fa-regular fa-arrows-rotate fa-2xl"></i></p>
                                 <p class="text-light">REWORK</p>
                             </div>
-                            <p class="text-light fs-1">313</p>
+                            <p class="text-light fs-1">{{ $outputRework }}</p>
                         </div>
                         <div class="card-custom-footer bg-light w-25 h-100">
                             <button class="reset single-item btn btn-pale w-100 h-100">
