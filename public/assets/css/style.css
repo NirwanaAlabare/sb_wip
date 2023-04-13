@@ -35,6 +35,16 @@
     transition: 0.3s;
 }
 
+/* Disable Number Arrow */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 /* Background Color */
 .bg-sb {
     background-color: var(--sb-color);

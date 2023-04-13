@@ -9,17 +9,19 @@ class UserPassword extends Authenticatable
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_line';
-
     protected $connection = 'mysql_sb';
 
     protected $table = 'userpassword';
 
+    protected $primaryKey = 'line_id';
+
     protected $fillable = [
+        'line_id',
         'username',
         'FullName',
         'Password',
-        'password_encrypt'
+        'password_encrypt',
+        'remember_token'
     ];
 
     public function getAuthPassword() {

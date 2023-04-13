@@ -25,14 +25,12 @@ class LoginController extends Controller
     {
         $credentials = $request->validated();
 
-        $user = UserPassword::where('username', $credentials['username'])->where('Password', $credentials['password'])->first();
+        $remember = isset($credentials['remember']) && $credentials['remember'] == "true" ? true : false;
 
-        if ($user) {
-            Auth::login($user);
-
+        if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']], $remember)) {
             $request->session()->regenerate();
 
-            session(['user_username' => Auth::user()->username, 'user_name' => Auth::user()->FullName]);
+            session(['user_id' => Auth::user()->id_line, 'user_username' => Auth::user()->username, 'user_name' => Auth::user()->FullName]);
 
             return array(
                 'status' => '200',
@@ -44,7 +42,7 @@ class LoginController extends Controller
 
         return array(
             'status' => '400',
-            'message' => 'Username or Password is false',
+            'message' => 'Username atau Password salah',
             'redirect' => '',
             'additional' => ['username', 'password']
         );

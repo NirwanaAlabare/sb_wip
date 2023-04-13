@@ -9,17 +9,21 @@ class Reject extends Model
 {
     use HasFactory;
 
-    protected $table = 'reject_output';
+    protected $connection = 'mysql_sb';
+
+    protected $table = 'output_rejects';
 
     protected $fillable = [
-        'nama_area_defect',
-        'jenis_defect_id',
+        'id',
+        'master_plan_id',
+        'so_det_id',
+        'status',
         'created_at',
         'updated_at',
     ];
 
-    public function defectType()
+    public function masterPlan()
     {
-        return $this->belongsTo(DefectType::class, 'jenis_defect_id', 'id');
+        return $this->belongsTo(MasterPlan::class, 'master_plan_id', 'id');
     }
 }

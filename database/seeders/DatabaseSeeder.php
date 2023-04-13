@@ -9,6 +9,7 @@ use App\Models\LineProduction;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderDetailSize;
+use App\Models\SignalBit\UserPassword;
 
 class DatabaseSeeder extends Seeder
 {
@@ -83,6 +84,22 @@ class DatabaseSeeder extends Seeder
                 'qty' => random_int(100, 1000),
                 'qty_output' => 0
             ]);
+        }
+
+        // Signal Bit UserPassword
+        for ($i = 0;$i < 10;$i++) {
+            $userPassword = new UserPassword(array(
+                'line_id' => ($i+1),
+                'FullName' => 'SEWING LINE '.sprintf("%02d", ($i+1)),
+                'Groupp' => 'SEWING',
+                'username' => 'line_'.sprintf("%02d", ($i+1)),
+                'Password' => 'password',
+                'password_encrypt' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+                'remember_token' => Str::random(10)
+            ));
+
+            $userPassword->timestamps = false;
+            $userPassword->save();
         }
     }
 }

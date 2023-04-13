@@ -4,12 +4,17 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Session\SessionManager;
+use App\Models\SignalBit\Rft as RftModel;
+use Carbon\Carbon;
 
 class Rft extends Component
 {
+    public $orderInfo;
     public $orderWsDetailSizes;
+    public $output;
     public $outputInput;
     public $sizeInput;
+    public $sizeInputText;
 
     protected $rules = [
         'outputInput' => 'required|numeric|min:1',
@@ -27,20 +32,17 @@ class Rft extends Component
     {
         $this->orderWsDetailSizes = $orderWsDetailSizes;
         $session->put('orderWsDetailSizes', $orderWsDetailSizes);
+        $this->output = 0;
         $this->outputInput = 1;
         $this->sizeInput = null;
-    }
-
-    public function dehydrate()
-    {
-        $this->resetValidation();
-        $this->resetErrorBag();
+        $this->sizeInputText = null;
     }
 
     public function clearInput()
     {
         $this->outputInput = 1;
-        $this->sizeInput = '';
+        $this->sizeInput = null;
+        $this->sizeInputText = '';
     }
 
     public function outputIncrement()
@@ -57,36 +59,53 @@ class Rft extends Component
         }
     }
 
-    public function setSizeInput($size)
+    public function setSizeInput($size, $sizeText)
     {
         $this->sizeInput = $size;
+        $this->sizeInputText = $sizeText;
     }
 
-    public function submitInput()
+    public function submitInput(SessionManager $session)
     {
         $validatedData = $this->validate();
 
         $insertData = [];
         for ($i = 0; $i < $this->outputInput; $i++)
         {
-            array_push($insertData, ['size' => $this->sizeInput]);
+            array_push($insertData, [
+                'master_plan_id' => $this->orderInfo->id,
+                'so_det_id' => $this->sizeInput,
+                'status' => 'NORMAL',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
         }
 
-        $this->emit('alert', 'success', $this->outputInput." output RFT berukuran ".$this->sizeInput." berhasil terekam.");
+        $insertRft = RftModel::insert($insertData);
 
-        // $insertRft = Rft::insert($insertData);
-
-        // if ($insertRft) {
-        //     $this->emit('alert', 'success', $this->outputInput." output berukuran ".$this->sizeInput." berhasil terekam.");
-        // } else {
-        //     $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
-        // }
+        if ($insertRft) {
+            $this->emit('alert', 'success', $this->outputInput." output berukuran ".$this->sizeInputText." berhasil terekam.");
+        } else {
+            $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
+        }
     }
 
     public function render(SessionManager $session)
     {
+        $this->orderInfo = $session->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = $session->get('orderWsDetailSizes', $this->orderWsDetailSizes);
 
-        return view('livewire.rft', ['orderWsDetailSizes' => $this->orderWsDetailSizes]);
+        // Get total output
+        $this->output = RftModel::
+            where('master_plan_id', $this->orderInfo->id)->
+            count();
+
+        return view('livewire.rft');
+    }
+
+    public function dehydrate()
+    {
+        $this->resetValidation();
+        $this->resetErrorBag();
     }
 }

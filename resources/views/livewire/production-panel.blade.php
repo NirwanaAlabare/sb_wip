@@ -61,10 +61,10 @@
                             <div class="d-flex flex-column justify-content-center align-items-stretch h-100 gap-1">
                                 <div class="filter multi-item upper h-50 bg-pale">
                                     <div class="d-flex flex-column justify-content-between w-100 h-100">
-                                        <select class="form-select" style="border-radius: 0 15px 0 0">
+                                        <select class="form-select" style="border-radius: 0 15px 0 0" wire:model='selectedSize'>
                                             <option value="all">All Sizes</option>
                                             @foreach ($orderWsDetailSizes as $order)
-                                                <option value="{{ $order->size }}">{{ $order->size }}</option>
+                                                <option value="{{ $order->so_det_id }}">{{ $order->size }}</option>
                                             @endforeach
                                         </select>
                                         <p class="text-center fs-3 mt-auto mb-auto">{{ $outputFiltered }}</p>

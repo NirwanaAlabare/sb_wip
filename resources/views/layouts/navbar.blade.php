@@ -23,10 +23,10 @@
                         <li class="nav-item dropdown w-100">
                             <button class="btn bg-white dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-regular fa-gear"></i>
-                                <span>{{ strtoupper(substr(session('user_name'), -6)) }}</span>
+                                <span>{{ strtoupper(substr(Auth::user()->FullName, 6)) }}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#"><i class="fa-regular fa-gear"></i> {{ strtoupper(substr(session('user_name'), -6)) }}</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fa-regular fa-gear"></i> {{ strtoupper(Auth::user()->FullName) }}</a></li>
                                 <li><a class="dropdown-item" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a></li>
                             </ul>
                         </li>

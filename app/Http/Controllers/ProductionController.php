@@ -17,14 +17,15 @@ class ProductionController extends Controller
     {
         $orderSql = MasterPlan::selectRaw("
             DISTINCT master_plan.id_ws, mastersupplier.supplier, act_costing.styleno, masterproduct.product_group, masterproduct.product_item, so_det.styleno_prod, so.qty,
+            master_plan.id as id,
             act_costing.kpno as ws_number,
-            mastersupplier.supplier as buyer_name,
             act_costing.styleno as style_name,
-            CONCAT(masterproduct.product_group, ' - ', masterproduct.product_item) as product_type,
+            mastersupplier.supplier as buyer_name,
             so_det.styleno_prod as reff_number,
             so_det.color as color,
             so_det.size as size,
-            so.qty as qty_order
+            so.qty as qty_order,
+            CONCAT(masterproduct.product_group, ' - ', masterproduct.product_item) as product_type
         ")
         ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
         ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')

@@ -33,9 +33,9 @@
                     <p class="mb-0 fs-5">Size</p>
                     <div class="d-flex justify-content-end align-items-center gap-1">
                         <div class="d-flex align-items-center gap-3 me-3">
-                            <p class="mb-1 fs-5">Reject</p>
+                            <p class="mb-1 fs-5">REJECT</p>
                             <p class="mb-1 fs-5">:</p>
-                            <p id="reject-qty" class="mb-1 fs-5">0</p>
+                            <p id="reject-qty" class="mb-1 fs-5">{{ $output }}</p>
                         </div>
                         <button class="btn btn-dark" wire:click='clearInput'>
                             <i class="fa-regular fa-rotate-left"></i>
@@ -56,7 +56,7 @@
                     <div class="row h-100 row-gap-3">
                         @foreach ($orderWsDetailSizes as $order)
                             <div class="col-md-4">
-                                <button class="btn btn-reject w-100 h-100 fs-3 {{ $sizeInput == $order->size ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->size }}')">
+                                <button class="btn btn-reject w-100 h-100 fs-3 {{ $sizeInput == $order->so_det_id ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->so_det_id }}','{{ $order->size }}')">
                                     {{ $order->size }}
                                 </button>
                             </div>

@@ -11,16 +11,17 @@ class DefectType extends Model
 
     protected $connection = 'mysql_sb';
 
-    protected $table = 'jenis_defect_output';
+    protected $table = 'output_defect_types';
 
     protected $fillable = [
-        'nama_jenis_defect',
+        'id',
+        'defect_type',
         'created_at',
         'updated_at',
     ];
 
     public function defectArea()
     {
-        return $this->hasMany(DefectArea::class, 'id', 'jenis_defect_id');
+        return $this->hasMany(DefectArea::class, 'id', 'defect_type_id');
     }
 }

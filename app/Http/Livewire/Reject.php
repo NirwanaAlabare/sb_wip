@@ -4,12 +4,16 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Session\SessionManager;
+use App\Models\SignalBit\Reject as RejectModel;
 
 class Reject extends Component
 {
+    public $orderInfo;
     public $orderWsDetailSizes;
+    public $output;
     public $outputInput;
     public $sizeInput;
+    public $sizeInputText;
 
     protected $rules = [
         'outputInput' => 'required|numeric|min:1',
@@ -29,18 +33,14 @@ class Reject extends Component
         $session->put('orderWsDetailSizes', $orderWsDetailSizes);
         $this->outputInput = 1;
         $this->sizeInput = null;
-    }
-
-    public function dehydrate()
-    {
-        $this->resetValidation();
-        $this->resetErrorBag();
+        $this->sizeInputText = null;
     }
 
     public function clearInput()
     {
         $this->outputInput = 1;
-        $this->sizeInput = '';
+        $this->sizeInput = null;
+        $this->sizeInputText = '';
     }
 
     public function outputIncrement()
@@ -57,36 +57,47 @@ class Reject extends Component
         }
     }
 
-    public function setSizeInput($size)
+    public function setSizeInput($size, $sizeText)
     {
         $this->sizeInput = $size;
+        $this->sizeInputText = $sizeText;
     }
 
-    public function submitInput()
+    public function submitInput(SessionManager $session)
     {
         $validatedData = $this->validate();
 
         $insertData = [];
         for ($i = 0; $i < $this->outputInput; $i++)
         {
-            array_push($insertData, ['size' => $this->sizeInput]);
+            array_push($insertData, ['master_plan_id' => $this->orderInfo->id, 'so_det_id' => $this->sizeInput, 'status' => 'NORMAL']);
         }
 
-        $this->emit('alert', 'success', $this->outputInput." output REJECT berukuran ".$this->sizeInput." berhasil terekam.");
+        $insertReject = RejectModel::insert($insertData);
 
-        // $insertReject = Reject::insert($insertData);
-
-        // if ($insertReject) {
-        //     $this->emit('alert', 'success', $this->outputInput." output berukuran ".$this->sizeInput." berhasil terekam.");
-        // } else {
-        //     $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
-        // }
+        if ($insertReject) {
+            $this->emit('alert', 'success', $this->outputInput." REJECT output berukuran ".$this->sizeInputText." berhasil terekam.");
+        } else {
+            $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
+        }
     }
 
     public function render(SessionManager $session)
     {
+        $this->orderInfo = $session->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = $session->get('orderWsDetailSizes', $this->orderWsDetailSizes);
 
-        return view('livewire.Reject', ['orderWsDetailSizes' => $this->orderWsDetailSizes]);
+        // Get total output
+        $this->output = RejectModel::
+            where('master_plan_id', $this->orderInfo->id)->
+            count();
+
+        return view('livewire.reject');
+    }
+
+    public function dehydrate()
+    {
+        $this->resetValidation();
+        $this->resetErrorBag();
     }
 }

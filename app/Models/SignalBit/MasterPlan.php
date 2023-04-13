@@ -13,23 +13,30 @@ class MasterPlan extends Model
 
     protected $table = 'master_plan';
 
-    protected $fillable = [
-        'tgl_plan',
-        'id_so_det',
-        'smv',
-        'jam_kerja',
-        'man_power',
-        'tgl_input',
-        'cancel'
-    ];
+    protected $fillable = [];
 
     public function userPassword()
     {
         return $this->hasMany(UserPassword::class, 'sewing_line', 'username');
     }
 
-    public function Rfts()
+    public function rfts()
     {
         return $this->hasMany(Rft::class, 'id', 'master_plan_id');
+    }
+
+    public function defects()
+    {
+        return $this->hasMany(Defect::class, 'id', 'master_plan_id');
+    }
+
+    public function rejects()
+    {
+        return $this->hasMany(Reject::class, 'id', 'master_plan_id');
+    }
+
+    public function reworks()
+    {
+        return $this->hasMany(Rework::class, 'id', 'master_plan_id');
     }
 }

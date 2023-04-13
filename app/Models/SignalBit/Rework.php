@@ -8,4 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Defect extends Model
 {
     use HasFactory;
+
+    protected $connection = 'mysql_sb';
+
+    protected $table = 'output_reworks';
+
+    protected $fillable = [
+        'id',
+        'defect_id',
+        'status',
+        'created_at',
+        'updated_at',
+    ];
+
+    public function masterPlan()
+    {
+        return $this->belongsTo(MasterPlan::class, 'master_plan_id', 'id');
+    }
+
+    public function defect()
+    {
+        return $this->hasOne(Defect::class, 'defect_id', 'id');
+    }
 }

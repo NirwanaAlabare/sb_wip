@@ -15,30 +15,28 @@
                 </div>
                 <div class="card-body table-responsive">
                     <table class="table table-bordered text-center align-middle">
-                        <tr>
-                            <th>No.</th>
-                            <th>ID</th>
-                            <th>Size</th>
-                            <th>Defect Type</th>
-                            <th>Defect Area</th>
-                            <th>Status</th>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>XS</td>
-                            <td>Asd</td>
-                            <td>Fgh</td>
-                            <td class="text-defect fw-bold">Defect</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>S</td>
-                            <td>Zxc</td>
-                            <td>Vbn</td>
-                            <td class="text-rework fw-bold">Reworked</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>ID</th>
+                                <th>Size</th>
+                                <th>Defect Type</th>
+                                <th>Defect Area</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($defects as $defect)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $defect->id }}</td>
+                                    <td>{{ $defect->so_det_size }}</td>
+                                    <td>{{ $defect->defectArea->defectType->defect_type }}</td>
+                                    <td>{{ $defect->defectArea->defect_area }}</td>
+                                    <td>{{ $defect->defect_status }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>

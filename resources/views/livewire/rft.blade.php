@@ -19,7 +19,7 @@
                     <div class="mb-3">
                         <h3 class="text-center"><i class="fa-regular fa-shirt"></i> Piece</h3>
                     </div>
-                    <input type="text" class="qty-input" id="rft-input" value="{{ $outputInput }}" wire:model='outputInput'>
+                    <input type="number" class="qty-input" id="rft-input" value="{{ $outputInput }}" wire:model='outputInput'>
                     <div class="d-flex justify-content-between gap-1 mt-3">
                         <button class="btn btn-danger w-50 fs-3" id="decrement" wire:click="outputDecrement">-1</button>
                         <button class="btn btn-success w-50 fs-3" id="increment" wire:click="outputIncrement">+1</button>
@@ -35,7 +35,7 @@
                         <div class="d-flex align-items-center gap-3 me-3">
                             <p class="mb-1 fs-5">RFT</p>
                             <p class="mb-1 fs-5">:</p>
-                            <p id="rft-qty" class="mb-1 fs-5">0</p>
+                            <p id="rft-qty" class="mb-1 fs-5">{{ $output }}</p>
                         </div>
                         <button class="btn btn-dark" wire:click='clearInput'>
                             <i class="fa-regular fa-rotate-left"></i>
@@ -56,7 +56,7 @@
                     <div class="row h-100 row-gap-3">
                         @foreach ($orderWsDetailSizes as $order)
                             <div class="col-md-4">
-                                <button class="btn btn-rft w-100 h-100 fs-3 {{ $sizeInput == $order->size ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->size }}')">
+                                <button class="btn btn-rft w-100 h-100 fs-3 {{ $sizeInput == $order->so_det_id ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->so_det_id }}','{{ $order->size }}')">
                                     {{ $order->size }}
                                 </button>
                             </div>

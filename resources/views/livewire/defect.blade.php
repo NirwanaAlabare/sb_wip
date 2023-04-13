@@ -50,7 +50,7 @@
                         <div class="d-flex align-items-center gap-3 me-3">
                             <p class="mb-1 fs-5">DEFECT</p>
                             <p class="mb-1 fs-5">:</p>
-                            <p id="defect-qty" class="mb-1 fs-5">0</p>
+                            <p id="defect-qty" class="mb-1 fs-5">{{ $output }}</p>
                         </div>
                         <button class="btn btn-dark" wire:click='clearInput'>
                             <i class="fa-regular fa-rotate-left"></i>
@@ -71,7 +71,7 @@
                     <div class="row h-100 row-gap-3">
                         @foreach ($orderWsDetailSizes as $order)
                             <div class="col-md-4">
-                                <button class="btn btn-defect w-100 h-100 fs-3 {{ $sizeInput == $order->size ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->size }}')">
+                                <button class="btn btn-defect w-100 h-100 fs-3 {{ $sizeInput == $order->so_det_id ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->so_det_id }}','{{ $order->size }}')">
                                     {{ $order->size }}
                                 </button>
                             </div>
@@ -96,9 +96,9 @@
                             <label class="form-label">Defect Type</label>
                             <select class="form-select" id="defect-type" wire:model='defectType'>
                                 <option value="" selected>Select defect type</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                @foreach ($defectTypes as $defect)
+                                    <option value="{{ $defect->id }}">{{ $defect->defect_type }}</option>
+                                @endforeach
                             </select>
                             @error('defectType')
                                 <span class="text-danger">{{ $message }}</span>
@@ -108,9 +108,9 @@
                             <label class="form-label">Defect Area</label>
                             <select class="form-select" id="defect-area" wire:model='defectArea' {{ $defectType == '' ? 'disabled' : '' }}>
                                 <option value="" selected>Select defect area</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                @foreach ($defectAreas as $defect)
+                                    <option value="{{ $defect->id }}">{{ $defect->defect_area }}</option>
+                                @endforeach
                             </select>
                             @error('defectArea')
                                 <span class="text-danger">{{ $message }}</span>

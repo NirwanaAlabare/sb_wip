@@ -11,9 +11,10 @@ class Rft extends Model
 
     protected $connection = 'mysql_sb';
 
-    protected $table = 'rft_output';
+    protected $table = 'output_rfts';
 
     protected $fillable = [
+        'id',
         'master_plan_id',
         'so_det_id',
         'status',

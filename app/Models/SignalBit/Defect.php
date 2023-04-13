@@ -11,9 +11,10 @@ class Defect extends Model
 
     protected $connection = 'mysql_sb';
 
-    protected $table = 'defect_output';
+    protected $table = 'output_defects';
 
     protected $fillable = [
+        'id',
         'master_plan_id',
         'so_det_id',
         'area_defect_id',
@@ -31,5 +32,10 @@ class Defect extends Model
     public function defectArea()
     {
         return $this->belongsTo(DefectArea::class, 'master_plan_id', 'id');
+    }
+
+    public function rework()
+    {
+        return $this->hasOne(Rework::class, 'id', 'defect_id');
     }
 }
