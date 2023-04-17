@@ -92,7 +92,7 @@ class ProductionPanel extends Component
     {
         $this->panels = false;
         $this->defectHistory = !($this->defectHistory);
-        $this->emit('toInputPanel', 'defectHistory');
+        $this->emit('toInputPanel', 'defect');
     }
 
     public function toReject()
@@ -155,7 +155,7 @@ class ProductionPanel extends Component
             count();
         $this->outputRework = Defect::
             where('master_plan_id', $this->orderInfo->id)->
-            where('defect_status', 'rework')->
+            where('defect_status', 'reworked')->
             count();
         $sqlFiltered = Rft::select('id')->where('master_plan_id', $this->orderInfo->id);
         $this->outputFiltered = $this->selectedSize == 'all' ? $sqlFiltered->count() : $sqlFiltered->where('so_det_id', $this->selectedSize)->count();

@@ -14,7 +14,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="card-body table-responsive-sm">
+                <div class="card-body table-responsive">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <input type="text" class="form-control mb-3 rounded-0" id="search-defect" name="search-defect" wire:model='searchDefect' placeholder="Search here...">
+                    </div>
                     <table class="table table-bordered text-center align-middle">
                         <tr>
                             <th>No.</th>
@@ -25,17 +28,19 @@
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>XS</td>
-                            <td>Asd</td>
-                            <td>Fgh</td>
-                            <td class="text-defect fw-bold">Defect</td>
-                            <td>
-                                <button class="btn btn-rework fw-bold w-100" onclick="reworkConfirmation()">REWORK</button>
-                            </td>
-                        </tr>
+                        @foreach ($defects as $defect)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $defect->id }}</td>
+                                <td>{{ $defect->so_det_size }}</td>
+                                <td>{{ $defect->defectArea->defectType->defect_type}}</td>
+                                <td>{{ $defect->defectArea->defect_area }}</td>
+                                <td class="text-defect fw-bold">{{ strtoupper($defect->defect_status) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-rework fw-bold w-100" wire:click="$emit('preSubmitRework', '{{ $defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectArea->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}')">REWORK</button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </table>
                 </div>
             </div>
@@ -53,7 +58,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="card-body table-responsive-sm">
+                <div class="card-body table-responsive">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <input type="text" class="form-control mb-3 rounded-0" id="search-rework" name="search-rework" wire:model='searchRework' placeholder="Search here...">
+                    </div>
                     <table class="table table-bordered text-center align-middle">
                         <tr>
                             <th>No.</th>
@@ -62,15 +70,21 @@
                             <th>Defect Type</th>
                             <th>Defect Area</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>S</td>
-                            <td>Zxc</td>
-                            <td>Vbn</td>
-                            <td class="text-rework fw-bold">Reworked</td>
-                        </tr>
+                        @foreach ($reworks as $rework)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $rework->defect->id }}</td>
+                                <td>{{ $rework->so_det_size }}</td>
+                                <td>{{ $rework->defect->defectArea->defectType->defect_type}}</td>
+                                <td>{{ $rework->defect->defectArea->defect_area }}</td>
+                                <td class="text-rework fw-bold">{{ strtoupper($rework->defect->defect_status) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectArea->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}')">CANCEL</button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </table>
                 </div>
             </div>

@@ -35,6 +35,16 @@
     transition: 0.3s;
 }
 
+.pagination .page-item > .page-link {
+    color: #212529 !important;
+}
+
+.pagination .page-item.active > .page-link {
+    background-color: #212529 !important;
+    border-color: #212529 !important;
+    color: #fbfbfb !important;
+}
+
 /* Disable Number Arrow */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
