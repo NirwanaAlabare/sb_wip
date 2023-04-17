@@ -14,6 +14,8 @@
 <body>
     @include('layouts.navbar')
 
+    @include('profile')
+
     <main role="main" class="main flex-shrink-0 container-fluid mt-3">
         @yield('content')
     </main>
