@@ -5,7 +5,7 @@ namespace App\Models\SignalBit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Defect extends Model
+class Rework extends Model
 {
     use HasFactory;
 
@@ -28,6 +28,6 @@ class Defect extends Model
 
     public function defect()
     {
-        return $this->hasOne(Defect::class, 'defect_id', 'id');
+        return $this->hasOne(Defect::class, 'id', 'defect_id');
     }
 }

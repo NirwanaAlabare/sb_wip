@@ -31,7 +31,7 @@ class Defect extends Model
 
     public function defectArea()
     {
-        return $this->belongsTo(DefectArea::class, 'master_plan_id', 'id');
+        return $this->belongsTo(DefectArea::class, 'defect_area_id', 'id');
     }
 
     public function rework()
