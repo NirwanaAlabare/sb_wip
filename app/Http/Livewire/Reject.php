@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Session\SessionManager;
 use App\Models\SignalBit\Reject as RejectModel;
+use Carbon\Carbon;
 
 class Reject extends Component
 {
@@ -70,7 +71,13 @@ class Reject extends Component
         $insertData = [];
         for ($i = 0; $i < $this->outputInput; $i++)
         {
-            array_push($insertData, ['master_plan_id' => $this->orderInfo->id, 'so_det_id' => $this->sizeInput, 'status' => 'NORMAL']);
+            array_push($insertData, [
+                'master_plan_id' => $this->orderInfo->id,
+                'so_det_id' => $this->sizeInput,
+                'status' => 'NORMAL',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
         }
 
         $insertReject = RejectModel::insert($insertData);

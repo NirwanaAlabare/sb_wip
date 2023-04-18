@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ProductionController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::controller(ProductionController::class)->prefix('production-panel')->group(function () {
         Route::get('/{id}', 'index');
         Route::post('/unauthenticate', 'unauthenticate')->middleware('auth');
+    });
+
+    Route::controller(ProfileController::class)->prefix('profile')->group(function () {
+        // Route::get('/{id}', 'index');
+        Route::put('/update/{id}', 'update')->middleware('auth');
     });
 
     Route::get('/rft', function () {
