@@ -28,20 +28,27 @@
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
-                        @foreach ($defects as $defect)
+                        @if ($defects->count() < 1)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $defect->id }}</td>
-                                <td>{{ $defect->so_det_size }}</td>
-                                <td>{{ $defect->defectArea->defectType->defect_type}}</td>
-                                <td>{{ $defect->defectArea->defect_area }}</td>
-                                <td class="text-defect fw-bold">{{ strtoupper($defect->defect_status) }}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-rework fw-bold w-100" wire:click="$emit('preSubmitRework', '{{ $defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectArea->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}')">REWORK</button>
-                                </td>
+                                <td colspan='7'>Defect tidak ditemukan</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach ($defects as $defect)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $defect->id }}</td>
+                                    <td>{{ $defect->so_det_size }}</td>
+                                    <td>{{ $defect->defectArea->defectType->defect_type}}</td>
+                                    <td>{{ $defect->defectArea->defect_area }}</td>
+                                    <td class="text-defect fw-bold">{{ strtoupper($defect->defect_status) }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-rework fw-bold w-100" wire:click="$emit('preSubmitRework', '{{ $defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectArea->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}')">REWORK</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </table>
+                    {{ $defects->links() }}
                 </div>
             </div>
         </div>
@@ -72,20 +79,27 @@
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
-                        @foreach ($reworks as $rework)
+                        @if ($reworks->count() < 1)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $rework->defect->id }}</td>
-                                <td>{{ $rework->so_det_size }}</td>
-                                <td>{{ $rework->defect->defectArea->defectType->defect_type}}</td>
-                                <td>{{ $rework->defect->defectArea->defect_area }}</td>
-                                <td class="text-rework fw-bold">{{ strtoupper($rework->defect->defect_status) }}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectArea->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}')">CANCEL</button>
-                                </td>
+                                <td colspan='7'>Rework tidak ditemukan</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach ($reworks as $rework)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $rework->defect->id }}</td>
+                                    <td>{{ $rework->so_det_size }}</td>
+                                    <td>{{ $rework->defect->defectArea->defectType->defect_type}}</td>
+                                    <td>{{ $rework->defect->defectArea->defect_area }}</td>
+                                    <td class="text-rework fw-bold">{{ strtoupper($rework->defect->defect_status) }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $rework->so_det_size }}', '{{ $rework->defect->defectArea->defectType->defect_type }}', '{{ $rework->defect->defectArea->defect_area }}')">CANCEL</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </table>
+                    {{ $reworks->links() }}
                 </div>
             </div>
         </div>

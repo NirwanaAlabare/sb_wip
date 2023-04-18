@@ -24,6 +24,8 @@ class UserPassword extends Authenticatable
         'remember_token'
     ];
 
+    public $timestamps = false;
+
     public function getAuthPassword() {
         return $this->password_encrypt;
     }

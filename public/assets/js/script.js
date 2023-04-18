@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    showDate();
     showTime();
 
     $('#input-type').hide();
@@ -18,8 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // General
 
+// show date
+function showDate() {
+    let date = new Date();
+
+    let dateFormat = setDateFormat(date);
+
+    if (document.getElementById("tanggal")) {
+        document.getElementById("tanggal").value = dateFormat;
+    }
+}
+
 // show time
-function showTime(){
+function showTime() {
     let date = new Date();
     let h = date.getHours(); // 0 - 23
     let m = date.getMinutes(); // 0 - 59
@@ -43,12 +55,7 @@ function showTime(){
     m = (m < 10) ? "0" + m : m;
     s = (s < 10) ? "0" + s : s;
 
-    let dateFormat = setDateFormat(date);
     let time = h + ":" + m + session;
-
-    if (document.getElementById("tanggal")) {
-        document.getElementById("tanggal").value = dateFormat;
-    }
 
     if (document.getElementById("jam")) {
         document.getElementById("jam").value = time;
@@ -296,4 +303,99 @@ function showNotification(type, message) {
             });
             break;
     }
+}
+
+// enable form
+function enableForm(element, elementOppositionId, formId) {
+    // hide this element
+    element.classList.remove("d-block");
+    element.classList.add("d-none");
+
+    // show opposition element
+    document.getElementById(elementOppositionId).classList.remove("d-none");
+    document.getElementById(elementOppositionId).classList.add("d-block");
+
+    // form
+    let form = document.getElementById(formId);
+    let formElements = form.elements;
+
+    for (let i = 0; i < formElements.length; i++) {
+        if (formElements[i].type != 'submit' && formElements[i].type != 'button') {
+            formElements[i].disabled = false;
+        } else {
+            formElements[i].classList.remove('d-none');
+            formElements[i].classList.add('d-block');
+        }
+    }
+}
+
+// disable form
+function disableForm(element, elementOppositionId, formId) {
+    // hide this element
+    element.classList.remove("d-block");
+    element.classList.add("d-none");
+
+    // show opposition element
+    document.getElementById(elementOppositionId).classList.remove("d-none");
+    document.getElementById(elementOppositionId).classList.add("d-block");
+
+    // form
+    let form = document.getElementById(formId);
+    let formElements = form.elements;
+
+    for (let i = 0; i < formElements.length; i++) {
+        if (formElements[i].type != 'submit' && formElements[i].type != 'button') {
+            formElements[i].disabled = true;
+        } else {
+            formElements[i].classList.remove('d-block');
+            formElements[i].classList.add('d-none');
+        }
+    }
+}
+
+// Update Profile
+function submitForm(e, evt) {
+    evt.preventDefault();
+
+    $.ajax({
+        url: e.getAttribute('action'),
+        type: e.getAttribute('method'),
+        data: new FormData(e),
+        processData: false,
+        contentType: false,
+        success: function(res) {
+            if (res.status == 200) {
+                console.log(res.message);
+                location.href = res.redirect;
+                iziToast.success({
+                    title: 'Success',
+                    message: res.message,
+                    position: 'topCenter'
+                });
+            } else {
+                console.error(res.message);
+                for(let i = 0;i < res.additional.length;i++) {
+                    document.getElementById(res.additional[i]).classList.add('is-invalid');
+                }
+                iziToast.error({
+                    title: 'Error',
+                    message: res.message,
+                    position: 'topCenter'
+                });
+            }
+        }, error: function (jqXHR) {
+            let res = jqXHR.responseJSON;
+            let message = '';
+            console.log(res.message);
+            for (let key in res.errors) {
+                message += res.errors[key]+' ';
+                document.getElementById(key).classList.add('is-invalid');
+            };
+            iziToast.error({
+                title: 'Error',
+                message: message,
+                position: 'topCenter'
+            });
+        }
+    });
 }

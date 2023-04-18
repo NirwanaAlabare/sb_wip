@@ -11,12 +11,12 @@
                     </div>
                     <div class="col-md-4">
                         <li class="nav-item w-100">
-                            <input type="date" class="form-control" id="tanggal" name="tanggal" onload="showTime(this)">
+                            <input type="date" class="form-control" id="tanggal" name="tanggal">
                         </li>
                     </div>
                     <div class="col-md-3">
                         <li class="nav-item w-100">
-                            <input type="text" class="form-control text-center" id="jam" name="jam" onload="showTime(this)" readonly>
+                            <input type="text" class="form-control text-center" id="jam" name="jam" readonly>
                         </li>
                     </div>
                     <div class="col-md-3">
@@ -36,3 +36,27 @@
         </div>
     </nav>
 </header>
+
+@section('custom-script')
+    <script>
+        // Set Date Event
+        // let tanggal = document.getElementById("tanggal");
+        // if (tanggal) {
+        //     let tanggalValue = tanggal.value;
+        //     let isChanged = function() {
+        //         if(tanggal.value !== tanggalValue){
+        //             tanggalValue=tanggal.value;
+        //             return true;
+        //         };
+
+        //         return false;
+        //     };
+
+        //     tanggal.addEventListener("change", function() {
+        //         if(isChanged()) {
+        //             Livewire.emit('setDate', tanggalValue);
+        //         }
+        //     });
+        // }
+    </script>
+@endsection

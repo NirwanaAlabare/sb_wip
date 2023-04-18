@@ -8,11 +8,25 @@ use Livewire\Component;
 
 class OrderList extends Component
 {
+    public $orders;
     public $search = '';
+    public $date = '';
+
+    public $listeners = ['setDate'];
+
+    public function mount()
+    {
+        $this->date = date('Y-m-d');
+    }
+
+    // public function setDate($date)
+    // {
+    //     $this->date = $date;
+    // }
 
     public function render()
     {
-        $orders = MasterPlan::selectRaw("
+        $this->orders = MasterPlan::selectRaw("
                 DISTINCT master_plan.id_ws, master_plan.tgl_plan, mastersupplier.supplier, act_costing.styleno, masterproduct.product_group, masterproduct.product_item, so_det.styleno_prod, so.qty,
                 master_plan.id as id,
                 master_plan.tgl_plan as plan_date,
@@ -31,6 +45,7 @@ class OrderList extends Component
             ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
             ->where('master_plan.sewing_line', Auth::user()->username)
             ->where('so_det.cancel', 'N')
+            // ->where('master_plan.tgl_plan', $this->date)
             ->whereRaw("
                 (
                     act_costing.kpno LIKE '%".$this->search."%'
@@ -43,6 +58,6 @@ class OrderList extends Component
             ->orderBy('master_plan.tgl_plan','DESC')
             ->get();
 
-        return view('livewire.order-list', ['orders' => $orders]);
+        return view('livewire.order-list');
     }
 }

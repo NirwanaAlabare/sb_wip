@@ -4,3 +4,4 @@
 <script src="/assets/izitoast/dist/js/iziToast.min.js"></script>
 <script src="/assets/select2/dist/js/select2.min.js"></script>
 <script src="/assets/js/script.js"></script>
+@livewireScripts

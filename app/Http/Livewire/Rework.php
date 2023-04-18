@@ -30,9 +30,14 @@ class Rework extends Component
         $session->put('orderWsDetailSizes', $orderWsDetailSizes);
     }
 
-    public function updatingSearch()
+    public function updatingSearchDefect()
     {
-        $this->resetPage();
+        $this->resetPage('defectsPage');
+    }
+
+    public function updatingSearchRework()
+    {
+        $this->resetPage('reworksPage');
     }
 
     public function submitRework($defectId) {
@@ -104,7 +109,7 @@ class Rework extends Component
                 output_defect_areas.defect_area LIKE '%".$this->searchDefect."%' OR
                 output_defect_types.defect_type LIKE '%".$this->searchDefect."%' OR
                 output_defects.defect_status LIKE '%".$this->searchDefect."%'
-            )")->paginate(10);
+            )")->paginate(10, ['*'], 'defectsPage');
         $reworks = ReworkModel::selectRaw('output_reworks.*, so_det.size as so_det_size')->
             leftJoin('output_defects', 'output_defects.id', '=', 'output_reworks.defect_id')->
             leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
@@ -119,7 +124,7 @@ class Rework extends Component
                 output_defect_areas.defect_area LIKE '%".$this->searchRework."%' OR
                 output_defect_types.defect_type LIKE '%".$this->searchRework."%' OR
                 output_defects.defect_status LIKE '%".$this->searchRework."%'
-            )")->paginate(10);
+            )")->paginate(10, ['*'], 'reworksPage');
 
         return view('livewire.rework' , ['defects' => $defects, 'reworks' => $reworks]);
     }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
-use Illuminate\Support\Facades\Auth;
 use App\Models\SignalBit\UserPassword;
 
 class LoginController extends Controller
@@ -30,7 +30,7 @@ class LoginController extends Controller
         if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']], $remember)) {
             $request->session()->regenerate();
 
-            session(['user_id' => Auth::user()->id_line, 'user_username' => Auth::user()->username, 'user_name' => Auth::user()->FullName]);
+            session(['user_id' => Auth::user()->line_id, 'user_username' => Auth::user()->username, 'user_name' => Auth::user()->FullName]);
 
             return array(
                 'status' => '200',
