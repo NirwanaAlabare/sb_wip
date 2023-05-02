@@ -19,10 +19,17 @@ class OrderList extends Component
         $this->date = date('Y-m-d');
     }
 
+<<<<<<< HEAD
     public function setDate($date)
     {
         $this->date = $date;
     }
+=======
+    // public function setDate($date)
+    // {
+    //     $this->date = $date;
+    // }
+>>>>>>> 01455130229d9bacf9efe6c8f1155c86175ff5b1
 
     public function render()
     {
@@ -45,7 +52,11 @@ class OrderList extends Component
             ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
             ->where('master_plan.sewing_line', Auth::user()->username)
             ->where('so_det.cancel', 'N')
+<<<<<<< HEAD
             ->where('master_plan.tgl_plan', $this->date)
+=======
+            // ->where('master_plan.tgl_plan', $this->date)
+>>>>>>> 01455130229d9bacf9efe6c8f1155c86175ff5b1
             ->whereRaw("
                 (
                     act_costing.kpno LIKE '%".$this->search."%'

@@ -40,6 +40,7 @@
 @section('custom-script')
     <script>
         // Set Date Event
+<<<<<<< HEAD
         let tanggal = document.getElementById("tanggal");
         if (tanggal) {
             let tanggalValue = tanggal.value;
@@ -58,5 +59,25 @@
                 }
             });
         }
+=======
+        // let tanggal = document.getElementById("tanggal");
+        // if (tanggal) {
+        //     let tanggalValue = tanggal.value;
+        //     let isChanged = function() {
+        //         if(tanggal.value !== tanggalValue){
+        //             tanggalValue=tanggal.value;
+        //             return true;
+        //         };
+
+        //         return false;
+        //     };
+
+        //     tanggal.addEventListener("change", function() {
+        //         if(isChanged()) {
+        //             Livewire.emit('setDate', tanggalValue);
+        //         }
+        //     });
+        // }
+>>>>>>> 01455130229d9bacf9efe6c8f1155c86175ff5b1
     </script>
 @endsection

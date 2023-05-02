@@ -362,7 +362,7 @@ function disableForm(element, elementOppositionId, formId) {
     }
 }
 
-// Submit Form
+// Update Profile
 function submitForm(e, evt) {
     evt.preventDefault();
 
