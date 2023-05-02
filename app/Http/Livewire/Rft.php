@@ -65,7 +65,7 @@ class Rft extends Component
         $this->sizeInputText = $sizeText;
     }
 
-    public function submitInput(SessionManager $session)
+    public function submitInput()
     {
         $validatedData = $this->validate();
 

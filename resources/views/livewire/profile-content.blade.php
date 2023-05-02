@@ -65,23 +65,28 @@
 
     <div class="mt-5 table-responsive">
         <h5 class="text-center">LATEST OUTPUT</h5>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Tanggal & Waktu</th>
-                    <th>Kuantitas</th>
-                    <th>Tipe Output</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{-- @foreach ($latestOutput as $output)
-                    <tr>
-                        <td>{{ $output }}</td>
-                        <td>{{  }}</td>
-                        <td>{{  }}</td>
-                    </tr>
-                @endforeach --}}
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-md-4">
+                <table class="table table-bordered w-100 mx-auto">
+                    <thead>
+                        <tr>
+                            <th class="text-end w-50">Tanggal & Waktu</th>
+                            <th class="text-start w-50">Tipe Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for ($i = 0; $i < count($latestOutput); $i++)
+                            <tr>
+                                <td class="text-end w-50">{{ $latestOutput[$i]->updated_at }}</td>
+                                <td class="text-start w-50"> - </td>
+                            </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-8">
+                <div id="daily-chart"></div>
+            </div>
+        </div>
     </div>
 </div>

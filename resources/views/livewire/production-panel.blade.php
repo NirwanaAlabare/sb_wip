@@ -70,7 +70,7 @@
                                         <p class="text-center fs-3 mt-auto mb-auto">{{ $outputFiltered }}</p>
                                     </div>
                                 </div>
-                                <button class="reset multi-item lower btn btn-pale h-50">
+                                <button type="button" class="reset multi-item lower btn btn-pale h-50" wire:click="preSubmitUndo('rft')">
                                     <i class="fa-regular fa-rotate-left fa-2xl"></i>
                                 </button>
                             </div>
@@ -94,7 +94,7 @@
                                         <p class="mb-0"><i class="fa-regular fa-clock-rotate-left fa-xl"></i></p>
                                     </div>
                                 </button>
-                                <button class="reset multi-item lower btn btn-pale h-50">
+                                <button type="button" class="reset multi-item lower btn btn-pale h-50" wire:click="preSubmitUndo('defect')">
                                     <div class="d-flex flex-column justify-content-center align-items-center w-100 h-100">
                                         <p class="mb-1">RESET</p>
                                         <p class="mb-0"><i class="fa-regular fa-rotate-left fa-xl"></i></p>
@@ -114,7 +114,7 @@
                             <p class="text-light fs-1">{{ $outputReject }}</p>
                         </div>
                         <div class="card-custom-footer bg-light w-25 h-100">
-                            <button class="reset single-item btn btn-pale w-100 h-100">
+                            <button class="reset single-item btn btn-pale w-100 h-100" wire:click="preSubmitUndo('reject')">
                                 <i class="fa-regular fa-rotate-left fa-2xl"></i>
                             </button>
                         </div>
@@ -130,7 +130,7 @@
                             <p class="text-light fs-1">{{ $outputRework }}</p>
                         </div>
                         <div class="card-custom-footer bg-light w-25 h-100">
-                            <button class="reset single-item btn btn-pale w-100 h-100">
+                            <button class="reset single-item btn btn-pale w-100 h-100" wire:click="preSubmitUndo('rework')">
                                 <i class="fa-regular fa-rotate-left fa-2xl"></i>
                             </button>
                         </div>
@@ -163,5 +163,75 @@
         @if ($rework)
             @livewire('rework', ["orderWsDetailSizes" => $orderWsDetailSizes])
         @endif
+
+        {{-- Undo --}}
+        <div class="modal" tabindex="-1" id="undo-modal" wire:ignore.self>
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">UNDO <span class="bg-{{ $undoType }} fs-5 px-3 pb-1 mb-0 rounded text-center text-light fw-bold">{{ strtoupper($undoType) }}</span></h5>
+                  <button type="button" class="btn btn-light border-none pt-1 close" data-dismiss="modal" aria-label="Close" wire:click="$emit('hideModal', 'undo')">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" name="undo" id="undo" value="{{ $undoType }}">
+                    <div class="mb-3">
+                        @error('undoQty')
+                            <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                <small>
+                                    <strong>Error</strong> {{$message}}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </small>
+                            </div>
+                        @enderror
+                        <label class="form-label">QTY</label>
+                        <input type="number" class="form-control @error('undoQty') is-invalid @enderror" name="undo-qty" id="undo-qty" value="1" wire:model=undoQty>
+                    </div>
+                    <div class="mb-3">
+                        @error('undoSize')
+                            <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                <small>
+                                    <strong>Error</strong> {{$message}}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </small>
+                            </div>
+                        @enderror
+                        <label class="form-label">Size</label>
+                        <select class="form-select @error('undoSize') is-invalid @enderror" name="undo-size" id="undo-size" wire:model='undoSize'>
+                            <option value="" selected disabled>Select Size</option>
+                            @foreach ($orderWsDetailSizes as $order)
+                                <option value="{{ $order->so_det_id }}">{{ $order->size }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @if ($undoType == 'defect' || $undoType == 'rework')
+                        <div class="mb-3">
+                            <label class="form-label">Defect Type <small>(not required)</small></label>
+                            <select class="form-select" name="undo-defect-type" id="undo-defect-type" wire:model='undoDefectType'>
+                                <option value="" selected>Select Defect Type</option>
+                                @foreach ($undoDefectTypes as $defect)
+                                    <option value="{{ $defect->id }}">{{ $defect->defect_type }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Defect Area <small>(not required)</small></label>
+                            <select class="form-select" name="undo-defect-area" id="undo-defect-area" wire:model='undoDefectArea' {{ $undoDefectType == '' ? 'disabled' : '' }}>
+                                <option value="" selected>Select Defect Area</option>
+                                @foreach ($undoDefectAreas as $defect)
+                                    <option value="{{ $defect->id }}">{{ $defect->defect_area }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                  {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click="$emit('hideModal', 'undo')">Close</button> --}}
+                  <button type="button" class="btn btn-dark" wire:click='submitUndo()'>UNDO</button>
+                </div>
+              </div>
+            </div>
+        </div>
     </div>
 </div>

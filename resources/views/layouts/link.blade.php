@@ -7,4 +7,5 @@
 <link rel="stylesheet" href="/assets/izitoast/dist/css/iziToast.min.css">
 <link rel="stylesheet" href="/assets/select2/dist/css/select2.min.css">
 <link rel="stylesheet" href="/assets/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css">
+<link rel="stylesheet" href="/assets/apexcharts/apexcharts.css">
 @livewireStyles

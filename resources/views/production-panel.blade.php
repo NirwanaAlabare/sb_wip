@@ -22,12 +22,16 @@
         Livewire.on('showModal', (type) => {
             if (type == 'defect') {
                 showDefectModal();
+            } else if (type == 'undo') {
+                showUndoModal();
             }
         })
 
         Livewire.on('hideModal', (type) => {
             if (type == 'defect') {
                 hideDefectModal();
+            } else if (type == 'undo') {
+                hideUndoModal();
             }
         })
 

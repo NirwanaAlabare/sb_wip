@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql_sb_wip'),
+    'default' => env('DB_CONNECTION', 'mysql_sb'),
 
     /*
     |--------------------------------------------------------------------------

@@ -6,10 +6,14 @@ use Livewire\Component;
 use App\Models\SignalBit\MasterPlan;
 use App\Models\SignalBit\Rft;
 use App\Models\SignalBit\Defect;
+use App\Models\SignalBit\DefectType;
+use App\Models\SignalBit\DefectArea;
 use App\Models\SignalBit\Reject;
 use App\Models\SignalBit\Rework;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use DB;
 
 class ProductionPanel extends Component
 {
@@ -35,6 +39,28 @@ class ProductionPanel extends Component
     public $reject;
     public $rework;
 
+    // Undo
+    public $undoType;
+    public $undoQty;
+    public $undoSize;
+    public $undoDefectType;
+    public $undoDefectArea;
+
+    // Rules
+    protected $rules = [
+        'undoType' => 'required',
+        'undoQty' => 'required|numeric|min:1',
+        'undoSize' => 'required',
+    ];
+
+    protected $messages = [
+        'undoType.required' => 'Terjadi kesalahan, tipe undo output tidak terbaca.',
+        'undoQty.required' => 'Harap tentukan kuantitas undo output.',
+        'undoQty.numeric' => 'Harap isi kuantitas undo output dengan angka.',
+        'undoQty.min' => 'Kuantitas undo output tidak bisa kurang dari 1.',
+        'undoSize.required' => 'Harap tentukan ukuran undo output.',
+    ];
+
     // Event listeners
     protected $listeners = [
         'toProductionPanel' => 'toProductionPanel',
@@ -47,6 +73,7 @@ class ProductionPanel extends Component
         'countDefect' => 'countDefect',
         'countReject' => 'countReject',
         'countRework' => 'countRework',
+        'preSubmitUndo' => 'preSubmitUndo',
     ];
 
     public function mount(SessionManager $session, $orderInfo, $orderWsDetails)
@@ -72,6 +99,11 @@ class ProductionPanel extends Component
         $this->outputReject = 0;
         $this->outputRework = 0;
         $this->outputFiltered = 0;
+        $this->undoType = "";
+        $this->undoQty = 1;
+        $this->undoSize = "";
+        $this->undoDefectType = "";
+        $this->undoDefectArea = "";
     }
 
     public function toRft()
@@ -120,6 +152,124 @@ class ProductionPanel extends Component
         $this->emit('fromInputPanel');
     }
 
+    public function preSubmitUndo($undoType)
+    {
+        $this->undoType = $undoType;
+        $this->emit('showModal', 'undo');
+    }
+
+    public function submitUndo()
+    {
+        $validatedData = $this->validate();
+
+        $size = DB::select(DB::raw("SELECT * FROM so_det WHERE id = '".$this->undoSize."'"));
+        $defectType = DefectType::select('defect_type')->find($this->undoDefectType);
+        $defectArea = DefectArea::select('defect_area')->find($this->undoDefectArea);
+
+        switch ($this->undoType) {
+            case 'rft' :
+                // Undo RFT
+                $deleteRft = Rft::where('master_plan_id', $this->orderInfo->id)->
+                    where('so_det_id', $this->undoSize)->
+                    orderBy('updated_at', 'DESC')->
+                    orderBy('created_at', 'DESC')->
+                    take($this->undoQty)->
+                    delete();
+
+                if ($deleteRft)  {
+                    $this->emit('alert', 'success', 'Output RFT dengan ukuran '.$size[0]->size.' berhasil di UNDO sebanyak '.$this->undoQty.' kali.');
+                } else {
+                    $this->emit('alert', 'error', 'Output RFT dengan ukuran '.$size[0]->size.' gagal di UNDO.');
+                }
+
+                break;
+            case 'defect' :
+                // Undo DEFECT
+                $defectQuery = Defect::selectRaw('output_defects.id as defect_id, output_defects.*, output_defect_areas.defect_type_id')->
+                    leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
+                    leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defect_areas.defect_type_id')->
+                    where('master_plan_id', $this->orderInfo->id)->
+                    where('so_det_id', $this->undoSize)->
+                    where('defect_status', 'defect');
+                if ($this->undoDefectType) {
+                    $defectQuery->where('output_defect_areas.defect_type_id', $this->undoDefectType);
+                };
+                if ($this->undoDefectArea) {
+                    $defectQuery->where('output_defects.defect_area_id', $this->undoDefectArea);
+                };
+
+                $deleteDefect = $defectQuery->orderBy('output_defects.updated_at', 'DESC')->
+                    orderBy('output_defects.created_at', 'DESC')->
+                    take($this->undoQty)->
+                    delete();
+
+                $defectTypeText = $defectType ? ' dengan defect type = '.$defectType->defect_type : '';
+                $defectAreaText = $defectArea ? 'dengan defect area = '.$defectArea->defect_area.' ' : '';
+
+                if ($deleteDefect) {
+                    $this->emit('alert', 'success', 'Output DEFECT dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'berhasil di UNDO sebanyak '.$this->undoQty.' kali.');
+                } else {
+                    $this->emit('alert', 'error', 'Output DEFECT dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'gagal di UNDO.');
+                }
+
+                break;
+            case 'reject' :
+                // Undo REJECT
+                $deleteReject = Reject::where('master_plan_id', $this->orderInfo->id)->
+                    where('so_det_id', $this->undoSize)->
+                    orderBy('updated_at', 'DESC')->
+                    orderBy('created_at', 'DESC')->
+                    take($this->undoQty)->
+                    delete();
+
+                if ($deleteReject) {
+                    $this->emit('alert', 'success', 'Output REJECT dengan ukuran '.$size[0]->size.' berhasil di UNDO sebanyak '.$this->undoQty.' kali.');
+                } else {
+                    $this->emit('alert', 'error', 'Output REJECT dengan ukuran '.$size[0]->size.' gagal di UNDO.');
+                }
+
+                break;
+            case 'rework' :
+                // Undo REWORK
+                $defectQuery = Defect::selectRaw('output_defects.id as defect_id, output_defects.*, output_defect_areas.defect_type_id')->
+                    leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
+                    leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defect_areas.defect_type_id')->
+                    where('master_plan_id', $this->orderInfo->id)->
+                    where('so_det_id', $this->undoSize)->
+                    where('defect_status', 'reworked');
+                if ($this->undoDefectType) {
+                    $defectQuery->where('output_defect_areas.defect_type_id', $this->undoDefectType);
+                }
+                if ($this->undoDefectArea) {
+                    $defectQuery->where('output_defects.defect_area_id', $this->undoDefectArea);
+                }
+
+                $getDefects = $defectQuery->orderBy('output_defects.updated_at', 'DESC')->
+                    orderBy('output_defects.created_at', 'DESC')->
+                    take($this->undoQty)->
+                    get();
+
+                foreach ($getDefects as $defect) {
+                    Defect::where('id', $defect->defect_id)->update([
+                        'defect_status' => 'defect'
+                    ]);
+
+                    Rework::where('defect_id', $defect->defect_id)->delete();
+                }
+
+                $defectTypeText = $defectType ? ' dengan defect type = '.$defectType->defect_type : '';
+                $defectAreaText = $defectArea ? 'dengan defect area = '.$defectArea->defect_area.' ' : '';
+
+                if ($getDefects->count() > 0) {
+                    $this->emit('alert', 'success', 'Output REWORK dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'berhasil di UNDO sebanyak '.$this->undoQty.' kali.');
+                } else {
+                    $this->emit('alert', 'error', 'Output REWORK dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'gagal di UNDO.');
+                }
+
+                break;
+        }
+    }
+
     public function render(SessionManager $session)
     {
         // Keep these data with session
@@ -160,6 +310,16 @@ class ProductionPanel extends Component
         $sqlFiltered = Rft::select('id')->where('master_plan_id', $this->orderInfo->id);
         $this->outputFiltered = $this->selectedSize == 'all' ? $sqlFiltered->count() : $sqlFiltered->where('so_det_id', $this->selectedSize)->count();
 
-        return view('livewire.production-panel');
+        // Defect
+        $undoDefectTypes = DefectType::all();
+        $undoDefectAreas = DefectArea::where('defect_type_id', $this->undoDefectType)->get();
+
+        return view('livewire.production-panel', ['undoDefectTypes' => $undoDefectTypes, 'undoDefectAreas' => $undoDefectAreas]);
+    }
+
+    public function dehydrate()
+    {
+        $this->resetValidation();
+        $this->resetErrorBag();
     }
 }
