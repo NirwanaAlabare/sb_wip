@@ -24,6 +24,10 @@
                 showDefectModal();
             } else if (type == 'undo') {
                 showUndoModal();
+            } else if (type == 'addDefectType') {
+                showAddDefectTypeModal();
+            } else if (type == 'addDefectArea') {
+                showAddDefectAreaModal();
             }
         })
 
@@ -32,6 +36,10 @@
                 hideDefectModal();
             } else if (type == 'undo') {
                 hideUndoModal();
+            } else if (type == 'addDefectType') {
+                hideAddDefectTypeModal();
+            } else if (type == 'addDefectArea') {
+                hideAddDefectAreaModal();
             }
         })
 
@@ -41,7 +49,7 @@
 
         Livewire.on('toInputPanel', (type) => {
             $('#input-type').removeClass();
-            $('#input-type').addClass('bg-'+type+' w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
+            $('#input-type').addClass('bg-'+type+' w-100 fs-6 pb-1 mb-0 rounded text-center text-light fw-bold');
             $('#input-type').html(type.toUpperCase());
             $('#input-type').show();
         })
@@ -139,6 +147,6 @@
                     });
                 }
             });
-        })
+        });
     </script>
 @endsection

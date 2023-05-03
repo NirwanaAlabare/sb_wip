@@ -20,6 +20,9 @@ class Defect extends Component
     public $defectAreas;
     public $defectType;
     public $defectArea;
+    public $defectTypeAdd;
+    public $defectTypeAreaAdd;
+    public $defectAreaAdd;
 
     protected $rules = [
         'outputInput' => 'required|numeric|min:1',
@@ -52,6 +55,46 @@ class Defect extends Component
     {
         $this->resetValidation();
         $this->resetErrorBag();
+    }
+
+    public function submitDefectType()
+    {
+        if ($this->defectTypeAdd) {
+            $createDefectType = DefectType::create([
+                'defect_type' => $this->defectTypeAdd
+            ]);
+
+            if ($createDefectType) {
+                $this->emit('alert', 'success', 'Defect type : '.$this->defectTypeAdd.' berhasil ditambahkan.');
+
+                $this->defectTypeAdd = '';
+            } else {
+                $this->emit('alert', 'error', 'Terjadi kesalahan.');
+            }
+        } else {
+            $this->emit('alert', 'error', 'Harap tentukan nama defect type');
+        }
+    }
+
+    public function submitDefectArea()
+    {
+        if ($this->defectTypeAreaAdd && $this->defectAreaAdd) {
+            $createDefectArea = DefectArea::create([
+                'defect_type_id' => $this->defectTypeAreaAdd,
+                'defect_area' => $this->defectAreaAdd
+            ]);
+
+            if ($createDefectArea) {
+                $this->emit('alert', 'success', 'Defect area : '.$this->defectAreaAdd.' berhasil ditambahkan.');
+
+                $this->defectTypeAreaAdd = '';
+                $this->defectAreaAdd = '';
+            } else {
+                $this->emit('alert', 'error', 'Terjadi kesalahan.');
+            }
+        } else {
+            $this->emit('alert', 'error', 'Harap tentukan defect type dan nama defect area');
+        }
     }
 
     public function clearInput()
@@ -126,6 +169,7 @@ class Defect extends Component
         // Get total output
         $this->output = DefectModel::
             where('master_plan_id', $this->orderInfo->id)->
+            where('defect_status', 'defect')->
             count();
 
         // Defect types

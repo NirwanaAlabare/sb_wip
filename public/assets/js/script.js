@@ -223,6 +223,24 @@ function hideUndoModal() {
     $("#undo-modal").modal("hide");
 }
 
+// add defect type modal
+function showAddDefectTypeModal() {
+    $("#defect-type-modal").modal("show");
+}
+
+function hideAddDefectTypeModal() {
+    $("#defect-type-modal").modal("hide");
+}
+
+// add defect area modal
+function showAddDefectAreaModal() {
+    $("#defect-area-modal").modal("show");
+}
+
+function hideAddDefectAreaModal() {
+    $("#defect-area-modal").modal("hide");
+}
+
 // rework
 function reworkConfirmation() {
     Swal.fire({
@@ -476,3 +494,21 @@ var options = {
 
 var chart = new ApexCharts(document.querySelector("#daily-chart"), options);
 chart.render();
+
+if (document.getElementById('defect-area-image')) {
+    var defectAreaImage = document.getElementById('defect-area-image');
+    var defectAreaPosition = document.getElementById('defect-area-position');
+
+    let localMousePos = { x: undefined, y: undefined };
+    let globalMousePos = { x: undefined, y: undefined };
+
+    window.addEventListener('mousemove', (event) => {
+        const localX = event.clientX - event.target.offsetLeft;
+        const localY = event.clientY - event.target.offsetTop;
+        localMousePos = { x: localX, y: localY };
+
+        globalMousePos = { x: event.clientX, y: event.clientY };
+
+        defectAreaPosition.textContent = `(${globalMousePos.x}, ${globalMousePos.y}) (${localMousePos.x}, ${localMousePos.y})`;
+    });
+}

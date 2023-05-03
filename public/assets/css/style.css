@@ -257,6 +257,8 @@ input[type=number] {
 /* Navbar */
 .navbar {
     border-bottom: 3px solid var(--sb-color);
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .navbar .dropdown-toggle {
@@ -355,6 +357,15 @@ input[type=number] {
 
 .order {
     text-decoration: none;
+}
+
+/* Defect Area Image */
+.defect-area-image {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 100;
+    background-color: #21252983;
 }
 
 /* Footer */

@@ -1,27 +1,27 @@
 <header>
     <nav class="navbar bg-body-secondary navbar-expand">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"><img src="/assets/images/logosb.png" alt="" width="150"></a>
+            <a class="navbar-brand" href="/"><img src="/assets/images/logosb.png" alt="" width="130"></a>
             <ul class="navbar-nav align-items-center gap-3">
                 <div class="row justify-content-end align-items-center">
                     <div class="col-md-2">
                         <li class="nav-item w-100">
-                            <p class="bg-rft fs-5 px-3 pb-1 mb-0 rounded text-center text-light fw-bold" id="input-type">RFT</p>
+                            <p id="input-type"></p>
                         </li>
                     </div>
                     <div class="col-md-4">
                         <li class="nav-item w-100">
-                            <input type="date" class="form-control" id="tanggal" name="tanggal">
+                            <input type="date" class="form-control form-control-sm" id="tanggal" name="tanggal">
                         </li>
                     </div>
                     <div class="col-md-3">
                         <li class="nav-item w-100">
-                            <input type="text" class="form-control text-center" id="jam" name="jam" readonly>
+                            <input type="text" class="form-control form-control-sm text-center" id="jam" name="jam" readonly>
                         </li>
                     </div>
                     <div class="col-md-3">
                         <li class="nav-item dropdown w-100">
-                            <button class="btn bg-white dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-sm bg-white dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-regular fa-gear"></i>
                                 <span>{{ strtoupper(substr(Auth::user()->FullName, 6)) }}</span>
                             </button>

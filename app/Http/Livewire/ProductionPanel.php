@@ -171,13 +171,14 @@ class ProductionPanel extends Component
                 // Undo RFT
                 $deleteRft = Rft::where('master_plan_id', $this->orderInfo->id)->
                     where('so_det_id', $this->undoSize)->
+                    where('status', 'NORMAL')->
                     orderBy('updated_at', 'DESC')->
                     orderBy('created_at', 'DESC')->
                     take($this->undoQty)->
                     delete();
 
                 if ($deleteRft)  {
-                    $this->emit('alert', 'success', 'Output RFT dengan ukuran '.$size[0]->size.' berhasil di UNDO sebanyak '.$this->undoQty.' kali.');
+                    $this->emit('alert', 'success', 'Output RFT dengan ukuran '.$size[0]->size.' berhasil di UNDO sebanyak '.$deleteRft.' kali.');
                 } else {
                     $this->emit('alert', 'error', 'Output RFT dengan ukuran '.$size[0]->size.' gagal di UNDO.');
                 }
@@ -185,7 +186,7 @@ class ProductionPanel extends Component
                 break;
             case 'defect' :
                 // Undo DEFECT
-                $defectQuery = Defect::selectRaw('output_defects.id as defect_id, output_defects.*, output_defect_areas.defect_type_id')->
+                $defectQuery = Defect::selectRaw('output_defects.id as defect_id')->
                     leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
                     leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defect_areas.defect_type_id')->
                     where('master_plan_id', $this->orderInfo->id)->
@@ -197,17 +198,18 @@ class ProductionPanel extends Component
                 if ($this->undoDefectArea) {
                     $defectQuery->where('output_defects.defect_area_id', $this->undoDefectArea);
                 };
-
-                $deleteDefect = $defectQuery->orderBy('output_defects.updated_at', 'DESC')->
+                $getDefects = $defectQuery->orderBy('output_defects.updated_at', 'DESC')->
                     orderBy('output_defects.created_at', 'DESC')->
                     take($this->undoQty)->
-                    delete();
+                    get()->toArray();
+
+                $deleteDefect = Defect::destroy($getDefects);
 
                 $defectTypeText = $defectType ? ' dengan defect type = '.$defectType->defect_type : '';
                 $defectAreaText = $defectArea ? 'dengan defect area = '.$defectArea->defect_area.' ' : '';
 
                 if ($deleteDefect) {
-                    $this->emit('alert', 'success', 'Output DEFECT dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'berhasil di UNDO sebanyak '.$this->undoQty.' kali.');
+                    $this->emit('alert', 'success', 'Output DEFECT dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'berhasil di UNDO sebanyak '.$deleteDefect.' kali.');
                 } else {
                     $this->emit('alert', 'error', 'Output DEFECT dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'gagal di UNDO.');
                 }
@@ -223,7 +225,7 @@ class ProductionPanel extends Component
                     delete();
 
                 if ($deleteReject) {
-                    $this->emit('alert', 'success', 'Output REJECT dengan ukuran '.$size[0]->size.' berhasil di UNDO sebanyak '.$this->undoQty.' kali.');
+                    $this->emit('alert', 'success', 'Output REJECT dengan ukuran '.$size[0]->size.' berhasil di UNDO sebanyak '.$deleteReject.' kali.');
                 } else {
                     $this->emit('alert', 'error', 'Output REJECT dengan ukuran '.$size[0]->size.' gagal di UNDO.');
                 }
@@ -243,17 +245,15 @@ class ProductionPanel extends Component
                 if ($this->undoDefectArea) {
                     $defectQuery->where('output_defects.defect_area_id', $this->undoDefectArea);
                 }
-
                 $getDefects = $defectQuery->orderBy('output_defects.updated_at', 'DESC')->
                     orderBy('output_defects.created_at', 'DESC')->
                     take($this->undoQty)->
                     get();
 
+                // update defect & delete rework
                 foreach ($getDefects as $defect) {
-                    Defect::where('id', $defect->defect_id)->update([
-                        'defect_status' => 'defect'
-                    ]);
-
+                    Defect::where('id', $defect->defect_id)->update(['defect_status' => 'defect']);
+                    Rft::leftJoin('output_reworks', 'output_reworks.id', '=', 'output_rfts.rework_id')->where('output_reworks.defect_id', $defect->defect_id)->delete();
                     Rework::where('defect_id', $defect->defect_id)->delete();
                 }
 
@@ -261,7 +261,7 @@ class ProductionPanel extends Component
                 $defectAreaText = $defectArea ? 'dengan defect area = '.$defectArea->defect_area.' ' : '';
 
                 if ($getDefects->count() > 0) {
-                    $this->emit('alert', 'success', 'Output REWORK dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'berhasil di UNDO sebanyak '.$this->undoQty.' kali.');
+                    $this->emit('alert', 'success', 'Output REWORK dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'berhasil di UNDO sebanyak '.$getDefects->count().' kali.');
                 } else {
                     $this->emit('alert', 'error', 'Output REWORK dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'gagal di UNDO.');
                 }

@@ -18,6 +18,7 @@ class Rft extends Model
         'master_plan_id',
         'so_det_id',
         'status',
+        'rework_id',
         'created_at',
         'updated_at',
     ];
@@ -25,5 +26,10 @@ class Rft extends Model
     public function masterPlan()
     {
         return $this->belongsTo(MasterPlan::class, 'master_plan_id', 'id');
+    }
+
+    public function rework()
+    {
+        return $this->hasOne(Rework::class, 'id', 'rework_id');
     }
 }

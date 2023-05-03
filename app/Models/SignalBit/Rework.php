@@ -30,4 +30,9 @@ class Rework extends Model
     {
         return $this->hasOne(Defect::class, 'id', 'defect_id');
     }
+
+    public function rft()
+    {
+        return $this->hasOne(Rft::class, 'rework_id', 'id');
+    }
 }

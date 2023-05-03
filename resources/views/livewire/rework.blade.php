@@ -6,11 +6,11 @@
                 <div class="card-header d-flex justify-content-between align-items-center bg-rework text-light">
                     <p class="mb-0 fs-5">Data Defect</p>
                     <div class="d-flex justify-content-end align-items-center gap-1">
-                        <button class="btn btn-dark">
+                        <button type="button" class="btn btn-dark" wire:click="$emit('preSubmitUndo', 'defect')">
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
-                        <button class="btn btn-dark">
-                            <i class="fa-regular fa-gear    "></i>
+                        <button type="button" class="btn btn-dark">
+                            <i class="fa-regular fa-gear"></i>
                         </button>
                     </div>
                 </div>
@@ -57,10 +57,10 @@
                 <div class="card-header d-flex justify-content-between align-items-center bg-rework text-light">
                     <p class="mb-0 fs-5">Data Rework</p>
                     <div class="d-flex justify-content-end align-items-center gap-1">
-                        <button class="btn btn-dark">
+                        <button type="button" class="btn btn-dark" wire:click="$emit('preSubmitUndo', 'rework')">
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
-                        <button class="btn btn-dark">
+                        <button type="button" class="btn btn-dark">
                             <i class="fa-regular fa-gear"></i>
                         </button>
                     </div>

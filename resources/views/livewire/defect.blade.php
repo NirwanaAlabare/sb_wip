@@ -93,34 +93,135 @@
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
-                            <label class="form-label">Defect Type</label>
-                            <select class="form-select" id="defect-type" wire:model='defectType'>
+                            @error('defectType')
+                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                    <small>
+                                        <strong>Error</strong> {{$message}}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </small>
+                                </div>
+                            @enderror
+                            <div class="d-flex align-items-center mb-1">
+                                <button type="button" class="btn btn-sm btn-light rounded-0 me-1" wire:click="$emit('showModal', 'addDefectType')">
+                                    <i class="fa-regular fa-plus fa-xs"></i>
+                                </button>
+                                <label class="form-label me-1 mb-0">Defect Type</label>
+                            </div>
+                            <select class="form-select @error('defectType') is-invalid @enderror" id="defect-type" wire:model='defectType'>
                                 <option value="" selected>Select defect type</option>
                                 @foreach ($defectTypes as $defect)
                                     <option value="{{ $defect->id }}">{{ $defect->defect_type }}</option>
                                 @endforeach
                             </select>
-                            @error('defectType')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Defect Area</label>
-                            <select class="form-select" id="defect-area" wire:model='defectArea' {{ $defectType == '' ? 'disabled' : '' }}>
+                            @error('defectArea')
+                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                    <small>
+                                        <strong>Error</strong> {{$message}}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </small>
+                                </div>
+                            @enderror
+                            <div class="d-flex align-items-center mb-1">
+                                <button type="button" class="btn btn-sm btn-light rounded-0 me-1" wire:click="$emit('showModal', 'addDefectArea')">
+                                    <i class="fa-regular fa-plus fa-xs"></i>
+                                </button>
+                                <label class="form-label me-1 mb-0">Defect Area</label>
+                            </div>
+                            <select class="form-select @error('defectArea') is-invalid @enderror" id="defect-area" wire:model='defectArea' {{ $defectType == '' ? 'disabled' : '' }}>
                                 <option value="" selected>Select defect area</option>
                                 @foreach ($defectAreas as $defect)
                                     <option value="{{ $defect->id }}">{{ $defect->defect_area }}</option>
                                 @endforeach
                             </select>
-                            @error('defectArea')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-success" wire:click='submitInput'>Selesai</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Add Defect Type --}}
+    <div class="modal" tabindex="-1" id="defect-type-modal" wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-defect text-light">
+                    <h5 class="modal-title">TAMBAH DEFECT TYPE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            @error('defectTypeAdd')
+                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                    <small>
+                                        <strong>Error</strong> {{$message}}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </small>
+                                </div>
+                            @enderror
+                            <label class="form-label me-1 mb-0">Defect Type</label>
+                            <input type="text" class="form-control" name="defect-type-add" id="defect-type-add" wire:model='defectTypeAdd'>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-success" wire:click='submitDefectType'>Tambahkan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Add Defect Area --}}
+    <div class="modal" tabindex="-1" id="defect-area-modal" wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-defect text-light">
+                    <h5 class="modal-title">TAMBAH DEFECT AREA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            @error('defectTypeAreaAdd')
+                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                    <small>
+                                        <strong>Error</strong> {{$message}}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </small>
+                                </div>
+                            @enderror
+                            <label class="form-label me-1 mb-0">Defect Type</label>
+                            <select class="select2 form-select @error('defectTypeAreaAdd') is-invalid @enderror" id="defect-type" wire:model='defectTypeAreaAdd'>
+                                <option value="" selected>Select defect type</option>
+                                @foreach ($defectTypes as $defect)
+                                    <option value="{{ $defect->id }}">{{ $defect->defect_type }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            @error('defectAreaAdd')
+                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                    <small>
+                                        <strong>Error</strong> {{$message}}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </small>
+                                </div>
+                            @enderror
+                            <label class="form-label me-1 mb-0">Defect Area</label>
+                            <input type="text" class="form-control" name="defect-area-add" id="defect-area-add" wire:model='defectAreaAdd'>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-success" wire:click='submitDefectArea'>Tambahkan</button>
                 </div>
             </div>
         </div>

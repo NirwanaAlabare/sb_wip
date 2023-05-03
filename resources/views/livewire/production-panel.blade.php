@@ -1,37 +1,31 @@
 <div>
     {{-- Production Info --}}
     <div class="production-info row row-gap-1 align-items-center mb-3">
-        <div class="col-md-2">
+        <div class="col-md">
             <div class="mb-1">
                 <label class="form-label mb-0">Buyer</label>
                 <input type="text" class="form-control form-control-sm" id="buyer-name" value="{{ $orderInfo->buyer_name }}" readonly>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md">
             <div class="mb-1">
                 <label class="form-label mb-0">WS Number</label>
                 <input type="text" class="form-control form-control-sm" id="ws-number" value="{{ $orderInfo->ws_number }}" readonly>
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="mb-1">
-                <label class="form-label mb-0">PO</label>
-                <input type="text" class="form-control form-control-sm" id="po-number" value="{{ $orderInfo->ws_number }}" readonly>
-            </div>
-        </div>
-        <div class="col-md-2">
+        <div class="col-md">
             <div class="mb-1">
                 <label class="form-label mb-0">Style</label>
                 <input type="text" class="form-control form-control-sm" id="style-name" value="{{ $orderInfo->style_name }}" readonly>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md">
             <div class="mb-1">
                 <label class="form-label mb-0">Product Type</label>
                 <input type="text" class="form-control form-control-sm" id="product-type" value="{{ $orderInfo->product_type }}" readonly>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md">
             <div class="mb-1" wire:ignore>
                 <label class="form-label mb-0">Color</label>
                 {{-- <input type="text" class="form-control form-control-sm" id="product-color" readonly> --}}
@@ -96,7 +90,7 @@
                                 </button>
                                 <button type="button" class="reset multi-item lower btn btn-pale h-50" wire:click="preSubmitUndo('defect')">
                                     <div class="d-flex flex-column justify-content-center align-items-center w-100 h-100">
-                                        <p class="mb-1">RESET</p>
+                                        <p class="mb-1">UNDO</p>
                                         <p class="mb-0"><i class="fa-regular fa-rotate-left fa-xl"></i></p>
                                     </div>
                                 </button>

@@ -58,7 +58,8 @@ class Rework extends Component
         $createRft = Rft::create([
             'master_plan_id' => $getDefect->master_plan_id,
             'so_det_id' => $getDefect->so_det_id,
-            "status" => "NORMAL"
+            "status" => "REWORK",
+            "rework_id" => $createRework->id
         ]);
 
         if ($createRework && $updateDefect && $createRft) {
@@ -80,11 +81,7 @@ class Rework extends Component
         ]);
 
         // delete from rft
-        $deleteRft = Rft::where('master_plan_id', $getDefect->master_plan_id)->
-            where('so_det_id', $getDefect->so_det_id)->
-            orderBy('id', 'desc')->
-            limit(1)->
-            delete();
+        $deleteRft = Rft::where('rework_id', $reworkId)->delete();
 
         if ($deleteRework && $updateDefect && $deleteRft) {
             $this->emit('alert', 'success', "REWORK dengan REWORK ID : ".$reworkId." dan DEFECT ID : ".$defectId." berhasil di kembalikan ke DEFECT.");
