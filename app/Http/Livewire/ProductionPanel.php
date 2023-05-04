@@ -188,7 +188,7 @@ class ProductionPanel extends Component
                 // Undo DEFECT
                 $defectQuery = Defect::selectRaw('output_defects.id as defect_id')->
                     leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
-                    leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defect_areas.defect_type_id')->
+                    leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
                     where('master_plan_id', $this->orderInfo->id)->
                     where('so_det_id', $this->undoSize)->
                     where('defect_status', 'defect');
@@ -235,12 +235,12 @@ class ProductionPanel extends Component
                 // Undo REWORK
                 $defectQuery = Defect::selectRaw('output_defects.id as defect_id, output_defects.*, output_defect_areas.defect_type_id')->
                     leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
-                    leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defect_areas.defect_type_id')->
+                    leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
                     where('master_plan_id', $this->orderInfo->id)->
                     where('so_det_id', $this->undoSize)->
                     where('defect_status', 'reworked');
                 if ($this->undoDefectType) {
-                    $defectQuery->where('output_defect_areas.defect_type_id', $this->undoDefectType);
+                    $defectQuery->where('output_defects.defect_type_id', $this->undoDefectType);
                 }
                 if ($this->undoDefectArea) {
                     $defectQuery->where('output_defects.defect_area_id', $this->undoDefectArea);
@@ -312,7 +312,7 @@ class ProductionPanel extends Component
 
         // Defect
         $undoDefectTypes = DefectType::all();
-        $undoDefectAreas = DefectArea::where('defect_type_id', $this->undoDefectType)->get();
+        $undoDefectAreas = DefectArea::all();
 
         return view('livewire.production-panel', ['undoDefectTypes' => $undoDefectTypes, 'undoDefectAreas' => $undoDefectAreas]);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Illuminate\Session\SessionManager;
 use App\Models\SignalBit\DefectType;
 use App\Models\SignalBit\DefectArea;
@@ -11,6 +12,8 @@ use Carbon\Carbon;
 
 class Defect extends Component
 {
+    use WithFileUploads;
+
     public $orderInfo;
     public $orderWsDetailSizes;
     public $output;
@@ -21,14 +24,18 @@ class Defect extends Component
     public $defectType;
     public $defectArea;
     public $defectTypeAdd;
-    public $defectTypeAreaAdd;
     public $defectAreaAdd;
+    public $defectAreaImageAdd;
+    public $defectAreaPositionX;
+    public $defectAreaPositionY;
 
     protected $rules = [
         'outputInput' => 'required|numeric|min:1',
         'sizeInput' => 'required',
         'defectType' => 'required',
         'defectArea' => 'required',
+        'defectAreaPositionX' => 'required',
+        'defectAreaPositionY' => 'required',
     ];
 
     protected $messages = [
@@ -38,6 +45,12 @@ class Defect extends Component
         'sizeInput.required' => 'Harap tentukan ukuran output.',
         'defectType.required' => 'Harap tentukan jenis defect.',
         'defectArea.required' => 'Harap tentukan area defect.',
+        'defectAreaPositionX.required' => "Harap tentukan posisi defect area dengan mengklik tombol 'gambar' di samping 'select defect' area.",
+        'defectAreaPositionY.required' => "Harap tentukan posisi defect area dengan mengklik tombol 'gambar' di samping 'select defect' area.",
+    ];
+
+    protected $listeners = [
+        'setDefectAreaPosition' => 'setDefectAreaPosition'
     ];
 
     public function mount(SessionManager $session, $orderWsDetailSizes)
@@ -49,6 +62,8 @@ class Defect extends Component
         $this->sizeInput = null;
         $this->defectType = null;
         $this->defectArea = null;
+        $this->defectAreaPositionX = null;
+        $this->defectAreaPositionY = null;
     }
 
     public function dehydrate()
@@ -76,24 +91,35 @@ class Defect extends Component
         }
     }
 
+    public function updatedDefectAreaImageAdd()
+    {
+        $this->validate([
+            'defectAreaImageAdd' => 'image',
+        ]);
+    }
+
     public function submitDefectArea()
     {
-        if ($this->defectTypeAreaAdd && $this->defectAreaAdd) {
+        if ($this->defectAreaAdd && $this->defectAreaImageAdd) {
+
+            $defectAreaImageAddName = md5($this->defectAreaImageAdd . microtime()).'.'.$this->defectAreaImageAdd->extension();
+            $this->defectAreaImageAdd->storeAs('public/images', $defectAreaImageAddName);
+
             $createDefectArea = DefectArea::create([
-                'defect_type_id' => $this->defectTypeAreaAdd,
-                'defect_area' => $this->defectAreaAdd
+                'defect_area' => $this->defectAreaAdd,
+                'image' => $defectAreaImageAddName,
             ]);
 
             if ($createDefectArea) {
                 $this->emit('alert', 'success', 'Defect area : '.$this->defectAreaAdd.' berhasil ditambahkan.');
 
-                $this->defectTypeAreaAdd = '';
-                $this->defectAreaAdd = '';
+                $this->defectAreaAdd = null;
+                $this->defectAreaImageAdd = null;
             } else {
                 $this->emit('alert', 'error', 'Terjadi kesalahan.');
             }
         } else {
-            $this->emit('alert', 'error', 'Harap tentukan defect type dan nama defect area');
+            $this->emit('alert', 'error', 'Harap tentukan nama defect area beserta gambarnya');
         }
     }
 
@@ -123,6 +149,23 @@ class Defect extends Component
         $this->sizeInputText = $sizeText;
     }
 
+    public function selectDefectAreaPosition()
+    {
+        $defectArea = DefectArea::select('image')->find($this->defectArea);
+
+        if ($defectArea) {
+            $this->emit('showSelectDefectArea', $defectArea->image);
+        } else {
+            $this->emit('alert', 'error', 'Harap pilih defect area terlebih dahulu');
+        }
+    }
+
+    public function setDefectAreaPosition($x, $y)
+    {
+        $this->defectAreaPositionX = $x;
+        $this->defectAreaPositionY = $y;
+    }
+
     public function preSubmitInput()
     {
         $this->validateOnly('outputInput');
@@ -141,7 +184,10 @@ class Defect extends Component
             array_push($insertData, [
                 'master_plan_id' => $this->orderInfo->id,
                 'so_det_id' => $this->sizeInput,
+                'defect_type_id' => $this->defectType,
                 'defect_area_id' => $this->defectArea,
+                'defect_area_x' => $this->defectAreaPositionX,
+                'defect_area_y' => $this->defectAreaPositionY,
                 'status' => 'NORMAL',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
@@ -176,7 +222,7 @@ class Defect extends Component
         $this->defectTypes = DefectType::all();
 
         // Defect areas
-        $this->defectAreas = DefectArea::where('defect_type_id', $this->defectType)->get();
+        $this->defectAreas = DefectArea::all();
 
         return view('livewire.defect');
     }

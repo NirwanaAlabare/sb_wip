@@ -15,16 +15,11 @@ class DefectArea extends Model
 
     protected $fillable = [
         'id',
-        'defect_type_id',
         'defect_area',
+        'image',
         'created_at',
         'updated_at',
     ];
-
-    public function defectType()
-    {
-        return $this->belongsTo(DefectType::class, 'defect_type_id', 'id');
-    }
 
     public function defects()
     {

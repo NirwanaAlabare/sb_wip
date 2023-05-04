@@ -15,19 +15,49 @@ class Rework extends Component
 
     protected $paginationTheme = 'bootstrap';
 
+    // filters
     public $orderInfo;
     public $orderWsDetailSizes;
     public $searchDefect;
     public $searchRework;
-    // public $defects;
-    // public $reworks;
 
-    protected $listeners = ['submitRework', 'cancelRework'];
+    // defect position
+    public $defectImage;
+    public $defectPositionX;
+    public $defectPositionY;
+
+    protected $listeners = [
+        'submitRework' => 'submitRework',
+        'cancelRework' => 'cancelRework',
+        'hideDefectAreaImageClear' => 'hideDefectAreaImage'
+    ];
 
     public function mount(SessionManager $session, $orderWsDetailSizes)
     {
         $this->orderWsDetailSizes = $orderWsDetailSizes;
         $session->put('orderWsDetailSizes', $orderWsDetailSizes);
+    }
+
+    public function setDefectAreaPosition($x, $y)
+    {
+        $this->defectPositionX = $x;
+        $this->defectPositionY = $y;
+    }
+
+    public function showDefectAreaImage($defectImage, $x, $y)
+    {
+        $this->defectImage = $defectImage;
+        $this->defectPositionX = $x;
+        $this->defectPositionY = $y;
+
+        $this->emit('showDefectAreaImage', $this->defectImage, $this->defectPositionX, $this->defectPositionY);
+    }
+
+    public function hideDefectAreaImage()
+    {
+        $this->defectImage = null;
+        $this->defectPositionX = null;
+        $this->defectPositionY = null;
     }
 
     public function updatingSearchDefect()
@@ -97,7 +127,7 @@ class Rework extends Component
         $defects = Defect::selectRaw('output_defects.*, so_det.size as so_det_size')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
-            leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defect_areas.defect_type_id')->
+            leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
             where('output_defects.defect_status', 'defect')->
             where('output_defects.master_plan_id', $this->orderInfo->id)->
             whereRaw("(
@@ -110,7 +140,7 @@ class Rework extends Component
         $reworks = ReworkModel::selectRaw('output_reworks.*, so_det.size as so_det_size')->
             leftJoin('output_defects', 'output_defects.id', '=', 'output_reworks.defect_id')->
             leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
-            leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defect_areas.defect_type_id')->
+            leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             where('output_defects.defect_status', 'reworked')->
             where('output_defects.master_plan_id', $this->orderInfo->id)->

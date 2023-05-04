@@ -495,20 +495,58 @@ var options = {
 var chart = new ApexCharts(document.querySelector("#daily-chart"), options);
 chart.render();
 
-if (document.getElementById('defect-area-image')) {
-    var defectAreaImage = document.getElementById('defect-area-image');
-    var defectAreaPosition = document.getElementById('defect-area-position');
+// Select Defect Area
+function showSelectDefectArea(defectAreaImage) {
+    document.body.style.maxHeight = '100%';
+    document.body.style.overflow = 'hidden';
 
-    let localMousePos = { x: undefined, y: undefined };
-    let globalMousePos = { x: undefined, y: undefined };
+    let defectAreaImageElement = document.getElementById('defect-area-img');
+    defectAreaImageElement.src = '/storage/images/'+defectAreaImage;
 
-    window.addEventListener('mousemove', (event) => {
-        const localX = event.clientX - event.target.offsetLeft;
-        const localY = event.clientY - event.target.offsetTop;
-        localMousePos = { x: localX, y: localY };
+    let selectDefectArea = document.getElementById('select-defect-area');
+    selectDefectArea.style.display = 'flex';
+    selectDefectArea.style.flexDirection = 'column';
+    selectDefectArea.style.alignItems = 'center';
+}
 
-        globalMousePos = { x: event.clientX, y: event.clientY };
+function hideSelectDefectArea() {
+    document.body.style.maxHeight = null;
+    document.body.style.overflow = null;
 
-        defectAreaPosition.textContent = `(${globalMousePos.x}, ${globalMousePos.y}) (${localMousePos.x}, ${localMousePos.y})`;
-    });
+    let defectAreaImageElement = document.getElementById('defect-area-img');
+    defectAreaImageElement.src = '';
+
+    let selectDefectArea = document.getElementById('select-defect-area');
+    selectDefectArea.style.display = 'none';
+    selectDefectArea.style.flexDirection = null;
+    selectDefectArea.style.justifyContent = null;
+    selectDefectArea.style.alignItems = null;
+}
+
+// Show Defect Area Image
+function showDefectAreaImage(defectAreaImage) {
+    document.body.style.maxHeight = '100%';
+    document.body.style.overflow = 'hidden';
+
+    let defectAreaImageElement = document.getElementById('defect-area-img-show');
+    defectAreaImageElement.src = '/storage/images/'+defectAreaImage;
+
+    let showDefectArea = document.getElementById('show-defect-area');
+    showDefectArea.style.display = 'flex';
+    showDefectArea.style.flexDirection = 'column';
+    showDefectArea.style.alignItems = 'center';
+}
+
+function hideDefectAreaImage() {
+    document.body.style.maxHeight = null;
+    document.body.style.overflow = null;
+
+    let defectAreaImageElement = document.getElementById('defect-area-img-show');
+    defectAreaImageElement.src = '';
+
+    let showDefectArea = document.getElementById('show-defect-area');
+    showDefectArea.style.display = 'none';
+    showDefectArea.style.flexDirection = null;
+    showDefectArea.style.justifyContent = null;
+    showDefectArea.style.alignItems = null;
 }

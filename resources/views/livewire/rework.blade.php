@@ -25,12 +25,13 @@
                             <th>Size</th>
                             <th>Defect Type</th>
                             <th>Defect Area</th>
+                            <th>Defect Area Image</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                         @if ($defects->count() < 1)
                             <tr>
-                                <td colspan='7'>Defect tidak ditemukan</td>
+                                <td colspan='8'>Defect tidak ditemukan</td>
                             </tr>
                         @else
                             @foreach ($defects as $defect)
@@ -38,11 +39,17 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $defect->id }}</td>
                                     <td>{{ $defect->so_det_size }}</td>
-                                    <td>{{ $defect->defectArea->defectType->defect_type}}</td>
+                                    <td>{{ $defect->defectType->defect_type}}</td>
                                     <td>{{ $defect->defectArea->defect_area }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$defect->defectArea->image}}', {{$defect->defect_area_x}}, {{$defect->defect_area_y}})'">
+                                            <i class="fa-regular fa-image"></i>
+                                        </button>
+                                    </td>
                                     <td class="text-defect fw-bold">{{ strtoupper($defect->defect_status) }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-rework fw-bold w-100" wire:click="$emit('preSubmitRework', '{{ $defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectArea->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}')">REWORK</button>
+                                        <button class="btn btn-sm btn-rework fw-bold w-100"
+                                            wire:click="$emit('preSubmitRework', '{{ $defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}', '{{ $defect->defectArea->image }}', '{{ $defect->defect_area_x }}', '{{ $defect->defect_area_y }}')">REWORK</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -76,12 +83,13 @@
                             <th>Size</th>
                             <th>Defect Type</th>
                             <th>Defect Area</th>
+                            <th>Defect Area Image</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                         @if ($reworks->count() < 1)
                             <tr>
-                                <td colspan='7'>Rework tidak ditemukan</td>
+                                <td colspan='8'>Rework tidak ditemukan</td>
                             </tr>
                         @else
                             @foreach ($reworks as $rework)
@@ -89,11 +97,16 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $rework->defect->id }}</td>
                                     <td>{{ $rework->so_det_size }}</td>
-                                    <td>{{ $rework->defect->defectArea->defectType->defect_type}}</td>
+                                    <td>{{ $rework->defect->defectType->defect_type}}</td>
                                     <td>{{ $rework->defect->defectArea->defect_area }}</td>
                                     <td class="text-rework fw-bold">{{ strtoupper($rework->defect->defect_status) }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $rework->so_det_size }}', '{{ $rework->defect->defectArea->defectType->defect_type }}', '{{ $rework->defect->defectArea->defect_area }}')">CANCEL</button>
+                                        <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$rework->defect->defectArea->image}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})'">
+                                            <i class="fa-regular fa-image"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $rework->so_det_size }}', '{{ $rework->defect->defectType->defect_type }}', '{{ $rework->defect->defectArea->defect_area }}', '{{$rework->defect->defectArea->image}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})">CANCEL</button>
                                     </td>
                                 </tr>
                             @endforeach

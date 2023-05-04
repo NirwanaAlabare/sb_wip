@@ -26,13 +26,14 @@
                                 <th>Size</th>
                                 <th>Defect Type</th>
                                 <th>Defect Area</th>
+                                <th>Defect Area Image</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if ($defects->count() < 1)
                                 <tr>
-                                    <td colspan="6"><i class="fa-solid fa-circle-exclamation"></i> Defect tidak ditemukan</td>
+                                    <td colspan="7"><i class="fa-solid fa-circle-exclamation"></i> Defect tidak ditemukan</td>
                                 </tr>
                             @else
                                 @foreach ($defects as $defect)
@@ -43,8 +44,13 @@
                                         <td>{{ $defects->firstItem() + $loop->index }}</td>
                                         <td>{{ $defect->id }}</td>
                                         <td>{{ $defect->so_det_size }}</td>
-                                        <td>{{ $defect->defectArea->defectType->defect_type }}</td>
+                                        <td>{{ $defect->defectType->defect_type }}</td>
                                         <td>{{ $defect->defectArea->defect_area }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$defect->defectArea->image}}', {{$defect->defect_area_x}}, {{$defect->defect_area_y}})'">
+                                                <i class="fa-regular fa-image"></i>
+                                            </button>
+                                        </td>
                                         <td class="{{ $defectStatusColor }} fw-bold">{{ strtoupper($defect->defect_status) }}</td>
                                     </tr>
                                 @endforeach

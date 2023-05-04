@@ -20,8 +20,8 @@ class DefectType extends Model
         'updated_at',
     ];
 
-    public function defectArea()
+    public function defects()
     {
-        return $this->hasMany(DefectArea::class, 'id', 'defect_type_id');
+        return $this->hasMany(Defect::class, 'id', 'defect_area_id');
     }
 }

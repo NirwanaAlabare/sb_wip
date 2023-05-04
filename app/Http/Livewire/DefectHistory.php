@@ -15,20 +15,54 @@ class DefectHistory extends Component
 
     protected $paginationTheme = 'bootstrap';
 
+    // order info
     public $orderInfo;
     public $orderWsDetailSizes;
 
+    // filter
     public $filterDefectSize;
     public $filterDefectType;
     public $filterDefectArea;
     public $filterDefectStatus;
     public $search;
-    // public $defects;
+
+    // defect position
+    public $defectImage;
+    public $defectPositionX;
+    public $defectPositionY;
+
+    protected $listeners = [
+        'hideDefectAreaImageClear' => 'hideDefectAreaImage',
+    ];
 
     public function mount(SessionManager $session, $orderWsDetailSizes)
     {
         $this->orderWsDetailSizes = $orderWsDetailSizes;
         $session->put('orderWsDetailSizes', $orderWsDetailSizes);
+        $this->defectPositionX = null;
+        $this->defectPositionY = null;
+    }
+
+    public function setDefectAreaPosition($x, $y)
+    {
+        $this->defectPositionX = $x;
+        $this->defectPositionY = $y;
+    }
+
+    public function showDefectAreaImage($defectImage, $x, $y)
+    {
+        $this->defectImage = $defectImage;
+        $this->defectPositionX = $x;
+        $this->defectPositionY = $y;
+
+        $this->emit('showDefectAreaImage', $this->defectImage, $this->defectPositionX, $this->defectPositionY);
+    }
+
+    public function hideDefectAreaImage()
+    {
+        $this->defectImage = null;
+        $this->defectPositionX = null;
+        $this->defectPositionY = null;
     }
 
     public function updatingSearch()
@@ -45,7 +79,7 @@ class DefectHistory extends Component
         $defects = Defect::selectRaw('output_defects.*, so_det.size as so_det_size')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
-            leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defect_areas.defect_type_id')->
+            leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
             where('output_defects.master_plan_id', $this->orderInfo->id);
 
         if ($this->filterDefectSize != null && $this->filterDefectSize != 'all') {

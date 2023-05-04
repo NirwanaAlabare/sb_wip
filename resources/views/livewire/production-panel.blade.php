@@ -211,7 +211,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Defect Area <small>(not required)</small></label>
-                            <select class="form-select" name="undo-defect-area" id="undo-defect-area" wire:model='undoDefectArea' {{ $undoDefectType == '' ? 'disabled' : '' }}>
+                            <select class="form-select" name="undo-defect-area" id="undo-defect-area" wire:model='undoDefectArea'>
                                 <option value="" selected>Select Defect Area</option>
                                 @foreach ($undoDefectAreas as $defect)
                                     <option value="{{ $defect->id }}">{{ $defect->defect_area }}</option>

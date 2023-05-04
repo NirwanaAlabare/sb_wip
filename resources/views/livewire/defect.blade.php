@@ -129,12 +129,42 @@
                                 </button>
                                 <label class="form-label me-1 mb-0">Defect Area</label>
                             </div>
-                            <select class="form-select @error('defectArea') is-invalid @enderror" id="defect-area" wire:model='defectArea' {{ $defectType == '' ? 'disabled' : '' }}>
-                                <option value="" selected>Select defect area</option>
-                                @foreach ($defectAreas as $defect)
-                                    <option value="{{ $defect->id }}">{{ $defect->defect_area }}</option>
-                                @endforeach
-                            </select>
+                            <div class="d-flex">
+                                <select class="form-select @error('defectArea') is-invalid @enderror" style="border-radius: 5px 0 0 5px" id="defect-area" wire:model='defectArea'>
+                                    <option value="" selected>Select defect area</option>
+                                    @foreach ($defectAreas as $defect)
+                                        <option value="{{ $defect->id }}">{{ $defect->defect_area }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="button" wire:click="selectDefectAreaPosition" class="btn btn-dark btn-sm" style="border-radius: 0 5px 5px 0">
+                                    <i class="fa-regular fa-image fa-2xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            @if ($errors->has('defectAreaPositionX') || $errors->has('defectAreaPositionY'))
+                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                    <small>
+                                        <strong>Error</strong> Harap tentukan posisi defect area dengan mengklik tombol 'gambar' di samping 'select defect' area.
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </small>
+                                </div>
+                            @endif
+                            <label class="form-label me-1 mb-2">Defect Area Position</label>
+                            <div class="row">
+                                <div class="col d-flex justify-content-center align-items-center">
+                                    <label class="form-label me-1 mb-0">X </label>
+                                    <div class="d-flex">
+                                        <input class="form-control @error('defectAreaPositionX') is-invalid @enderror" id="defect-area-position-x-livewire" wire:model='defectAreaPositionX' readonly>
+                                    </div>
+                                </div>
+                                <div class="col d-flex justify-content-center align-items-center">
+                                    <label class="form-label me-1 mb-1">Y </label>
+                                    <div class="d-flex">
+                                        <input class="form-control @error('defectAreaPositionY') is-invalid @enderror" id="defect-area-position-x-livewire" wire:model='defectAreaPositionY' readonly>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -189,23 +219,6 @@
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
-                            @error('defectTypeAreaAdd')
-                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
-                                    <small>
-                                        <strong>Error</strong> {{$message}}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </small>
-                                </div>
-                            @enderror
-                            <label class="form-label me-1 mb-0">Defect Type</label>
-                            <select class="select2 form-select @error('defectTypeAreaAdd') is-invalid @enderror" id="defect-type" wire:model='defectTypeAreaAdd'>
-                                <option value="" selected>Select defect type</option>
-                                @foreach ($defectTypes as $defect)
-                                    <option value="{{ $defect->id }}">{{ $defect->defect_type }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
                             @error('defectAreaAdd')
                                 <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
                                     <small>
@@ -216,6 +229,25 @@
                             @enderror
                             <label class="form-label me-1 mb-0">Defect Area</label>
                             <input type="text" class="form-control" name="defect-area-add" id="defect-area-add" wire:model='defectAreaAdd'>
+                        </div>
+                        <div class="mb-3">
+                            @error('defectAreaImageAdd')
+                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                    <small>
+                                        <strong>Error</strong> {{$message}}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </small>
+                                </div>
+                            @enderror
+                            <label class="form-label me-1 mb-0">Defect Area Image</label>
+                            <input type="file" class="form-control" name="defect-area-add" id="defect-area-add" style="border-radius: 5px 5px 0 0;" wire:model='defectAreaImageAdd'>
+                            <div class="d-flex justify-content-center border" style="border-radius: 0 0 5px 5px;">
+                                @if ($defectAreaImageAdd)
+                                    <img src="{{ $defectAreaImageAdd->temporaryUrl() }}" class="img-fluid">
+                                @else
+                                    <p class="text-center mb-1">*Preview Gambar*</p>
+                                @endif
+                            </div>
                         </div>
                     </form>
                 </div>
