@@ -9,9 +9,9 @@
                         <button type="button" class="btn btn-dark" wire:click="$emit('preSubmitUndo', 'defect')">
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
-                        <button type="button" class="btn btn-dark">
+                        {{-- <button type="button" class="btn btn-dark">
                             <i class="fa-regular fa-gear"></i>
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
                 <div class="card-body table-responsive">
@@ -67,9 +67,9 @@
                         <button type="button" class="btn btn-dark" wire:click="$emit('preSubmitUndo', 'rework')">
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
-                        <button type="button" class="btn btn-dark">
+                        {{-- <button type="button" class="btn btn-dark">
                             <i class="fa-regular fa-gear"></i>
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
                 <div class="card-body table-responsive">

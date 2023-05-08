@@ -5,9 +5,9 @@
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center bg-rft text-light">
                     <p class="mb-0 fs-5">QTY</p>
-                    <button class="btn btn-dark">
+                    {{-- <button class="btn btn-dark">
                         <i class="fa-regular fa-plus"></i>
-                    </button>
+                    </button> --}}
                 </div>
                 @error('outputInput')
                     <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
@@ -40,9 +40,9 @@
                         <button class="btn btn-dark" wire:click='clearInput'>
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
-                        <button class="btn btn-dark">
+                        {{-- <button class="btn btn-dark">
                             <i class="fa-regular fa-gear"></i>
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
                 @error('sizeInput')
