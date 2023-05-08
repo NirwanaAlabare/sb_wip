@@ -65,6 +65,8 @@
                 showDefectModal();
             } else if (type == 'undo') {
                 showUndoModal();
+            } else if (type == 'addProductType') {
+                showAddProductTypeModal();
             } else if (type == 'addDefectType') {
                 showAddDefectTypeModal();
             } else if (type == 'addDefectArea') {
@@ -273,8 +275,6 @@
             defectAreaImagePoint.style.left = (parseFloat(x)-25)+'px';
             defectAreaImagePoint.style.top = (parseFloat(y)-25)+'px';
             defectAreaImagePoint.style.display = 'block';
-
-            console.log(defectAreaImage);
 
             showDefectAreaImage(defectAreaImage)
         });

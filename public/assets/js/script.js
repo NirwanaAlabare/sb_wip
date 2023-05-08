@@ -223,6 +223,15 @@ function hideUndoModal() {
     $("#undo-modal").modal("hide");
 }
 
+// add product type modal
+function showAddProductTypeModal() {
+    $("#product-type-modal").modal("show");
+}
+
+function hideAddProductTypeModal() {
+    $("#product-type-modal").modal("hide");
+}
+
 // add defect type modal
 function showAddDefectTypeModal() {
     $("#defect-type-modal").modal("show");

@@ -17,6 +17,7 @@ class Defect extends Model
         'id',
         'master_plan_id',
         'so_det_id',
+        'product_type_id',
         'defect_type_id',
         'defect_area_id',
         'defect_area_x',
@@ -30,6 +31,11 @@ class Defect extends Model
     public function masterPlan()
     {
         return $this->belongsTo(MasterPlan::class, 'master_plan_id', 'id');
+    }
+
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class, 'product_type_id', 'id');
     }
 
     public function defectType()

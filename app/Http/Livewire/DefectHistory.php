@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Session\SessionManager;
 use App\Models\SignalBit\Defect;
+use App\Models\SignalBit\ProductType;
 use App\Models\SignalBit\DefectType;
 use App\Models\SignalBit\DefectArea;
 
@@ -27,7 +28,7 @@ class DefectHistory extends Component
     public $search;
 
     // defect position
-    public $defectImage;
+    public $productTypeImage;
     public $defectPositionX;
     public $defectPositionY;
 
@@ -49,18 +50,18 @@ class DefectHistory extends Component
         $this->defectPositionY = $y;
     }
 
-    public function showDefectAreaImage($defectImage, $x, $y)
+    public function showDefectAreaImage($productTypeImage, $x, $y)
     {
-        $this->defectImage = $defectImage;
+        $this->productTypeImage = $productTypeImage;
         $this->defectPositionX = $x;
         $this->defectPositionY = $y;
 
-        $this->emit('showDefectAreaImage', $this->defectImage, $this->defectPositionX, $this->defectPositionY);
+        $this->emit('showDefectAreaImage', $this->productTypeImage, $this->defectPositionX, $this->defectPositionY);
     }
 
     public function hideDefectAreaImage()
     {
-        $this->defectImage = null;
+        $this->productTypeImage = null;
         $this->defectPositionX = null;
         $this->defectPositionY = null;
     }
@@ -74,10 +75,12 @@ class DefectHistory extends Component
     {
         $this->orderInfo = $session->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = $session->get('orderWsDetailSizes', $this->orderWsDetailSizes);
+        $productTypes = ProductType::get();
         $defectTypes = DefectType::get();
         $defectAreas = DefectArea::get();
         $defects = Defect::selectRaw('output_defects.*, so_det.size as so_det_size')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
+            leftJoin('output_product_types', 'output_product_types.id', '=', 'output_defects.product_type_id')->
             leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
             leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
             where('output_defects.master_plan_id', $this->orderInfo->id);
@@ -106,6 +109,6 @@ class DefectHistory extends Component
             output_defects.defect_status LIKE '%".$this->search."%'
         )")->paginate(10);
 
-        return view('livewire.defect-history', ['defects' => $filteredDefects, 'defectTypes' => $defectTypes, 'defectAreas' => $defectAreas]);
+        return view('livewire.defect-history', ['defects' => $filteredDefects, 'productTypes' => $productTypes, 'defectTypes' => $defectTypes, 'defectAreas' => $defectAreas]);
     }
 }

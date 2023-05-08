@@ -63,10 +63,10 @@
         </div>
     </div>
 
-    <div class="mt-5 table-responsive">
+    <div class="mt-5">
         <h5 class="text-center">LATEST OUTPUT</h5>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col table-responsive">
                 <table class="table table-bordered w-100 mx-auto">
                     <thead>
                         <tr>
@@ -84,9 +84,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-8">
+            {{-- <div class="col-md-8">
                 <div id="daily-chart"></div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

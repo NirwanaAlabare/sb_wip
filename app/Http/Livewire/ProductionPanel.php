@@ -193,7 +193,7 @@ class ProductionPanel extends Component
                     where('so_det_id', $this->undoSize)->
                     where('defect_status', 'defect');
                 if ($this->undoDefectType) {
-                    $defectQuery->where('output_defect_areas.defect_type_id', $this->undoDefectType);
+                    $defectQuery->where('output_defects.defect_type_id', $this->undoDefectType);
                 };
                 if ($this->undoDefectArea) {
                     $defectQuery->where('output_defects.defect_area_id', $this->undoDefectArea);

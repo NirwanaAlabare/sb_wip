@@ -47,7 +47,7 @@
                                         <td>{{ $defect->defectType->defect_type }}</td>
                                         <td>{{ $defect->defectArea->defect_area }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$defect->defectArea->image}}', {{$defect->defect_area_x}}, {{$defect->defect_area_y}})'">
+                                            <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$defect->productType->image}}', {{$defect->defect_area_x}}, {{$defect->defect_area_y}})'">
                                                 <i class="fa-regular fa-image"></i>
                                             </button>
                                         </td>

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Session\SessionManager;
+use App\Models\SignalBit\ProductType;
 use App\Models\SignalBit\DefectType;
 use App\Models\SignalBit\DefectArea;
 use App\Models\SignalBit\Defect as DefectModel;
@@ -21,11 +22,14 @@ class Defect extends Component
     public $sizeInput;
     public $defectTypes;
     public $defectAreas;
+    public $productTypes;
     public $defectType;
     public $defectArea;
+    public $productType;
     public $defectTypeAdd;
     public $defectAreaAdd;
-    public $defectAreaImageAdd;
+    public $productTypeAdd;
+    public $productTypeImageAdd;
     public $defectAreaPositionX;
     public $defectAreaPositionY;
 
@@ -34,6 +38,7 @@ class Defect extends Component
         'sizeInput' => 'required',
         'defectType' => 'required',
         'defectArea' => 'required',
+        'productType' => 'required',
         'defectAreaPositionX' => 'required',
         'defectAreaPositionY' => 'required',
     ];
@@ -45,8 +50,9 @@ class Defect extends Component
         'sizeInput.required' => 'Harap tentukan ukuran output.',
         'defectType.required' => 'Harap tentukan jenis defect.',
         'defectArea.required' => 'Harap tentukan area defect.',
-        'defectAreaPositionX.required' => "Harap tentukan posisi defect area dengan mengklik tombol 'gambar' di samping 'select defect' area.",
-        'defectAreaPositionY.required' => "Harap tentukan posisi defect area dengan mengklik tombol 'gambar' di samping 'select defect' area.",
+        'productType.required' => 'Harap tentukan tipe produk.',
+        'defectAreaPositionX.required' => "Harap tentukan posisi defect area dengan mengklik tombol 'gambar' di samping 'select product type'.",
+        'defectAreaPositionY.required' => "Harap tentukan posisi defect area dengan mengklik tombol 'gambar' di samping 'select product type'.",
     ];
 
     protected $listeners = [
@@ -62,6 +68,7 @@ class Defect extends Component
         $this->sizeInput = null;
         $this->defectType = null;
         $this->defectArea = null;
+        $this->productType = null;
         $this->defectAreaPositionX = null;
         $this->defectAreaPositionY = null;
     }
@@ -91,35 +98,55 @@ class Defect extends Component
         }
     }
 
-    public function updatedDefectAreaImageAdd()
+    public function updatedproductTypeImageAdd()
     {
         $this->validate([
-            'defectAreaImageAdd' => 'image',
+            'productTypeImageAdd' => 'image',
         ]);
+    }
+
+    public function submitProductType()
+    {
+        if ($this->productTypeAdd && $this->productTypeImageAdd) {
+
+            $productTypeImageAddName = md5($this->productTypeImageAdd . microtime()).'.'.$this->productTypeImageAdd->extension();
+            $this->productTypeImageAdd->storeAs('public/images', $productTypeImageAddName);
+
+            $createProductType = ProductType::create([
+                'product_type' => $this->productTypeAdd,
+                'image' => $productTypeImageAddName,
+            ]);
+
+            if ($createProductType) {
+                $this->emit('alert', 'success', 'Product Time : '.$this->productTypeAdd.' berhasil ditambahkan.');
+
+                $this->productTypeAdd = null;
+                $this->productTypeImageAdd = null;
+            } else {
+                $this->emit('alert', 'error', 'Terjadi kesalahan.');
+            }
+        } else {
+            $this->emit('alert', 'error', 'Harap tentukan nama tipe produk beserta gambarnya');
+        }
     }
 
     public function submitDefectArea()
     {
-        if ($this->defectAreaAdd && $this->defectAreaImageAdd) {
-
-            $defectAreaImageAddName = md5($this->defectAreaImageAdd . microtime()).'.'.$this->defectAreaImageAdd->extension();
-            $this->defectAreaImageAdd->storeAs('public/images', $defectAreaImageAddName);
+        if ($this->defectAreaAdd) {
 
             $createDefectArea = DefectArea::create([
                 'defect_area' => $this->defectAreaAdd,
-                'image' => $defectAreaImageAddName,
             ]);
 
             if ($createDefectArea) {
                 $this->emit('alert', 'success', 'Defect area : '.$this->defectAreaAdd.' berhasil ditambahkan.');
 
                 $this->defectAreaAdd = null;
-                $this->defectAreaImageAdd = null;
             } else {
                 $this->emit('alert', 'error', 'Terjadi kesalahan.');
             }
         } else {
-            $this->emit('alert', 'error', 'Harap tentukan nama defect area beserta gambarnya');
+            $this->emit('alert', 'error', 'Harap tentukan nama defect area');
         }
     }
 
@@ -151,12 +178,12 @@ class Defect extends Component
 
     public function selectDefectAreaPosition()
     {
-        $defectArea = DefectArea::select('image')->find($this->defectArea);
+        $productType = ProductType::select('image')->find($this->productType);
 
-        if ($defectArea) {
-            $this->emit('showSelectDefectArea', $defectArea->image);
+        if ($productType) {
+            $this->emit('showSelectDefectArea', $productType->image);
         } else {
-            $this->emit('alert', 'error', 'Harap pilih defect area terlebih dahulu');
+            $this->emit('alert', 'error', 'Harap pilih tipe produk terlebih dahulu');
         }
     }
 
@@ -184,6 +211,7 @@ class Defect extends Component
             array_push($insertData, [
                 'master_plan_id' => $this->orderInfo->id,
                 'so_det_id' => $this->sizeInput,
+                'product_type_id' => $this->productType,
                 'defect_type_id' => $this->defectType,
                 'defect_area_id' => $this->defectArea,
                 'defect_area_x' => $this->defectAreaPositionX,
@@ -217,6 +245,9 @@ class Defect extends Component
             where('master_plan_id', $this->orderInfo->id)->
             where('defect_status', 'defect')->
             count();
+
+        // Defect types
+        $this->productTypes = ProductType::all();
 
         // Defect types
         $this->defectTypes = DefectType::all();
