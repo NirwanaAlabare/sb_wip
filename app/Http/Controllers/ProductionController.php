@@ -22,7 +22,7 @@ class ProductionController extends Controller
             act_costing.styleno as style_name,
             mastersupplier.supplier as buyer_name,
             so_det.styleno_prod as reff_number,
-            so_det.color as color,
+            master_plan.color as color,
             so_det.size as size,
             so.qty as qty_order,
             CONCAT(masterproduct.product_group, ' - ', masterproduct.product_item) as product_type

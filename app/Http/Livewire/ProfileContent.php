@@ -9,10 +9,15 @@ use App\Models\SignalBit\Defect;
 use App\Models\SignalBit\Reject;
 use App\Models\SignalBit\Rework;
 use App\Models\SignalBit\MasterPlan;
+use Livewire\WithPagination;
 use DB;
 
 class ProfileContent extends Component
 {
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $dateFrom;
     public $dateTo;
 
@@ -32,6 +37,7 @@ class ProfileContent extends Component
             count();
         $totalDefect = Defect::select('output_defects.*')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_defects.master_plan_id')->
+            where('output_defects.defect_status', 'defect')->
             where('master_plan.sewing_line', Auth::user()->username)->
             whereRaw("DATE(output_defects.created_at) >= '".$this->dateFrom."'")->
             whereRaw("DATE(output_defects.created_at) <= '".$this->dateTo."'")->
@@ -81,6 +87,44 @@ class ProfileContent extends Component
             LIMIT 10
         "));
 
+        $latestRfts = Rft::selectRaw('output_rfts.*, so_det.size as size')->
+            leftJoin('master_plan', 'master_plan.id', '=', 'output_rfts.master_plan_id')->
+            leftJoin('so_det', 'so_det.id', '=', 'output_rfts.so_det_id')->
+            where('master_plan.sewing_line', Auth::user()->username)->
+            whereRaw("DATE(output_rfts.created_at) >= '".$this->dateFrom."'")->
+            whereRaw("DATE(output_rfts.created_at) <= '".$this->dateTo."'")->
+            orderBy("output_rfts.updated_at", "desc")->
+            orderBy("output_rfts.created_at", "desc")->
+            paginate(5, ['*'], 'latestRftsPage');
+        $latestDefects = Defect::selectRaw('output_defects.*, so_det.size as size')->
+            leftJoin('master_plan', 'master_plan.id', '=', 'output_defects.master_plan_id')->
+            leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
+            where('master_plan.sewing_line', Auth::user()->username)->
+            whereRaw("DATE(output_defects.created_at) >= '".$this->dateFrom."'")->
+            whereRaw("DATE(output_defects.created_at) <= '".$this->dateTo."'")->
+            orderBy("output_defects.updated_at", "desc")->
+            orderBy("output_defects.created_at", "desc")->
+            paginate(5, ['*'], 'latestDefectsPage');
+        $latestRejects = Reject::selectRaw('output_rejects.*, so_det.size as size')->
+            leftJoin('master_plan', 'master_plan.id', '=', 'output_rejects.master_plan_id')->
+            leftJoin('so_det', 'so_det.id', '=', 'output_rejects.so_det_id')->
+            where('master_plan.sewing_line', Auth::user()->username)->
+            whereRaw("DATE(output_rejects.created_at) >= '".$this->dateFrom."'")->
+            whereRaw("DATE(output_rejects.created_at) <= '".$this->dateTo."'")->
+            orderBy("output_rejects.updated_at", "desc")->
+            orderBy("output_rejects.created_at", "desc")->
+            paginate(5, ['*'], 'latestRejectsPage');
+        $latestReworks = Rework::selectRaw('output_reworks.*, so_det.size as size')->
+            leftJoin('output_defects', 'output_defects.id', '=', 'output_reworks.defect_id')->
+            leftJoin('master_plan', 'master_plan.id', '=', 'output_defects.master_plan_id')->
+            leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
+            where('master_plan.sewing_line', Auth::user()->username)->
+            whereRaw("DATE(output_reworks.created_at) >= '".$this->dateFrom."'")->
+            whereRaw("DATE(output_reworks.created_at) <= '".$this->dateTo."'")->
+            orderBy("output_reworks.updated_at", "desc")->
+            orderBy("output_reworks.created_at", "desc")->
+            paginate(5, ['*'], 'latestReworksPage');
+
         \Log::info($latestOutput);
 
         return view('livewire.profile-content', [
@@ -88,7 +132,11 @@ class ProfileContent extends Component
             'totalDefect' => $totalDefect,
             'totalReject' => $totalReject,
             'totalRework' => $totalRework,
-            'latestOutput' => $latestOutput
+            'latestOutput' => $latestOutput,
+            'latestRfts' => $latestRfts,
+            'latestDefects' => $latestDefects,
+            'latestRejects' => $latestRejects,
+            'latestReworks' => $latestReworks
         ]);
     }
 }

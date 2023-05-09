@@ -111,7 +111,9 @@
                                 <select class="form-select @error('productType') is-invalid @enderror" id="product-type" wire:model='productType'>
                                     <option value="" selected>Select product type</option>
                                     @foreach ($productTypes as $product)
-                                        <option value="{{ $product->id }}">{{ $product->product_type }}</option>
+                                        <option value="{{ $product->id }}">
+                                            {{ $product->product_type }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
