@@ -44,6 +44,7 @@ class ProfileContent extends Component
 
         $totalDefectSql = Defect::select('output_defects.*')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_defects.master_plan_id')->
+            where('output_defects.defect_status', 'defect')->
             where('master_plan.sewing_line', Auth::user()->username)->
             where('output_defects.defect_status', 'defect');
             if ($this->masterPlan) {
