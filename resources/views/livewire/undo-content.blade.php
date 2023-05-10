@@ -36,13 +36,13 @@
                             <th>Tanggal & Waktu</th>
                             <th>Ukuran</th>
                             <th>Tipe</th>
-                            <th>Detail</th>
+                            {{-- <th>Detail</th> --}}
                         </tr>
                     </thead>
                     <tbody>
                         @if (count($latestUndo) < 1)
                             <tr>
-                                <td colspan="4" class="text-center">Data tidak ditemukan</td>
+                                <td colspan="3" class="text-center">Data tidak ditemukan</td>
                             </tr>
                         @else
                             @foreach ($latestUndo as $undo)
@@ -50,7 +50,7 @@
                                     <td>{{ $undo->updated_at }}</td>
                                     <td>{{ $undo->size }}</td>
                                     <td class="text-{{$undo->keterangan}} fw-bold">{{ strtoupper($undo->keterangan) }}</td>
-                                    <td>
+                                    {{-- <td>
                                         @if ($undo->keterangan == 'defect' || $undo->keterangan == 'rework')
                                             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#output-detail">
                                                 <i class="fa-regular fa-magnifying-glass"></i>
@@ -58,7 +58,7 @@
                                         @else
                                             <p>-</p>
                                         @endif
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         @endif

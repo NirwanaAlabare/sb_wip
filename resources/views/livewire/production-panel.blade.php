@@ -1,4 +1,7 @@
 <div>
+    <div class="loading-container-fullscreen" wire:loading wire:target="submitUndo">
+        <div class="loading"></div>
+    </div>
     {{-- Production Info --}}
     <div class="production-info row row-gap-1 align-items-center mb-3">
         <div class="col-md">

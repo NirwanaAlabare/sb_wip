@@ -118,6 +118,7 @@ class Rft extends Component
         // Get total output
         $this->output = RftModel::
             where('master_plan_id', $this->orderInfo->id)->
+            where('status', 'normal')->
             count();
 
         return view('livewire.rft');

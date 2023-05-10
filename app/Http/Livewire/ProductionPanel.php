@@ -211,10 +211,11 @@ class ProductionPanel extends Component
                 if ($this->undoDefectArea) {
                     $defectQuery->where('output_defects.defect_area_id', $this->undoDefectArea);
                 };
-                $getDefects = $defectQuery->orderBy('output_defects.updated_at', 'DESC')->
+                $defectQuery->orderBy('output_defects.updated_at', 'DESC')->
                     orderBy('output_defects.created_at', 'DESC')->
-                    take($this->undoQty)->
-                    get();
+                    take($this->undoQty);
+
+                $getDefects = $defectQuery->get();
 
                 foreach ($getDefects as $getDefect) {
                     $addUndoHistory = Undo::create([
@@ -223,15 +224,15 @@ class ProductionPanel extends Component
                         'output_defect_id' => $getDefect->defect_id,
                         'keterangan' => 'defect',
                     ]);
-                }
 
-                $deleteDefect = Defect::destroy($getDefects->toArray());
+                    $deleteDefect = Defect::find($getDefect->id)->delete();
+                }
 
                 $defectTypeText = $defectType ? ' dengan defect type = '.$defectType->defect_type : '';
                 $defectAreaText = $defectArea ? 'dengan defect area = '.$defectArea->defect_area.' ' : '';
 
-                if ($deleteDefect) {
-                    $this->emit('alert', 'success', 'Output DEFECT dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'berhasil di UNDO sebanyak '.$deleteDefect.' kali.');
+                if ($getDefects->count() > 0) {
+                    $this->emit('alert', 'success', 'Output DEFECT dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'berhasil di UNDO sebanyak '.$getDefects->count().' kali.');
                 } else {
                     $this->emit('alert', 'error', 'Output DEFECT dengan ukuran '.$size[0]->size.''.$defectTypeText.' '.$defectAreaText.'gagal di UNDO.');
                 }
@@ -343,7 +344,7 @@ class ProductionPanel extends Component
             where('master_plan_id', $this->orderInfo->id)->
             where('defect_status', 'reworked')->
             count();
-        $sqlFiltered = Rft::select('id')->where('master_plan_id', $this->orderInfo->id);
+        $sqlFiltered = Rft::select('id')->where('master_plan_id', $this->orderInfo->id)->where('status', 'NORMAL');
         $this->outputFiltered = $this->selectedSize == 'all' ? $sqlFiltered->count() : $sqlFiltered->where('so_det_id', $this->selectedSize)->count();
 
         // Defect

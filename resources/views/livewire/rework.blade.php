@@ -1,4 +1,7 @@
 <div>
+    <div class="loading-container-fullscreen" wire:loading>
+        <div class="loading"></div>
+    </div>
     {{-- Production Input --}}
     <div class="production-input row row-gap-3">
         <div class="col-md-6">
