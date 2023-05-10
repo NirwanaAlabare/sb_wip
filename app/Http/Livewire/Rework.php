@@ -71,31 +71,37 @@ class Rework extends Component
     }
 
     public function submitRework($defectId) {
-        // add to rework
-        $createRework = ReworkModel::create([
-            "defect_id" => $defectId,
-            "status" => "NORMAL"
-        ]);
+        $thisDefectRework = ReworkModel::where('defect_id', $defectId)->count();
 
-        // remove from defect
-        $defect = Defect::where('id', $defectId);
-        $getDefect = $defect->first();
-        $updateDefect = $defect->update([
-            "defect_status" => "reworked"
-        ]);
+        if ($thisDefectRework < 1) {
+            // add to rework
+            $createRework = ReworkModel::create([
+                "defect_id" => $defectId,
+                "status" => "NORMAL"
+            ]);
 
-        // add to rft
-        $createRft = Rft::create([
-            'master_plan_id' => $getDefect->master_plan_id,
-            'so_det_id' => $getDefect->so_det_id,
-            "status" => "REWORK",
-            "rework_id" => $createRework->id
-        ]);
+            // remove from defect
+            $defect = Defect::where('id', $defectId);
+            $getDefect = $defect->first();
+            $updateDefect = $defect->update([
+                "defect_status" => "reworked"
+            ]);
 
-        if ($createRework && $updateDefect && $createRft) {
-            $this->emit('alert', 'success', "DEFECT dengan ID : ".$defectId." berhasil di REWORK.");
+            // add to rft
+            $createRft = Rft::create([
+                'master_plan_id' => $getDefect->master_plan_id,
+                'so_det_id' => $getDefect->so_det_id,
+                "status" => "REWORK",
+                "rework_id" => $createRework->id
+            ]);
+
+            if ($createRework && $updateDefect && $createRft) {
+                $this->emit('alert', 'success', "DEFECT dengan ID : ".$defectId." berhasil di REWORK.");
+            } else {
+                $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT dengan ID : ".$defectId." tidak berhasil di REWORK.");
+            }
         } else {
-            $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT dengan ID : ".$defectId." tidak berhasil di REWORK.");
+            $this->emit('alert', 'warning', "Pencegahan data redundant. DEFECT dengan ID : ".$defectId." sudah ada di REWORK.");
         }
     }
 

@@ -58,7 +58,18 @@ html, body {
     height: 120px;
     -webkit-animation: spin 1s linear infinite;
     animation: spin 1s linear infinite;
-    margin: auto;
+    margin: 150px auto;
+}
+
+.loading-container-fullscreen {
+    background-color: #212529d2;
+    display: flex;
+    position: fixed;
+    z-index: 999999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
 }
 
 @-webkit-keyframes spin {

@@ -22,21 +22,21 @@ class MasterPlan extends Model
 
     public function rfts()
     {
-        return $this->hasMany(Rft::class, 'id', 'master_plan_id');
+        return $this->hasMany(Rft::class, 'master_plan_id', 'id');
     }
 
     public function defects()
     {
-        return $this->hasMany(Defect::class, 'id', 'master_plan_id');
+        return $this->hasMany(Defect::class, 'master_plan_id', 'id');
     }
 
     public function rejects()
     {
-        return $this->hasMany(Reject::class, 'id', 'master_plan_id');
+        return $this->hasMany(Reject::class, 'master_plan_id', 'id');
     }
 
     public function reworks()
     {
-        return $this->hasMany(Rework::class, 'id', 'master_plan_id');
+        return $this->hasMany(Rework::class, 'master_plan_id', 'id');
     }
 }

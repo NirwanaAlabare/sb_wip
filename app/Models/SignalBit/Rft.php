@@ -32,4 +32,9 @@ class Rft extends Model
     {
         return $this->hasOne(Rework::class, 'id', 'rework_id');
     }
+
+    public function undo()
+    {
+        return $this->hasOne(Undo::class, 'output_rft_id', 'id');
+    }
 }

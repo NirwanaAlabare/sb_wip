@@ -15,6 +15,8 @@
     @include('layouts.navbar')
 
     @include('profile')
+    @include('history')
+    @include('undo')
 
     <main role="main" class="main flex-shrink-0 container-fluid mt-3">
         @yield('content')

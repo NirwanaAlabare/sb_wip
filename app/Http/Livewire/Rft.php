@@ -5,7 +5,10 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Session\SessionManager;
 use App\Models\SignalBit\Rft as RftModel;
+use App\Models\SignalBit\Rework;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use DB;
 
 class Rft extends Component
 {
@@ -15,6 +18,8 @@ class Rft extends Component
     public $outputInput;
     public $sizeInput;
     public $sizeInputText;
+    public $submitting;
+    public $redundantData;
 
     protected $rules = [
         'outputInput' => 'required|numeric|min:1',
@@ -36,6 +41,7 @@ class Rft extends Component
         $this->outputInput = 1;
         $this->sizeInput = null;
         $this->sizeInputText = null;
+        $this->submitting = false;
     }
 
     public function clearInput()
@@ -88,6 +94,20 @@ class Rft extends Component
         } else {
             $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
         }
+    }
+
+    public function deleteRedundant() {
+        $redundantData = DB::select(DB::raw(
+            "select defect_id, jml from (select defect_id, COUNT(defect_id) jml from (SELECT a.* from output_reworks a inner join output_defects c on c.id = a.defect_id inner join master_plan b on b.id = c.master_plan_id where b.sewing_line = '".Auth::user()->username."' and DATE_FORMAT(a.created_at, '%Y-%m-%d') = CURRENT_DATE() order by a.defect_id asc) a GROUP BY a.defect_id) a where a.jml > 1"
+        ));
+
+        foreach ($redundantData as $redundant) {
+            $reworkData = Rework::where('defect_id', $redundant->defect_id)->limit(1)->first();
+            Rework::where('id', $reworkData->id)->limit(1)->delete();
+            RftModel::where('rework_id', $reworkData->id)->limit(1)->delete();
+        }
+
+        $this->emit('alert', 'success', 'Redundant deleted');
     }
 
     public function render(SessionManager $session)

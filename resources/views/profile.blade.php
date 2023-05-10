@@ -1,4 +1,4 @@
-<div class="modal fade" id="profile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+<div class="modal fade" wire:ignore.self id="profile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -37,11 +37,11 @@
                     </div>
                 </form>
                 <div class="mt-5">
-                    <livewire:profile-content/>
+                    @livewire('profile-content', ['masterPlan' => Session::get('orderInfo')])
                 </div>
             </div>
             <div class="modal-footer">
-                ...
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>

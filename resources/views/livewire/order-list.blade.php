@@ -46,12 +46,30 @@
                                     <td class="text-nowrap">:</td>
                                     <td class="fw-bold">{{ ucwords($order->style_name) }}</td>
                                 </tr>
+                                {{-- Color Name Temporary --}}
+                                <tr>
+                                    <td class="text-nowrap">Color</td>
+                                    <td class="text-nowrap">:</td>
+                                    <td class="fw-bold">{{ ucwords($order->color_name) }}</td>
+                                </tr>
                                 <tr>
                                     <td class="text-nowrap">Plan Date</td>
                                     <td class="text-nowrap">:</td>
                                     <td class="fw-bold">{{ $order->plan_date }}</td>
                                 </tr>
                             </table>
+                            <div class="mx-2">
+                                <div class="d-flex justify-content-between w-100">
+                                    <p class="mb-1">Output : <b>{{ $order->rfts->count() }}</b></p>
+                                    <p class="mb-1">Target : <b>{{ $order->target }}</b></p>
+                                </div>
+                                <div class="progress" role="progressbar" aria-valuenow="{{ $order->rfts->count() }}" aria-valuemin="0" aria-valuemax="{{ $order->target }}" style="height: 10px">
+                                    @php
+                                        $outputProgress = $order->rfts->count() > 0 ? $order->rfts->count()/$order->target * 100 : 0;
+                                    @endphp
+                                    <div class="progress-bar bg-sb" style="width:{{  $outputProgress }}%"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </a href="/production-panel/{{ $order->id }}">

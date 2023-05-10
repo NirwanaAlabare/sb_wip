@@ -1,4 +1,7 @@
 <div>
+    <div class="loading-container-fullscreen" wire:loading wire:target="submitInput">
+        <div class="loading"></div>
+    </div>
     {{-- Production Input --}}
     <div class="production-input row row-gap-3">
         <div class="col-md-4">
@@ -76,8 +79,13 @@
     <footer class="footer fixed-bottom py-3">
         <div class="container-fluid">
             <div class="d-flex justify-content-end">
-                <button class="btn btn-dark btn-lg ms-auto fs-3" wire:click='submitInput'>SELESAI</button>
+                <button class="btn btn-dark btn-lg ms-auto fs-3" wire:click='submitInput' {{ $submitting ? 'disabled' : ''}}>SELESAI</button>
             </div>
         </div>
     </footer>
+
+    {{-- <button wire:click='deleteRedundant' class="btn btn-dark">CLEAR</button>
+    {{
+        $this->redundantData;
+    }} --}}
 </div>
