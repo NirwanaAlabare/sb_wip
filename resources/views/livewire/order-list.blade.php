@@ -60,7 +60,7 @@
                             </table>
                             <div class="mx-2">
                                 <div class="d-flex justify-content-between w-100">
-                                    <p class="mb-1">Output : <b>{{ $order->rfts->count() }}</b></p>
+                                    <p class="mb-1">Output : <b>{{ $order->rfts->where('status', 'NORMAL')->count() + $order->defects->where('defect_status', 'reworked')->count() }}</b></p>
                                     <p class="mb-1">Target : <b>{{ $order->target }}</b></p>
                                 </div>
                                 <div class="progress" role="progressbar" aria-valuenow="{{ $order->rfts->count() }}" aria-valuemin="0" aria-valuemax="{{ $order->target }}" style="height: 10px">

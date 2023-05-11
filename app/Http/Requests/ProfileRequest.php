@@ -25,8 +25,8 @@ class ProfileRequest extends FormRequest
     {
         return [
             'full_name' => 'required',
-            'password' => 'nullable|confirmed',
-            'password_confirmation' => 'nullable'
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required'
         ];
     }
 }
