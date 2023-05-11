@@ -36,6 +36,7 @@
                             <th>Tanggal & Waktu</th>
                             <th>Ukuran</th>
                             <th>Tipe</th>
+                            <th>Qty</th>
                             {{-- <th>Detail</th> --}}
                         </tr>
                     </thead>
@@ -50,6 +51,7 @@
                                     <td>{{ $undo->updated_at }}</td>
                                     <td>{{ $undo->size }}</td>
                                     <td class="text-{{$undo->keterangan}} fw-bold">{{ strtoupper($undo->keterangan) }}</td>
+                                    <td>{{ $undo->total }}</td>
                                     {{-- <td>
                                         @if ($undo->keterangan == 'defect' || $undo->keterangan == 'rework')
                                             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#output-detail">

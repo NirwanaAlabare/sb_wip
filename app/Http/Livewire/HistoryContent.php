@@ -52,20 +52,33 @@ class HistoryContent extends Component
         //     LIMIT 10
         // "));
 
-        $latestOutputRfts = Rft::selectRaw('output_rfts.*, so_det.size as size')->
+        $latestOutputRfts = Rft::selectRaw('output_rfts.updated_at, so_det.size as size, count(*) as total')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_rfts.master_plan_id')->
             leftJoin('so_det', 'so_det.id', '=', 'output_rfts.so_det_id')->
+            where('output_rfts.status', 'normal')->
             where('master_plan.sewing_line', Auth::user()->username);
             if ($this->masterPlan) {
                 $latestOutputRfts->where('master_plan.id', $this->masterPlan);
             }
         $latestRfts = $latestOutputRfts->whereRaw("DATE(output_rfts.created_at) >= '".$this->dateFrom."'")->
             whereRaw("DATE(output_rfts.created_at) <= '".$this->dateTo."'")->
+            groupBy("output_rfts.updated_at", "so_det.size")->
             orderBy("output_rfts.updated_at", "desc")->
             orderBy("output_rfts.created_at", "desc")->
             paginate(5, ['*'], 'latestRftsPage');
 
-        $latestOutputDefects = Defect::selectRaw('output_defects.*, so_det.size as size')->
+        $latestOutputDefects = Defect::selectRaw('
+                output_defects.updated_at,
+                output_defect_types.defect_type,
+                output_defect_areas.defect_area,
+                output_product_types.image,
+                output_defects.defect_area_x,
+                output_defects.defect_area_y,
+                so_det.size as size,
+                count(*) as total')->
+            leftJoin('output_product_types', 'output_product_types.id', '=', 'output_defects.product_type_id')->
+            leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
+            leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_defects.master_plan_id')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             where('output_defects.defect_status', 'defect')->
@@ -75,11 +88,20 @@ class HistoryContent extends Component
             }
         $latestDefects = $latestOutputDefects->whereRaw("DATE(output_defects.created_at) >= '".$this->dateFrom."'")->
             whereRaw("DATE(output_defects.created_at) <= '".$this->dateTo."'")->
+            groupBy(
+                "output_defects.updated_at",
+                "output_defect_types.defect_type",
+                "output_defect_areas.defect_area",
+                "output_product_types.image",
+                "output_defects.defect_area_x",
+                "output_defects.defect_area_y",
+                "so_det.size"
+            )->
             orderBy("output_defects.updated_at", "desc")->
             orderBy("output_defects.created_at", "desc")->
             paginate(5, ['*'], 'latestDefectsPage');
 
-        $latestOutputRejects = Reject::selectRaw('output_rejects.*, so_det.size as size')->
+        $latestOutputRejects = Reject::selectRaw('output_rejects.updated_at, so_det.size as size, count(*) as total')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_rejects.master_plan_id')->
             leftJoin('so_det', 'so_det.id', '=', 'output_rejects.so_det_id')->
             where('master_plan.sewing_line', Auth::user()->username);
@@ -88,12 +110,25 @@ class HistoryContent extends Component
             }
         $latestRejects = $latestOutputRejects->whereRaw("DATE(output_rejects.created_at) >= '".$this->dateFrom."'")->
             whereRaw("DATE(output_rejects.created_at) <= '".$this->dateTo."'")->
+            groupBy("output_rejects.updated_at", "so_det.size")->
             orderBy("output_rejects.updated_at", "desc")->
             orderBy("output_rejects.created_at", "desc")->
             paginate(5, ['*'], 'latestRejectsPage');
 
-        $latestOutputReworks = Rework::selectRaw('output_reworks.*, so_det.size as size')->
+        $latestOutputReworks = Rework::selectRaw('
+                output_reworks.updated_at,
+                output_defect_types.defect_type,
+                output_defect_areas.defect_area,
+                output_product_types.image,
+                output_defects.defect_area_x,
+                output_defects.defect_area_y,
+                so_det.size as size,
+                count(*) as total
+            ')->
             leftJoin('output_defects', 'output_defects.id', '=', 'output_reworks.defect_id')->
+            leftJoin('output_product_types', 'output_product_types.id', '=', 'output_defects.product_type_id')->
+            leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
+            leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_defects.master_plan_id')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             where('master_plan.sewing_line', Auth::user()->username);
@@ -102,6 +137,15 @@ class HistoryContent extends Component
             }
         $latestReworks = $latestOutputReworks->whereRaw("DATE(output_reworks.created_at) >= '".$this->dateFrom."'")->
             whereRaw("DATE(output_reworks.created_at) <= '".$this->dateTo."'")->
+            groupBy(
+                "output_reworks.updated_at",
+                "output_defect_types.defect_type",
+                "output_defect_areas.defect_area",
+                "output_product_types.image",
+                "output_defects.defect_area_x",
+                "output_defects.defect_area_y",
+                "so_det.size"
+            )->
             orderBy("output_reworks.updated_at", "desc")->
             orderBy("output_reworks.created_at", "desc")->
             paginate(5, ['*'], 'latestReworksPage');

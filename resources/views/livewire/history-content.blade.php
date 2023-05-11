@@ -36,6 +36,7 @@
                         <tr>
                             <th>Tanggal & Waktu</th>
                             <th>Ukuran</th>
+                            <th>Qty</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,6 +49,7 @@
                                 <tr>
                                     <td>{{ $latestRft->updated_at }}</td>
                                     <td>{{ $latestRft->size }}</td>
+                                    <td>{{ $latestRft->total }}</td>
                                 </tr>
                             @endforeach
                         @endif
@@ -62,6 +64,7 @@
                         <tr>
                             <th>Tanggal & Waktu</th>
                             <th>Ukuran</th>
+                            <th>Qty</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,6 +77,7 @@
                                 <tr>
                                     <td>{{ $latestReject->updated_at }}</td>
                                     <td>{{ $latestReject->size }}</td>
+                                    <td>{{ $latestReject->total }}</td>
                                 </tr>
                             @endforeach
                         @endif
@@ -91,6 +95,7 @@
                             <th>Defect Type</th>
                             <th>Defect Area</th>
                             <th>Defect Image</th>
+                            <th>Qty</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,13 +108,14 @@
                                 <tr>
                                     <td>{{ $latestDefect->updated_at }}</td>
                                     <td>{{ $latestDefect->size }}</td>
-                                    <td>{{ $latestDefect->defectType->defect_type }}</td>
-                                    <td>{{ $latestDefect->defectArea->defect_area }}</td>
+                                    <td>{{ $latestDefect->defect_type }}</td>
+                                    <td>{{ $latestDefect->defect_area }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestDefect->productType->image}}', {{$latestDefect->defect_area_x}}, {{$latestDefect->defect_area_y}})'">
+                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestDefect->image}}', {{$latestDefect->defect_area_x}}, {{$latestDefect->defect_area_y}})'">
                                             <i class="fa-regular fa-image"></i>
                                         </button>
                                     </td>
+                                    <td>{{ $latestDefect->total }}</td>
                                 </tr>
                             @endforeach
                         @endif
@@ -127,6 +133,7 @@
                             <th>Defect Type</th>
                             <th>Defect Area</th>
                             <th>Defect Image</th>
+                            <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -139,13 +146,14 @@
                                 <tr>
                                     <td>{{ $latestRework->updated_at }}</td>
                                     <td>{{ $latestRework->size }}</td>
-                                    <td>{{ $latestRework->defect->defectType->defect_type }}</td>
-                                    <td>{{ $latestRework->defect->defectArea->defect_area }}</td>
+                                    <td>{{ $latestRework->defect_type }}</td>
+                                    <td>{{ $latestRework->defect_area }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestRework->defect->productType->image}}', {{$latestRework->defect->defect_area_x}}, {{$latestRework->defect->defect_area_y}})'">
+                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestRework->image}}', {{$latestRework->defect_area_x}}, {{$latestRework->defect_area_y}})'">
                                             <i class="fa-regular fa-image"></i>
                                         </button>
                                     </td>
+                                    <td>{{ $latestRework->total }}</td>
                                 </tr>
                             @endforeach
                         @endif

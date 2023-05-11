@@ -49,7 +49,7 @@ class UndoContent extends Component
         //     LIMIT 10
         // "));
 
-        $latestUndoSql = Undo::selectRaw('output_undo.*, so_det.size as size')->
+        $latestUndoSql = Undo::selectRaw('output_undo.updated_at, output_undo.keterangan, so_det.size as size, count(*) as total')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_undo.master_plan_id')->
             leftJoin('so_det', 'so_det.id', '=', 'output_undo.so_det_id')->
             where('master_plan.sewing_line', Auth::user()->username);
@@ -58,6 +58,7 @@ class UndoContent extends Component
             }
         $latestUndo = $latestUndoSql->whereRaw("DATE(output_undo.created_at) >= '".$this->dateFrom."'")->
             whereRaw("DATE(output_undo.created_at) <= '".$this->dateTo."'")->
+            groupBy("output_undo.updated_at", "output_undo.keterangan", "so_det.size")->
             orderBy("output_undo.updated_at", "desc")->
             orderBy("output_undo.created_at", "desc")->
             paginate(10, ['*'], 'latestUndoPage');
