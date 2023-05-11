@@ -250,6 +250,15 @@ function hideAddDefectAreaModal() {
     $("#defect-area-modal").modal("hide");
 }
 
+// mass rework modal
+function showMassReworkModal() {
+    $("#mass-rework-modal").modal("show");
+}
+
+function hideMassReworkModal() {
+    $("#mass-rework-modal").modal("hide");
+}
+
 // rework
 function reworkConfirmation() {
     Swal.fire({

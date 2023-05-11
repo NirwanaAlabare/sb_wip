@@ -26,6 +26,20 @@ class Rework extends Component
     public $defectPositionX;
     public $defectPositionY;
 
+    // defect list
+    public $allDefectImage;
+    public $allDefectPosition;
+    public $allDefectList;
+
+    // mass rework
+    public $massQty;
+    public $massSize;
+    public $massDefectType;
+    public $massDefectTypeName;
+    public $massDefectArea;
+    public $massDefectAreaName;
+    public $massSelectedDefect;
+
     protected $listeners = [
         'submitRework' => 'submitRework',
         'cancelRework' => 'cancelRework',
@@ -36,6 +50,7 @@ class Rework extends Component
     {
         $this->orderWsDetailSizes = $orderWsDetailSizes;
         $session->put('orderWsDetailSizes', $orderWsDetailSizes);
+        $this->massSize = '';
     }
 
     public function setDefectAreaPosition($x, $y)
@@ -68,6 +83,58 @@ class Rework extends Component
     public function updatingSearchRework()
     {
         $this->resetPage('reworksPage');
+    }
+
+    public function preSubmitMassRework($defectType, $defectArea, $defectTypeName, $defectAreaName) {
+        $this->massQty = 1;
+        $this->massDefectType = $defectType;
+        $this->massDefectTypeName = $defectTypeName;
+        $this->massDefectArea = $defectArea;
+        $this->massDefectAreaName = $defectAreaName;
+
+        $this->emit('showModal', 'massRework');
+    }
+
+    public function submitMassRework() {
+        $selectedDefect = Defect::selectRaw('output_defects.*, so_det.size as size')->
+            leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
+            where('output_defects.defect_status', 'defect')->
+            where('output_defects.master_plan_id', $this->orderInfo->id)->
+            where('output_defects.defect_type_id', $this->massDefectType)->
+            where('output_defects.defect_area_id', $this->massDefectArea)->
+            where('output_defects.so_det_id', $this->massSize)->
+            take($this->massQty)->get();
+
+        if ($selectedDefect->count() > 0) {
+            foreach ($selectedDefect as $defect) {
+                // create rework
+                $createRework = ReworkModel::create([
+                    "defect_id" => $defect->id,
+                    "status" => "NORMAL"
+                ]);
+
+                // update defect
+                $defectSql = Defect::where('id', $defect->id)->update([
+                    "defect_status" => "reworked"
+                ]);
+
+                // create rft
+                $createRft = Rft::create([
+                    'master_plan_id' => $defect->master_plan_id,
+                    'so_det_id' => $defect->so_det_id,
+                    "status" => "REWORK",
+                    "rework_id" => $createRework->id
+                ]);
+            }
+
+            if ($selectedDefect->count() > 0) {
+                $this->emit('alert', 'success', "DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." berhasil di REWORK.");
+            } else {
+                $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." tidak berhasil di REWORK.");
+            }
+        } else {
+            $this->emit('alert', 'warning', "Data tidak ditemukan.");
+        }
     }
 
     public function submitRework($defectId) {
@@ -130,6 +197,23 @@ class Rework extends Component
     {
         $this->orderInfo = $session->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = $session->get('orderWsDetailSizes', $this->orderWsDetailSizes);
+
+        $this->allDefectImage = Defect::where('output_defects.defect_status', 'defect')->
+            where('output_defects.master_plan_id', $this->orderInfo->id)->
+            first();
+
+        $this->allDefectPosition = Defect::where('output_defects.defect_status', 'defect')->
+            where('output_defects.master_plan_id', $this->orderInfo->id)->
+            get();
+
+        $this->allDefectList = Defect::selectRaw('output_defects.defect_type_id, output_defects.defect_area_id, output_defect_types.defect_type, output_defect_areas.defect_area, count(*) as total')->
+            leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
+            leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
+            where('output_defects.defect_status', 'defect')->
+            where('output_defects.master_plan_id', $this->orderInfo->id)->
+            groupBy('output_defects.defect_type_id', 'output_defects.defect_area_id', 'output_defect_types.defect_type', 'output_defect_areas.defect_area')->
+            get();
+
         $defects = Defect::selectRaw('output_defects.*, so_det.size as so_det_size')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
@@ -158,6 +242,14 @@ class Rework extends Component
                 output_defect_types.defect_type LIKE '%".$this->searchRework."%' OR
                 output_defects.defect_status LIKE '%".$this->searchRework."%'
             )")->paginate(10, ['*'], 'reworksPage');
+
+        $this->massSelectedDefect = Defect::selectRaw('output_defects.so_det_id, so_det.size as size')->
+            leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
+            where('output_defects.defect_status', 'defect')->
+            where('output_defects.master_plan_id', $this->orderInfo->id)->
+            where('output_defects.defect_type_id', $this->massDefectType)->
+            where('output_defects.defect_area_id', $this->massDefectArea)->
+            groupBy('output_defects.so_det_id', 'so_det.size')->get();
 
         return view('livewire.rework' , ['defects' => $defects, 'reworks' => $reworks]);
     }

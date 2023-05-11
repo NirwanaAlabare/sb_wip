@@ -71,6 +71,8 @@
                 showAddDefectTypeModal();
             } else if (type == 'addDefectArea') {
                 showAddDefectAreaModal();
+            } else if (type == 'massRework') {
+                showMassReworkModal();
             }
         });
 
@@ -83,6 +85,8 @@
                 hideAddDefectTypeModal();
             } else if (type == 'addDefectArea') {
                 hideAddDefectAreaModal();
+            } else if (type == 'massRework') {
+                hideMassReworkModal();
             }
         });
 
