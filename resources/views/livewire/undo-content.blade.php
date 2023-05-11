@@ -43,7 +43,7 @@
                     <tbody>
                         @if (count($latestUndo) < 1)
                             <tr>
-                                <td colspan="3" class="text-center">Data tidak ditemukan</td>
+                                <td colspan="4" class="text-center">Data tidak ditemukan</td>
                             </tr>
                         @else
                             @foreach ($latestUndo as $undo)

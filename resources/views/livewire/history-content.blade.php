@@ -101,7 +101,7 @@
                     <tbody>
                         @if (count($latestDefects) < 1)
                             <tr>
-                                <td colspan="5" class="text-center">Data tidak ditemukan</td>
+                                <td colspan="6" class="text-center">Data tidak ditemukan</td>
                             </tr>
                         @else
                             @foreach ($latestDefects as $latestDefect)
@@ -139,7 +139,7 @@
                     <tbody>
                         @if (count($latestReworks) < 1)
                             <tr>
-                                <td colspan="3" class="text-center">Data tidak ditemukan</td>
+                                <td colspan="6" class="text-center">Data tidak ditemukan</td>
                             </tr>
                         @else
                             @foreach ($latestReworks as $latestRework)
