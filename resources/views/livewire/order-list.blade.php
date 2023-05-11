@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="progress" role="progressbar" aria-valuenow="{{ $order->rfts->count() }}" aria-valuemin="0" aria-valuemax="{{ $order->target }}" style="height: 10px">
                                     @php
-                                        $outputProgress = $order->rfts->count() > 0 ? $order->rfts->count()/$order->target * 100 : 0;
+                                        $outputProgress = $order->rfts->where('status', 'NORMAL')->count() + $order->defects->where('defect_status', 'reworked')->count() > 0 ? floatval($order->rfts->where('status', 'NORMAL')->count() + $order->defects->where('defect_status', 'reworked')->count())/floatval($order->target) * 100 : 0;
                                     @endphp
                                     <div class="progress-bar bg-sb" style="width:{{  $outputProgress }}%"></div>
                                 </div>

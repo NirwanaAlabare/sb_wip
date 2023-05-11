@@ -86,6 +86,7 @@ class Rework extends Component
     }
 
     public function preSubmitMassRework($defectType, $defectArea, $defectTypeName, $defectAreaName) {
+        $this->massSize = '';
         $this->massQty = 1;
         $this->massDefectType = $defectType;
         $this->massDefectTypeName = $defectTypeName;
