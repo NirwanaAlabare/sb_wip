@@ -39,6 +39,7 @@ class ProfileContent extends Component
                 $totalRftSql->where('master_plan.id', $this->masterPlan);
             }
         $totalRft = $totalRftSql->whereRaw("DATE(output_rfts.created_at) >= '".$this->dateFrom."'")->
+            where("status", "NORMAL")->
             whereRaw("DATE(output_rfts.created_at) <= '".$this->dateTo."'")->
             count();
 
