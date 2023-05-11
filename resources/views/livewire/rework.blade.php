@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header align-items-center bg-rework text-light">
-                    <p class="mb-0 fs-5">Defect</p>
+                    <p class="mb-0 fs-5">Defect List</p>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -184,11 +184,9 @@
     <div class="modal" tabindex="-1" id="mass-rework-modal" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title text-rework fw-bold">MASS REWORK</h5>
-              <button type="button" class="btn btn-light border-none pt-1 close" data-dismiss="modal" aria-label="Close" wire:click="$emit('hideModal', 'massRework')">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="modal-header bg-rework">
+              <h5 class="modal-title text-light fw-bold">REWORK</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
@@ -247,9 +245,9 @@
                     <input type="text" class="form-control @error('massDefectArea') is-invalid @enderror" wire:model=massDefectAreaName readonly>
                 </div>
             </div>
-            <div class="modal-footer">
-              {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal" wire:click="$emit('hideModal', 'undo')">Close</button> --}}
-              <button type="button" class="btn btn-rework" wire:click='submitMassRework()'>REWORK</button>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-rework" wire:click='submitMassRework()'>Rework</button>
+                <button type="button" class="btn btn-no" data-dismiss="modal" wire:click="$emit('hideModal', 'massRework')">Batal</button>
             </div>
           </div>
         </div>

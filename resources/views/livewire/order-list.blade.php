@@ -63,11 +63,11 @@
                                     <p class="mb-1">Output : <b>{{ $order->rfts->where('status', 'NORMAL')->count() + $order->defects->where('defect_status', 'reworked')->count() }}</b></p>
                                     <p class="mb-1">Target : <b>{{ $order->target }}</b></p>
                                 </div>
-                                <div class="progress" role="progressbar" aria-valuenow="{{ $order->rfts->count() }}" aria-valuemin="0" aria-valuemax="{{ $order->target }}" style="height: 10px">
+                                <div class="progress" role="progressbar" aria-valuenow="{{ $order->rfts->count() }}" aria-valuemin="0" aria-valuemax="{{ $order->target }}" style="height: 15px">
                                     @php
                                         $outputProgress = $order->rfts->where('status', 'NORMAL')->count() + $order->defects->where('defect_status', 'reworked')->count() > 0 ? floatval($order->rfts->where('status', 'NORMAL')->count() + $order->defects->where('defect_status', 'reworked')->count())/floatval($order->target) * 100 : 0;
                                     @endphp
-                                    <div class="progress-bar bg-sb" style="width:{{  $outputProgress }}%"></div>
+                                    <div class="progress-bar fw-bold {{ $outputProgress > 100 ? 'bg-rft' : 'bg-sb' }}" style="width:{{  $outputProgress }}%">{{ $outputProgress > 100 ? 'TARGET TERLAMPAUI' : '' }}</div>
                                 </div>
                             </div>
                         </div>
