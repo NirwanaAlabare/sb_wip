@@ -55,6 +55,8 @@ class OrderList extends Component
                     mastersupplier.supplier LIKE '%".$this->search."%'
                     OR
                     act_costing.styleno LIKE '%".$this->search."%'
+                    OR
+                    master_plan.color LIKE '%".$this->search."%'
                 )
             ")
             ->groupBy('master_plan.id', 'master_plan.plan_target', 'master_plan.color', 'master_plan.tgl_plan', 'act_costing.kpno', 'mastersupplier.supplier', 'act_costing.styleno', 'product_type', 'so.id')
