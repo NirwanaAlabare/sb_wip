@@ -86,8 +86,8 @@ class Rework extends Component
     }
 
     public function preSubmitMassRework($defectType, $defectArea, $defectTypeName, $defectAreaName) {
-        $this->massSize = '';
         $this->massQty = 1;
+        $this->massSize = '';
         $this->massDefectType = $defectType;
         $this->massDefectTypeName = $defectTypeName;
         $this->massDefectArea = $defectArea;
@@ -129,7 +129,9 @@ class Rework extends Component
             }
 
             if ($selectedDefect->count() > 0) {
-                $this->emit('alert', 'success', "DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." berhasil di REWORK.");
+                $this->emit('alert', 'success', "DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." berhasil di REWORK sebanyak ".$selectedDefect->count()." kali.");
+
+                $this->emit('hideModal', 'massRework');
             } else {
                 $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." tidak berhasil di REWORK.");
             }
@@ -244,7 +246,7 @@ class Rework extends Component
                 output_defects.defect_status LIKE '%".$this->searchRework."%'
             )")->paginate(10, ['*'], 'reworksPage');
 
-        $this->massSelectedDefect = Defect::selectRaw('output_defects.so_det_id, so_det.size as size')->
+        $this->massSelectedDefect = Defect::selectRaw('output_defects.so_det_id, so_det.size as size, count(*) as total')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             where('output_defects.defect_status', 'defect')->
             where('output_defects.master_plan_id', $this->orderInfo->id)->

@@ -1,6 +1,8 @@
 <div>
-    <div class="loading-container-fullscreen" wire:loading wire:target='submitMassRework'>
-        <div class="loading"></div>
+    <div class="loading-container-fullscreen" wire:loading {{-- wire:loading wire:target='submitMassRework, submitRework, cancelRework' --}}>
+        <div class="loading-container">
+            <div class="loading"></div>
+        </div>
     </div>
     {{-- Production Input --}}
     <div class="production-input row row-gap-3">
@@ -214,7 +216,7 @@
                     <select class="form-select @error('massSize') is-invalid @enderror" name="mass-size" id="mass-size" wire:model='massSize'>
                         <option value="" selected disabled>Select Size</option>
                         @foreach ($massSelectedDefect as $defect)
-                            <option value="{{ $defect->so_det_id }}">{{ $defect->size }}</option>
+                            <option value="{{ $defect->so_det_id }}">{{ $defect->size }} ({{"qty : ".$defect->total}})</option>
                         @endforeach
                     </select>
                 </div>

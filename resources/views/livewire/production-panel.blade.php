@@ -1,6 +1,8 @@
 <div>
     <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, submitUndo">
-        <div class="loading"></div>
+        <div class="loading-container">
+            <div class="loading"></div>
+        </div>
     </div>
     {{-- Production Info --}}
     <div class="production-info row row-gap-1 align-items-center mb-3">

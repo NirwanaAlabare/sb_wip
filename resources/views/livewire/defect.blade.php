@@ -1,6 +1,8 @@
 <div>
     <div class="loading-container-fullscreen" wire:loading wire:target="submitInput">
-        <div class="loading"></div>
+        <div class="loading-container">
+            <div class="loading"></div>
+        </div>
     </div>
     <div class="production-input row row-gap-3">
         <div class="col-md-4">
