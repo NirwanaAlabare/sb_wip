@@ -1,5 +1,5 @@
 <div>
-    <div class="loading-container-fullscreen" wire:loading {{-- wire:loading wire:target='submitMassRework, submitRework, cancelRework' --}}>
+    <div class="loading-container-fullscreen" wire:loading wire:target='submitMassRework'>
         <div class="loading-container">
             <div class="loading"></div>
         </div>
@@ -57,7 +57,8 @@
                                                 <td><b>{{$defectList->total}}</b></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-rework fw-bold w-100"
-                                                        wire:click="preSubmitMassRework('{{ $defectList->defect_type_id }}', '{{ $defectList->defect_area_id }}', '{{ $defectList->defect_type }}', '{{ $defectList->defect_area }}')">
+                                                        wire:click="preSubmitMassRework('{{ $defectList->defect_type_id }}', '{{ $defectList->defect_area_id }}', '{{ $defectList->defect_type }}', '{{ $defectList->defect_area }}')"
+                                                    >
                                                         REWORK
                                                     </button>
                                                 </td>
@@ -118,10 +119,15 @@
                                     </td>
                                     <td class="text-defect fw-bold">{{ strtoupper($defect->defect_status) }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-rework fw-bold w-100"
-                                            wire:click="$emit('preSubmitRework', '{{ $defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}', '{{ $defect->productType->image }}', '{{ $defect->defect_area_x }}', '{{ $defect->defect_area_y }}')">
-                                            REWORK
-                                        </button>
+                                        <div wire:loading>
+                                            <div class="loading-small"></div>
+                                        </div>
+                                        <div wire:loading.remove>
+                                            <button class="btn btn-sm btn-rework fw-bold w-100"
+                                                wire:click="$emit('preSubmitRework', '{{ $defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}', '{{ $defect->productType->image }}', '{{ $defect->defect_area_x }}', '{{ $defect->defect_area_y }}')">
+                                                REWORK
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -178,7 +184,12 @@
                                         </button>
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $rework->so_det_size }}', '{{ $rework->defect->defectType->defect_type }}', '{{ $rework->defect->defectArea->defect_area }}', '{{$rework->defect->productType->image}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})">CANCEL</button>
+                                        <div wire:loading>
+                                            <div class="loading-small"></div>
+                                        </div>
+                                        <div wire:loading.remove>
+                                            <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $rework->so_det_size }}', '{{ $rework->defect->defectType->defect_type }}', '{{ $rework->defect->defectArea->defect_area }}', '{{$rework->defect->productType->image}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})">CANCEL</button>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
