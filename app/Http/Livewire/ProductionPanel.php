@@ -193,10 +193,10 @@ class ProductionPanel extends Component
                 $this->undoSizes = Rework::selectRaw('so_det.id as so_det_id, so_det.size, count(*) as total')->
                     leftJoin('output_defects', 'output_defects.id', '=', 'output_reworks.defect_id')->
                     leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
-                    where('master_plan_id', $this->orderInfo->id)->
-                    where('status', 'NORMAL')->
-                    orderBy('updated_at', 'DESC')->
-                    orderBy('created_at', 'DESC')->
+                    where('output_defects.master_plan_id', $this->orderInfo->id)->
+                    where('output_reworks.status', 'NORMAL')->
+                    orderBy('output_reworks.updated_at', 'DESC')->
+                    orderBy('output_reworks.created_at', 'DESC')->
                     groupBy('so_det.id', 'so_det.size')->
                     get();
                 break;
