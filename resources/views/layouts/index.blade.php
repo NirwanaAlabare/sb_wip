@@ -27,5 +27,6 @@
     @include('layouts.script')
 
     @yield('custom-script')
+    @stack('scripts')
 </body>
 </html>

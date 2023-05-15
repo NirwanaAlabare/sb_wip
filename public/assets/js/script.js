@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+    $.fn.modal.Constructor.prototype._enforceFocus = function() {};
+
     showDate();
     showTime();
 

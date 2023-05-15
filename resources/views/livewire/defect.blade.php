@@ -112,8 +112,8 @@
                                 </button>
                                 <label class="form-label me-1 mb-0">Product Type</label>
                             </div>
-                            <div class="d-flex">
-                                <select class="form-select @error('productType') is-invalid @enderror" id="product-type" wire:model='productType'>
+                            <div wire:ignore id="select-product-type-container">
+                                <select class="form-select @error('productType') is-invalid @enderror" id="product-type-select2" wire:model='productType'>
                                     <option value="" selected>Select product type</option>
                                     @foreach ($productTypes as $product)
                                         <option value="{{ $product->id }}">
@@ -138,12 +138,16 @@
                                 </button>
                                 <label class="form-label me-1 mb-0">Defect Type</label>
                             </div>
-                            <select class="form-select @error('defectType') is-invalid @enderror" id="defect-type" wire:model='defectType'>
-                                <option value="" selected>Select defect type</option>
-                                @foreach ($defectTypes as $defect)
-                                    <option value="{{ $defect->id }}">{{ $defect->defect_type }}</option>
-                                @endforeach
-                            </select>
+                            <div wire:ignore id="select-defect-type-container">
+                                <select class="form-select @error('defectType') is-invalid @enderror" id="defect-type-select2" wire:model='defectType'>
+                                    <option value="" selected>Select defect type</option>
+                                    @foreach ($defectTypes as $defect)
+                                        <option value="{{ $defect->id }}">
+                                            {{ $defect->defect_type }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             @error('defectArea')
@@ -161,15 +165,21 @@
                                 <label class="form-label me-1 mb-0">Defect Area</label>
                             </div>
                             <div class="d-flex">
-                                <select class="form-select @error('defectArea') is-invalid @enderror" style="border-radius: 5px 0 0 5px" id="defect-area" wire:model='defectArea'>
-                                    <option value="" selected>Select defect area</option>
-                                    @foreach ($defectAreas as $defect)
-                                        <option value="{{ $defect->id }}">{{ $defect->defect_area }}</option>
-                                    @endforeach
-                                </select>
-                                <button type="button" wire:click="selectDefectAreaPosition" class="btn btn-dark" style="border-radius: 0 5px 5px 0">
-                                    <i class="fa-regular fa-image"></i>
-                                </button>
+                                <div class="w-75" wire:ignore id="select-defect-area-container">
+                                    <select class="form-select @error('defectArea') is-invalid @enderror" style="border-radius: 5px 0 0 5px" id="defect-area-select2" wire:model='defectArea'>
+                                        <option value="" selected>Select defect area</option>
+                                        @foreach ($defectAreas as $defect)
+                                            <option value="{{ $defect->id }}">
+                                                {{ $defect->defect_area }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="w-25">
+                                    <button type="button" wire:click="selectDefectAreaPosition" class="btn btn-dark w-100" style="border-radius: 0 5px 5px 0">
+                                        <i class="fa-regular fa-image"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -261,7 +271,7 @@
     </div>
 
     {{-- Add Defect Type --}}
-    <div class="modal" tabindex="-1" id="defect-type-modal" wire:ignore.self>
+    <div class="modal" id="defect-type-modal" wire:ignore.self>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-defect text-light">
@@ -338,3 +348,48 @@
         </div>
     </footer>
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Product Type
+            $('#product-type-select2').select2({
+                theme: "bootstrap-5",
+                width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+                placeholder: $( this ).data( 'placeholder' ),
+                dropdownParent: $('#defect-modal .modal-content #select-product-type-container')
+            });
+
+            $('#product-type-select2').on('change', function (e) {
+                var productType = $('#product-type-select2').select2("val");
+                @this.set('productType', productType);
+            });
+
+            // Defect Type
+            $('#defect-type-select2').select2({
+                theme: "bootstrap-5",
+                width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+                placeholder: $( this ).data( 'placeholder' ),
+                dropdownParent: $('#defect-modal .modal-content #select-defect-type-container')
+            });
+
+            $('#defect-type-select2').on('change', function (e) {
+                var defectType = $('#defect-type-select2').select2("val");
+                @this.set('defectType', defectType);
+            });
+
+            // Defect Area
+            $('#defect-area-select2').select2({
+                theme: "bootstrap-5",
+                width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+                placeholder: $( this ).data( 'placeholder' ),
+                dropdownParent: $('#defect-modal .modal-content #select-defect-area-container')
+            });
+
+            $('#defect-area-select2').on('change', function (e) {
+                var defectArea = $('#defect-area-select2').select2("val");
+                @this.set('defectArea', defectArea);
+            });
+        })
+    </script>
+@endpush

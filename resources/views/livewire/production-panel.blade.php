@@ -144,9 +144,11 @@
         @endif
 
         {{-- Defect --}}
-        @if ($defect)
+        {{-- @if ($defect) --}}
+        <div class="{{ $defect ? '' : 'd-none' }}">
             @livewire('defect', ["orderWsDetailSizes" => $orderWsDetailSizes])
-        @endif
+        </div>
+        {{-- @endif --}}
 
         {{-- Defect History --}}
         @if ($defectHistory)
