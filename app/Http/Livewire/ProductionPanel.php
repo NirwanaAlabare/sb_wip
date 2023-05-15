@@ -376,6 +376,7 @@ class ProductionPanel extends Component
                     leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
                     where('master_plan_id', $this->orderInfo->id)->
                     where('status', 'NORMAL')->
+                    where('defect_status', 'defect')->
                     orderBy('updated_at', 'DESC')->
                     orderBy('created_at', 'DESC')->
                     groupBy('so_det.id', 'so_det.size')->
