@@ -28,6 +28,11 @@
                             </div>
                         </div>
                         <div class="col-md-5 table-responsive">
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                Untuk me-rework lebih dari 1 produk sekaligus bisa menggunakan tombol <button class="btn btn-sm btn-rework fw-bold" disabled>REWORK
+                                </button> di tabel dibawah ini
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                             <table class="table table-bordered vertical-align-center">
                                 <thead>
                                     <tr>
