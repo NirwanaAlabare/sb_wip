@@ -40,6 +40,8 @@ class Rework extends Component
     public $massDefectAreaName;
     public $massSelectedDefect;
 
+    public $info;
+
     protected $listeners = [
         'submitRework' => 'submitRework',
         'cancelRework' => 'cancelRework',
@@ -50,7 +52,15 @@ class Rework extends Component
     {
         $this->orderWsDetailSizes = $orderWsDetailSizes;
         $session->put('orderWsDetailSizes', $orderWsDetailSizes);
+
         $this->massSize = '';
+
+        $this->info = true;
+    }
+
+    public function closeInfo()
+    {
+        $this->info = false;
     }
 
     public function setDefectAreaPosition($x, $y)
