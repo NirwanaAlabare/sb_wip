@@ -197,9 +197,11 @@
                         <label class="form-label">Size</label>
                         <select class="form-select @error('undoSize') is-invalid @enderror" name="undo-size" id="undo-size" wire:model='undoSize'>
                             <option value="" selected disabled>Select Size</option>
-                            @foreach ($orderWsDetailSizes as $order)
-                                <option value="{{ $order->so_det_id }}">{{ $order->size }}</option>
-                            @endforeach
+                            @if ($undoSizes)
+                                @foreach ($undoSizes as $size)
+                                    <option value="{{ $size->so_det_id }}">{{ $size->size }} ({{ "qty : ".$size->total }})</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                     @if ($undoType == 'defect' || $undoType == 'rework')

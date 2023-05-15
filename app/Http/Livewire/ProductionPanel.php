@@ -41,6 +41,7 @@ class ProductionPanel extends Component
     public $rework;
 
     // Undo
+    public $undoSizes;
     public $undoType;
     public $undoQty;
     public $undoSize;
@@ -156,6 +157,51 @@ class ProductionPanel extends Component
     public function preSubmitUndo($undoType)
     {
         $this->undoType = $undoType;
+
+        switch ($this->undoType) {
+            case 'rft' :
+                $this->undoSizes = Rft::selectRaw('so_det.id as so_det_id, so_det.size, count(*) as total')->
+                    leftJoin('so_det', 'so_det.id', '=', 'output_rfts.so_det_id')->
+                    where('master_plan_id', $this->orderInfo->id)->
+                    where('status', 'NORMAL')->
+                    orderBy('updated_at', 'DESC')->
+                    orderBy('created_at', 'DESC')->
+                    groupBy('so_det.id', 'so_det.size')->
+                    get();
+                break;
+            case 'defect' :
+                $this->undoSizes = Defect::selectRaw('so_det.id as so_det_id, so_det.size, count(*) as total')->
+                    leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
+                    where('master_plan_id', $this->orderInfo->id)->
+                    where('status', 'NORMAL')->
+                    orderBy('updated_at', 'DESC')->
+                    orderBy('created_at', 'DESC')->
+                    groupBy('so_det.id', 'so_det.size')->
+                    get();
+                break;
+            case 'reject' :
+                $this->undoSizes = Reject::selectRaw('so_det.id as so_det_id, so_det.size, count(*) as total')->
+                    leftJoin('so_det', 'so_det.id', '=', 'output_rejects.so_det_id')->
+                    where('master_plan_id', $this->orderInfo->id)->
+                    where('status', 'NORMAL')->
+                    orderBy('updated_at', 'DESC')->
+                    orderBy('created_at', 'DESC')->
+                    groupBy('so_det.id', 'so_det.size')->
+                    get();
+                break;
+            case 'rework' :
+                $this->undoSizes = Rework::selectRaw('so_det.id as so_det_id, so_det.size, count(*) as total')->
+                    leftJoin('output_defects', 'output_defects.id', '=', 'output_reworks.defect_id')->
+                    leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
+                    where('master_plan_id', $this->orderInfo->id)->
+                    where('status', 'NORMAL')->
+                    orderBy('updated_at', 'DESC')->
+                    orderBy('created_at', 'DESC')->
+                    groupBy('so_det.id', 'so_det.size')->
+                    get();
+                break;
+        }
+
         $this->emit('showModal', 'undo');
     }
 
