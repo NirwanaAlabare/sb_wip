@@ -20,7 +20,7 @@
                                         <div class="all-defect-area-img-point" style="left: {{ floatval($defectPosition->defect_area_x) - floatval(25) }}px;top: {{ floatval($defectPosition->defect_area_y) - floatval(25) }}px;"></div>
                                     @endforeach
                                     @if ($allDefectImage)
-                                        <img src="/storage/images/{{ $allDefectImage->productType->image }}" class="all-defect-area-img" alt="defect image">
+                                        <img src="http://10.10.5.16/sb1test/pages/prod_new/upload_files/{{ $allDefectImage->gambar }}" class="all-defect-area-img" alt="defect image">
                                     @else
                                         <img src="/assets/images/notfound.png" class="all-defect-area-img" alt="defect image">
                                     @endif
@@ -113,7 +113,7 @@
                                     <td>{{ $defect->defectType->defect_type}}</td>
                                     <td>{{ $defect->defectArea->defect_area }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$defect->productType->image}}', {{$defect->defect_area_x}}, {{$defect->defect_area_y}})'">
+                                        <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$defect->masterPlan->gambar}}', {{$defect->defect_area_x}}, {{$defect->defect_area_y}})'">
                                             <i class="fa-regular fa-image"></i>
                                         </button>
                                     </td>
@@ -124,7 +124,7 @@
                                         </div>
                                         <div wire:loading.remove>
                                             <button class="btn btn-sm btn-rework fw-bold w-100"
-                                                wire:click="$emit('preSubmitRework', '{{ $defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}', '{{ $defect->productType->image }}', '{{ $defect->defect_area_x }}', '{{ $defect->defect_area_y }}')">
+                                                wire:click="$emit('preSubmitRework', '{{ $defect->id }}', '{{ $defect->so_det_size }}', '{{ $defect->defectType->defect_type }}', '{{ $defect->defectArea->defect_area }}', '{{ $defect->masterPlan->gambar }}', '{{ $defect->defect_area_x }}', '{{ $defect->defect_area_y }}')">
                                                 REWORK
                                             </button>
                                         </div>
@@ -179,7 +179,7 @@
                                     <td>{{ $rework->defect->defectArea->defect_area }}</td>
                                     <td class="text-rework fw-bold">{{ strtoupper($rework->defect->defect_status) }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$rework->defect->productType->image}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})'">
+                                        <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$rework->defect->masterPlan->gambar}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})'">
                                             <i class="fa-regular fa-image"></i>
                                         </button>
                                     </td>
@@ -188,7 +188,7 @@
                                             <div class="loading-small"></div>
                                         </div>
                                         <div wire:loading.remove>
-                                            <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $rework->so_det_size }}', '{{ $rework->defect->defectType->defect_type }}', '{{ $rework->defect->defectArea->defect_area }}', '{{$rework->defect->productType->image}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})">CANCEL</button>
+                                            <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $rework->so_det_size }}', '{{ $rework->defect->defectType->defect_type }}', '{{ $rework->defect->defectArea->defect_area }}', '{{$rework->defect->masterPlan->gambar}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})">CANCEL</button>
                                         </div>
                                     </td>
                                 </tr>

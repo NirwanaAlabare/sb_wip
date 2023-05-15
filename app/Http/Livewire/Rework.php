@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Session\SessionManager;
+use App\Models\SignalBit\MasterPlan;
 use App\Models\SignalBit\Rft;
 use App\Models\SignalBit\Defect;
 use App\Models\SignalBit\Rework as ReworkModel;
@@ -211,9 +212,7 @@ class Rework extends Component
         $this->orderInfo = $session->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = $session->get('orderWsDetailSizes', $this->orderWsDetailSizes);
 
-        $this->allDefectImage = Defect::where('output_defects.defect_status', 'defect')->
-            where('output_defects.master_plan_id', $this->orderInfo->id)->
-            first();
+        $this->allDefectImage = MasterPlan::select('gambar')->find($this->orderInfo->id);
 
         $this->allDefectPosition = Defect::where('output_defects.defect_status', 'defect')->
             where('output_defects.master_plan_id', $this->orderInfo->id)->

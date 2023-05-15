@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Session\SessionManager;
+use App\Models\SignalBit\MasterPlan;
 use App\Models\SignalBit\ProductType;
 use App\Models\SignalBit\DefectType;
 use App\Models\SignalBit\DefectArea;
@@ -36,9 +37,9 @@ class Defect extends Component
     protected $rules = [
         'outputInput' => 'required|numeric|min:1',
         'sizeInput' => 'required',
+        // 'productType' => 'required',
         'defectType' => 'required',
         'defectArea' => 'required',
-        'productType' => 'required',
         'defectAreaPositionX' => 'required',
         'defectAreaPositionY' => 'required',
     ];
@@ -48,9 +49,9 @@ class Defect extends Component
         'outputInput.numeric' => 'Harap isi kuantitas output dengan angka.',
         'outputInput.min' => 'Kuantitas output tidak bisa kurang dari 1.',
         'sizeInput.required' => 'Harap tentukan ukuran output.',
+        // 'productType.required' => 'Harap tentukan tipe produk.',
         'defectType.required' => 'Harap tentukan jenis defect.',
         'defectArea.required' => 'Harap tentukan area defect.',
-        'productType.required' => 'Harap tentukan tipe produk.',
         'defectAreaPositionX.required' => "Harap tentukan posisi defect area dengan mengklik tombol 'gambar' di samping 'select product type'.",
         'defectAreaPositionY.required' => "Harap tentukan posisi defect area dengan mengklik tombol 'gambar' di samping 'select product type'.",
     ];
@@ -178,10 +179,10 @@ class Defect extends Component
 
     public function selectDefectAreaPosition()
     {
-        $productType = ProductType::select('image')->find($this->productType);
+        $masterPlan = MasterPlan::select('gambar')->find($this->orderInfo->id);
 
-        if ($productType) {
-            $this->emit('showSelectDefectArea', $productType->image);
+        if ($masterPlan) {
+            $this->emit('showSelectDefectArea', $masterPlan->gambar);
         } else {
             $this->emit('alert', 'error', 'Harap pilih tipe produk terlebih dahulu');
         }
@@ -211,7 +212,7 @@ class Defect extends Component
             array_push($insertData, [
                 'master_plan_id' => $this->orderInfo->id,
                 'so_det_id' => $this->sizeInput,
-                'product_type_id' => $this->productType,
+                // 'product_type_id' => $this->productType,
                 'defect_type_id' => $this->defectType,
                 'defect_area_id' => $this->defectArea,
                 'defect_area_x' => $this->defectAreaPositionX,

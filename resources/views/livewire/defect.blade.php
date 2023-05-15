@@ -97,7 +97,7 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             @error('productType')
                                 <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
                                     <small>
@@ -122,7 +122,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="mb-3">
                             @error('defectType')
                                 <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
