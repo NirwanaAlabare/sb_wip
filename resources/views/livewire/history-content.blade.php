@@ -133,7 +133,7 @@
                             <th>Defect Type</th>
                             <th>Defect Area</th>
                             <th>Defect Image</th>
-                            <th>Total</th>
+                            <th>Qty</th>
                         </tr>
                     </thead>
                     <tbody>
