@@ -156,6 +156,8 @@ class ProductionPanel extends Component
 
     public function preSubmitUndo($undoType)
     {
+        $this->undoQty = '';
+        $this->undoSize = '';
         $this->undoType = $undoType;
 
         $this->emit('showModal', 'undo');

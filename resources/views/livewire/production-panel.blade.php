@@ -1,5 +1,5 @@
 <div>
-    <div class="loading-container-fullscreen" wire:loading wire:target="submitUndo">
+    <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, submitUndo">
         <div class="loading"></div>
     </div>
     {{-- Production Info --}}
@@ -31,12 +31,12 @@
         <div class="col-md">
             <div class="mb-1" wire:ignore>
                 <label class="form-label mb-0">Color</label>
-                {{-- <input type="text" class="form-control form-control-sm" id="product-color" readonly> --}}
-                <select class="select2 form-select-sm" name="state" id="product-color" wire:model='selectedColor'>
+                <input type="text" class="form-control form-control-sm" id="product-color" wire:model='selectedColor' readonly>
+                {{-- <select class="select2 form-select-sm" name="state" id="product-color" wire:model='selectedColor'>
                     @foreach ($orderWsDetails as $order)
                         <option value="{{ $order->color }}">{{ $order->color }}</option>
                     @endforeach
-                </select>
+                </select> --}}
             </div>
         </div>
     </div>
