@@ -423,7 +423,7 @@ input[type=number] {
 
 .select-defect-area .defect-area-img-container .defect-area-img {
     width: auto;
-    height: 500px;
+    height: 450px;
 }
 
 .select-defect-area .defect-area-img-container .defect-area-img-point {
@@ -460,7 +460,7 @@ input[type=number] {
 
 .show-defect-area .defect-area-img-container .defect-area-img {
     width: auto;
-    height: 500px;
+    height: 450px;
 }
 
 .show-defect-area .defect-area-img-container .defect-area-img-point {
@@ -498,7 +498,7 @@ input[type=number] {
 
 .all-defect-area-img {
     width: auto;
-    height: 500px;
+    height: 450px;
 }
 
 .all-defect-area-img-point {

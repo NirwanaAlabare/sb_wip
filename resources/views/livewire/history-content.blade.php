@@ -111,7 +111,7 @@
                                     <td>{{ $latestDefect->defect_type }}</td>
                                     <td>{{ $latestDefect->defect_area }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestDefect->image}}', {{$latestDefect->defect_area_x}}, {{$latestDefect->defect_area_y}})'">
+                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestDefect->gambar}}', {{$latestDefect->defect_area_x}}, {{$latestDefect->defect_area_y}})'">
                                             <i class="fa-regular fa-image"></i>
                                         </button>
                                     </td>
@@ -149,7 +149,7 @@
                                     <td>{{ $latestRework->defect_type }}</td>
                                     <td>{{ $latestRework->defect_area }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestRework->image}}', {{$latestRework->defect_area_x}}, {{$latestRework->defect_area_y}})'">
+                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestRework->gambar}}', {{$latestRework->defect_area_x}}, {{$latestRework->defect_area_y}})'">
                                             <i class="fa-regular fa-image"></i>
                                         </button>
                                     </td>

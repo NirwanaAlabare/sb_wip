@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.visible>
     <div class="production-input row row-gap-3">
         <div class="col-md-12">
             <div class="card h-100">
@@ -22,12 +22,13 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>ID</th>
+                                <th>Tanggal & Waktu</th>
                                 <th>Size</th>
                                 <th>Defect Type</th>
                                 <th>Defect Area</th>
                                 <th>Defect Area Image</th>
                                 <th>Status</th>
+                                <th>Qty</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,16 +43,17 @@
                                     @endphp
                                     <tr>
                                         <td>{{ $defects->firstItem() + $loop->index }}</td>
-                                        <td>{{ $defect->id }}</td>
+                                        <td>{{ $defect->updated_at }}</td>
                                         <td>{{ $defect->so_det_size }}</td>
-                                        <td>{{ $defect->defectType->defect_type }}</td>
-                                        <td>{{ $defect->defectArea->defect_area }}</td>
+                                        <td>{{ $defect->defect_type }}</td>
+                                        <td>{{ $defect->defect_area }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$defect->masterPlan->gambar}}', {{$defect->defect_area_x}}, {{$defect->defect_area_y}})'">
+                                            <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$defect->gambar}}', {{$defect->defect_area_x}}, {{$defect->defect_area_y}})'">
                                                 <i class="fa-regular fa-image"></i>
                                             </button>
                                         </td>
                                         <td class="{{ $defectStatusColor }} fw-bold">{{ strtoupper($defect->defect_status) }}</td>
+                                        <td>{{ $defect->total }}</td>
                                     </tr>
                                 @endforeach
                             @endif

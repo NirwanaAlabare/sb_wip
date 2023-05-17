@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.visible>
     <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, submitUndo">
         <div class="loading-container">
             <div class="loading"></div>

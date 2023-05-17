@@ -12,7 +12,7 @@
                     <p class="mb-0 fs-5">Defect List</p>
                 </div>
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-md-7">
                             <div class="scroll-defect-area-img">
                                 <div class="all-defect-area-img-container">
@@ -28,13 +28,9 @@
                             </div>
                         </div>
                         <div class="col-md-5 table-responsive">
-                            @if ($this->info)
-                                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                    Untuk me-rework lebih dari 1 produk sekaligus bisa menggunakan tombol <button class="btn btn-sm btn-rework fw-bold" disabled>REWORK
-                                    </button> di tabel dibawah ini
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" wire:click="closeInfo()"></button>
-                                </div>
-                            @endif
+                            <div class="mb-3">
+                                <input type="text" class="form-control rounded-0" wire:model='allDefectListFilter' placeholder="Search defect">
+                            </div>
                             <table class="table table-bordered vertical-align-center">
                                 <thead>
                                     <tr>
@@ -67,6 +63,7 @@
                                     @endif
                                 </tbody>
                             </table>
+                            {{ $allDefectList->links() }}
                         </div>
                     </div>
                 </div>
@@ -107,7 +104,7 @@
                         @else
                             @foreach ($defects as $defect)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $defects->firstItem() + $loop->index }}</td>
                                     <td>{{ $defect->id }}</td>
                                     <td>{{ $defect->so_det_size }}</td>
                                     <td>{{ $defect->defectType->defect_type}}</td>
@@ -172,7 +169,7 @@
                         @else
                             @foreach ($reworks as $rework)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $reworks->firstItem() + $loop->index }}</td>
                                     <td>{{ $rework->defect->id }}</td>
                                     <td>{{ $rework->so_det_size }}</td>
                                     <td>{{ $rework->defect->defectType->defect_type}}</td>

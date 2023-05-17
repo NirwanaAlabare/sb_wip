@@ -33,7 +33,7 @@ class DefectHistory extends Component
     public $defectPositionY;
 
     protected $listeners = [
-        'hideDefectAreaImageClear' => 'hideDefectAreaImage',
+        'hideDefectAreaImageClear' => 'hideDefectAreaImage'
     ];
 
     public function mount(SessionManager $session, $orderWsDetailSizes)
@@ -78,7 +78,18 @@ class DefectHistory extends Component
         $productTypes = ProductType::get();
         $defectTypes = DefectType::get();
         $defectAreas = DefectArea::get();
-        $defects = Defect::selectRaw('output_defects.*, so_det.size as so_det_size')->
+        $defects = Defect::selectRaw('
+                output_defects.updated_at,
+                so_det.size as so_det_size,
+                master_plan.gambar,
+                output_defects.defect_area_x,
+                output_defects.defect_area_y,
+                output_defect_types.defect_type,
+                output_defect_areas.defect_area,
+                output_defects.defect_status,
+                count(*) as total
+            ')->
+            leftJoin('master_plan', 'master_plan.id', '=', 'output_defects.master_plan_id')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             leftJoin('output_product_types', 'output_product_types.id', '=', 'output_defects.product_type_id')->
             leftJoin('output_defect_areas', 'output_defect_areas.id', '=', 'output_defects.defect_area_id')->
@@ -107,7 +118,18 @@ class DefectHistory extends Component
             output_defect_areas.defect_area LIKE '%".$this->search."%' OR
             output_defect_types.defect_type LIKE '%".$this->search."%' OR
             output_defects.defect_status LIKE '%".$this->search."%'
-        )")->paginate(10);
+        )")->
+        groupBy(
+            'output_defects.updated_at',
+            'so_det.size',
+            'master_plan.gambar',
+            'output_defect_types.defect_type',
+            'output_defect_areas.defect_area',
+            'output_defects.defect_area_x',
+            'output_defects.defect_area_y',
+            'output_defects.defect_status'
+        )->
+        orderBy('output_defects.updated_at', 'desc')->paginate(10);
 
         return view('livewire.defect-history', ['defects' => $filteredDefects, 'productTypes' => $productTypes, 'defectTypes' => $defectTypes, 'defectAreas' => $defectAreas]);
     }
