@@ -80,6 +80,14 @@ class Defect extends Component
         $this->resetErrorBag();
     }
 
+    public function updateOutput()
+    {
+        $this->output = DefectModel::
+            where('master_plan_id', $this->orderInfo->id)->
+            where('defect_status', 'defect')->
+            count();
+    }
+
     public function submitDefectType()
     {
         if ($this->defectTypeAdd) {

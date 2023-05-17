@@ -1,4 +1,4 @@
-<div wire:poll.visible>
+<div wire:poll='updateOutput'>
     <div class="loading-container-fullscreen" wire:loading wire:target="submitInput">
         <div class="loading-container">
             <div class="loading"></div>
@@ -164,9 +164,9 @@
                                 </button>
                                 <label class="form-label me-1 mb-0">Defect Area</label>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex gap-1">
                                 <div class="w-75" wire:ignore id="select-defect-area-container">
-                                    <select class="form-select @error('defectArea') is-invalid @enderror" style="border-radius: 5px 0 0 5px" id="defect-area-select2" wire:model='defectArea'>
+                                    <select class="form-select @error('defectArea') is-invalid @enderror" id="defect-area-select2" wire:model='defectArea'>
                                         <option value="" selected>Select defect area</option>
                                         @foreach ($defectAreas as $defect)
                                             <option value="{{ $defect->id }}">
@@ -176,7 +176,7 @@
                                     </select>
                                 </div>
                                 <div class="w-25">
-                                    <button type="button" wire:click="selectDefectAreaPosition" class="btn btn-dark w-100" style="border-radius: 0 5px 5px 0">
+                                    <button type="button" wire:click="selectDefectAreaPosition" class="btn btn-dark w-100">
                                         <i class="fa-regular fa-image"></i>
                                     </button>
                                 </div>
