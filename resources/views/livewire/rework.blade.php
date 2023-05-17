@@ -12,7 +12,7 @@
                     <p class="mb-0 fs-5">Defect List</p>
                 </div>
                 <div class="card-body">
-                    <div class="row align-items-center">
+                    <div class="row">
                         <div class="col-md-7">
                             <div class="scroll-defect-area-img">
                                 <div class="all-defect-area-img-container">
