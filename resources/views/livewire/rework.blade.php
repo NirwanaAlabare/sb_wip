@@ -20,7 +20,7 @@
                                         <div class="all-defect-area-img-point" style="left: {{ floatval($defectPosition->defect_area_x) - floatval(25) }}px;top: {{ floatval($defectPosition->defect_area_y) - floatval(25) }}px;"></div>
                                     @endforeach
                                     @if ($allDefectImage)
-                                        <img src="http://10.10.5.16/sb1test/pages/prod_new/upload_files/{{ $allDefectImage->gambar }}" class="all-defect-area-img" alt="defect image">
+                                        <img src="http://10.10.5.62:8080/erp/pages/prod_new/upload_files/{{ $allDefectImage->gambar }}" class="all-defect-area-img" alt="defect image">
                                     @else
                                         <img src="/assets/images/notfound.png" class="all-defect-area-img" alt="defect image">
                                     @endif
