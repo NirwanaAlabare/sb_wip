@@ -34,7 +34,7 @@
                         <tbody>
                             @if ($defects->count() < 1)
                                 <tr>
-                                    <td colspan="7"><i class="fa-solid fa-circle-exclamation"></i> Defect tidak ditemukan</td>
+                                    <td colspan="8"><i class="fa-solid fa-circle-exclamation"></i> Defect tidak ditemukan</td>
                                 </tr>
                             @else
                                 @foreach ($defects as $defect)

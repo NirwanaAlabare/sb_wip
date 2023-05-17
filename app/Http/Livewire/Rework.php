@@ -50,6 +50,11 @@ class Rework extends Component
         'hideDefectAreaImageClear' => 'hideDefectAreaImage'
     ];
 
+    public function loadReworkPage()
+    {
+        $this->emit('loadReworkPageJs');
+    }
+
     public function mount(SessionManager $session, $orderWsDetailSizes)
     {
         $this->orderWsDetailSizes = $orderWsDetailSizes;
@@ -210,6 +215,8 @@ class Rework extends Component
 
     public function render(SessionManager $session)
     {
+        $this->emit('loadReworkPageJs');
+
         $this->orderInfo = $session->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = $session->get('orderWsDetailSizes', $this->orderWsDetailSizes);
 

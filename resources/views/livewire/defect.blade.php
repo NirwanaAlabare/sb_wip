@@ -1,4 +1,4 @@
-<div wire:poll='updateOutput'>
+<div>
     <div class="loading-container-fullscreen" wire:loading wire:target="submitInput">
         <div class="loading-container">
             <div class="loading"></div>

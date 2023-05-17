@@ -129,7 +129,7 @@ function logout() {
         showConfirmButton: true,
         showDenyButton: true,
         confirmButtonText: 'Logout',
-        confirmButtonColor: '#535394',
+        confirmButtonColor: '#6531a0',
         denyButtonText: 'Cancel',
       }).then((result) => {
         if (result.isConfirmed) {

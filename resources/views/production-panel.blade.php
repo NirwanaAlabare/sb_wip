@@ -234,14 +234,16 @@
             defectAreaImageContainer.addEventListener('mousemove', (event) => {
                 let rect = defectAreaImage.getBoundingClientRect();
 
-                const localX = event.clientX - rect.left;
-                const localY = event.clientY - rect.top;
+                const localX = parseFloat((event.clientX - rect.left))/parseFloat(rect.width) * 100;
+                const localY = parseFloat((event.clientY - rect.top))/parseFloat(rect.height) * 100;
 
                 localMousePos = { x: localX, y: localY };
 
                 defectAreaImageContainer.addEventListener('click', (event) => {
-                    defectAreaImagePoint.style.left = (localMousePos.x - 25)+'px';
-                    defectAreaImagePoint.style.top = (localMousePos.y - 25)+'px';
+                    defectAreaImagePoint.style.width = 0.05 * rect.width+'px';
+                    defectAreaImagePoint.style.height = defectAreaImagePoint.style.width;
+                    defectAreaImagePoint.style.left =  'calc('+localMousePos.x+'% - '+0.025 * rect.width+'px)';
+                    defectAreaImagePoint.style.top =  'calc('+localMousePos.y+'% - '+0.025 * rect.width+'px)';
                     defectAreaImagePoint.style.display = 'block';
 
                     defectAreaPositionX.value = localMousePos.x;
@@ -273,14 +275,28 @@
             Livewire.emit('showDefectAreaImage', defectAreaImage, x, y);
         }
 
-        Livewire.on('showDefectAreaImage', (defectAreaImage, x, y) => {
-            let defectAreaImagePoint = document.getElementById('defect-area-img-point-show');
+        Livewire.on('showDefectAreaImage', async function (defectAreaImage, x, y) {
+            await showDefectAreaImage(defectAreaImage);
 
-            defectAreaImagePoint.style.left = (parseFloat(x)-25)+'px';
-            defectAreaImagePoint.style.top = (parseFloat(y)-25)+'px';
-            defectAreaImagePoint.style.display = 'block';
+            let defectAreaImageElement = document.getElementById('defect-area-img-show');
+            let defectAreaImagePointElement = document.getElementById('defect-area-img-point-show');
 
-            showDefectAreaImage(defectAreaImage)
+            defectAreaImageElement.style.display = 'block'
+
+            let rect = await defectAreaImageElement.getBoundingClientRect();
+
+            let pointWidth = null;
+            if (rect.width == 0) {
+                pointWidth = 35;
+            } else {
+                pointWidth = 0.05 * rect.width;
+            }
+
+            defectAreaImagePointElement.style.width = pointWidth+'px';
+            defectAreaImagePointElement.style.height = defectAreaImagePointElement.style.width;
+            defectAreaImagePointElement.style.left =  'calc('+x+'% - '+0.5 * pointWidth+'px)';
+            defectAreaImagePointElement.style.top =  'calc('+y+'% - '+0.5 * pointWidth+'px)';
+            defectAreaImagePointElement.style.display = 'block';
         });
 
         function onHideDefectAreaImage() {
@@ -288,5 +304,21 @@
 
             Livewire.emit('hideDefectAreaImageClear');
         }
+
+        Livewire.on('loadReworkPageJs', () => {
+            if (document.getElementById('all-defect-area-img')) {
+                let defectAreaImage = document.getElementById('all-defect-area-img');
+                let defectAreaImagePoint = document.getElementsByClassName('all-defect-area-img-point');
+
+                let rect = defectAreaImage.getBoundingClientRect();
+
+                for(i = 0; i < defectAreaImagePoint.length; i++) {
+                    defectAreaImagePoint[i].style.width = 0.05 * rect.width+'px';
+                    defectAreaImagePoint[i].style.height = defectAreaImagePoint[i].style.width;
+                    defectAreaImagePoint[i].style.left =  'calc('+defectAreaImagePoint[i].getAttribute('data-x')+'% - '+0.025 * rect.width+'px)';
+                    defectAreaImagePoint[i].style.top =  'calc('+defectAreaImagePoint[i].getAttribute('data-y')+'% - '+0.025 * rect.width+'px)';
+                }
+            }
+        });
     </script>
 @endsection

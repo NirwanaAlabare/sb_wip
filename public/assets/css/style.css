@@ -1,6 +1,6 @@
 /* General */
 :root {
-    --sb-color: #535394;
+    --sb-color: #6531a0;
     --rft-color: #12be60;
     --rft-color-sec: #2e8a57;
     --defect-color: #ff971f;
@@ -274,12 +274,12 @@ input[type=number] {
 }
 
 .login-form label {
-    color: #dd6e36;
+    color: #4690f7;
     font-weight: 600;
 }
 
 .login-form input {
-    border-color: #dd6e36;
+    border-color: #4690f7;
 }
 
 .login-form>div:last-child>div:nth-child(2)>span {
@@ -494,11 +494,12 @@ input[type=number] {
     justify-content: center;
     align-items: center;
     margin: auto;
+    width: 100%;
 }
 
 .all-defect-area-img {
-    width: auto;
-    height: 450px;
+    width: 100%;
+    height: auto;
 }
 
 .all-defect-area-img-point {

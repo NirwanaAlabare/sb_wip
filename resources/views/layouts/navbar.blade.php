@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar bg-body-secondary navbar-expand">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"><img src="/assets/images/logosb.png" alt="" width="130"></a>
+            <a class="navbar-brand" href="/"><img src="/assets/images/Frame 1.png" alt="" width="130"></a>
             <ul class="navbar-nav align-items-center gap-3">
                 <div class="row justify-content-end align-items-center">
                     <div class="col-md-2">

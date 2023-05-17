@@ -1,4 +1,4 @@
-<div>
+<div wire:init="loadReworkPage">
     <div class="loading-container-fullscreen" wire:loading wire:target='submitMassRework'>
         <div class="loading-container">
             <div class="loading"></div>
@@ -13,14 +13,19 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-7">
-                            <div class="scroll-defect-area-img">
+                        <div class="col-md-7 align-self-center">
+                            <div class="w-100 h-100" wire:loading wire:target='loadReworkPage'>
+                                <div class="loading-container">
+                                    <div class="loading"></div>
+                                </div>
+                            </div>
+                            <div class="scroll-defect-area-img" wire:loading.remove wire:target='loadReworkPage'>
                                 <div class="all-defect-area-img-container">
                                     @foreach ($allDefectPosition as $defectPosition)
-                                        <div class="all-defect-area-img-point" style="left: {{ floatval($defectPosition->defect_area_x) - floatval(25) }}px;top: {{ floatval($defectPosition->defect_area_y) - floatval(25) }}px;"></div>
+                                        <div class="all-defect-area-img-point" data-x="{{ floatval($defectPosition->defect_area_x) }}" data-y="{{ floatval($defectPosition->defect_area_y) }}"></div>
                                     @endforeach
                                     @if ($allDefectImage)
-                                        <img src="http://10.10.5.62:8080/erp/pages/prod_new/upload_files/{{ $allDefectImage->gambar }}" class="all-defect-area-img" alt="defect image">
+                                        <img src="http://10.10.5.62:8080/erp/pages/prod_new/upload_files/{{ $allDefectImage->gambar }}" class="all-defect-area-img" id="all-defect-area-img" alt="defect image">
                                     @else
                                         <img src="/assets/images/notfound.png" class="all-defect-area-img" alt="defect image">
                                     @endif

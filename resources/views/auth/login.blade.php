@@ -15,7 +15,7 @@
     <div class="login-card card">
         <div class="row align-items-center g-0">
             <div class="col-md-6">
-                <img src="/assets/images/logosb.png" class="img-fluid mt-auto mb-auto" alt="...">
+                <img src="/assets/images/Frame 1.png" class="img-fluid mt-auto mb-auto" alt="...">
             </div>
             <div class="col-md-6">
                 <div class="card-body my-5">
