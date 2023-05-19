@@ -58,6 +58,7 @@ class Defect extends Component
 
     protected $listeners = [
         'setDefectAreaPosition' => 'setDefectAreaPosition',
+        'updateWsDetailSizes' => 'updateWsDetailSizes',
         'updateOutput' => 'updateOutput'
     ];
 
@@ -81,31 +82,18 @@ class Defect extends Component
         $this->resetErrorBag();
     }
 
+    public function updateWsDetailSizes()
+    {
+        $this->orderInfo = session()->get('orderInfo', $this->orderInfo);
+        $this->orderWsDetailSizes = session()->get('orderWsDetailSizes', $this->orderWsDetailSizes);
+    }
+
     public function updateOutput()
     {
         $this->output = DefectModel::
             where('master_plan_id', $this->orderInfo->id)->
             where('defect_status', 'defect')->
             count();
-    }
-
-    public function submitDefectType()
-    {
-        if ($this->defectTypeAdd) {
-            $createDefectType = DefectType::create([
-                'defect_type' => $this->defectTypeAdd
-            ]);
-
-            if ($createDefectType) {
-                $this->emit('alert', 'success', 'Defect type : '.$this->defectTypeAdd.' berhasil ditambahkan.');
-
-                $this->defectTypeAdd = '';
-            } else {
-                $this->emit('alert', 'error', 'Terjadi kesalahan.');
-            }
-        } else {
-            $this->emit('alert', 'error', 'Harap tentukan nama defect type');
-        }
     }
 
     public function updatedproductTypeImageAdd()
@@ -137,6 +125,25 @@ class Defect extends Component
             }
         } else {
             $this->emit('alert', 'error', 'Harap tentukan nama tipe produk beserta gambarnya');
+        }
+    }
+
+    public function submitDefectType()
+    {
+        if ($this->defectTypeAdd) {
+            $createDefectType = DefectType::create([
+                'defect_type' => $this->defectTypeAdd
+            ]);
+
+            if ($createDefectType) {
+                $this->emit('alert', 'success', 'Defect type : '.$this->defectTypeAdd.' berhasil ditambahkan.');
+
+                $this->defectTypeAdd = '';
+            } else {
+                $this->emit('alert', 'error', 'Terjadi kesalahan.');
+            }
+        } else {
+            $this->emit('alert', 'error', 'Harap tentukan nama defect type');
         }
     }
 

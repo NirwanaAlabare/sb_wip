@@ -28,6 +28,10 @@ class Reject extends Component
         'sizeInput.required' => 'Harap tentukan ukuran output.',
     ];
 
+    protected $listeners = [
+        'updateWsDetailSizes' => 'updateWsDetailSizes'
+    ];
+
     public function mount(SessionManager $session, $orderWsDetailSizes)
     {
         $this->orderWsDetailSizes = $orderWsDetailSizes;
@@ -35,6 +39,12 @@ class Reject extends Component
         $this->outputInput = 1;
         $this->sizeInput = null;
         $this->sizeInputText = null;
+    }
+
+    public function updateWsDetailSizes()
+    {
+        $this->orderInfo = session()->get('orderInfo', $this->orderInfo);
+        $this->orderWsDetailSizes = session()->get('orderWsDetailSizes', $this->orderWsDetailSizes);
     }
 
     public function clearInput()

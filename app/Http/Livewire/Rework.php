@@ -47,8 +47,15 @@ class Rework extends Component
     protected $listeners = [
         'submitRework' => 'submitRework',
         'cancelRework' => 'cancelRework',
-        'hideDefectAreaImageClear' => 'hideDefectAreaImage'
+        'hideDefectAreaImageClear' => 'hideDefectAreaImage',
+        'updateWsDetailSizes' => 'updateWsDetailSizes'
     ];
+
+    public function updateWsDetailSizes()
+    {
+        $this->orderInfo = session()->get('orderInfo', $this->orderInfo);
+        $this->orderWsDetailSizes = session()->get('orderWsDetailSizes', $this->orderWsDetailSizes);
+    }
 
     public function loadReworkPage()
     {

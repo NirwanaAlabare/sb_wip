@@ -15,28 +15,61 @@ class ProductionController extends Controller
      */
     public function index($id)
     {
-        $orderSql = MasterPlan::selectRaw("
-            DISTINCT master_plan.id_ws, mastersupplier.supplier, act_costing.styleno, masterproduct.product_group, masterproduct.product_item, so_det.styleno_prod, so.qty,
-            master_plan.id as id,
-            act_costing.kpno as ws_number,
-            act_costing.styleno as style_name,
-            mastersupplier.supplier as buyer_name,
-            so_det.styleno_prod as reff_number,
-            master_plan.color as color,
-            so_det.size as size,
-            so.qty as qty_order,
-            CONCAT(masterproduct.product_group, ' - ', masterproduct.product_item) as product_type
-        ")
-        ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
-        ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
-        ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
-        ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
-        ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
-        ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
-        ->where('so_det.cancel', 'N');
+        $orderInfo = MasterPlan::selectRaw("
+                master_plan.id as id,
+                master_plan.tgl_plan as tgl_plan,
+                act_costing.kpno as ws_number,
+                act_costing.styleno as style_name,
+                mastersupplier.supplier as buyer_name,
+                so_det.styleno_prod as reff_number,
+                master_plan.color as color,
+                so_det.size as size,
+                so.qty as qty_order,
+                CONCAT(masterproduct.product_group, ' - ', masterproduct.product_item) as product_type
+            ")
+            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
+            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
+            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
+            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
+            ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
+            ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
+            ->where('so_det.cancel', 'N')
+            ->where('master_plan.id', $id)
+            ->first();
 
-        $orderInfo = $orderSql->where('master_plan.id', $id)->first();
-        $orderWsDetails = $orderSql->where('master_plan.sewing_line', Auth::user()->username)->where('act_costing.kpno', $orderInfo->ws_number)->get();
+        $orderWsDetails = MasterPlan::selectRaw("
+                master_plan.id as id,
+                master_plan.tgl_plan as tgl_plan,
+                master_plan.color as color,
+                mastersupplier.supplier as buyer_name,
+                act_costing.styleno as style_name,
+                mastersupplier.supplier as buyer_name,
+                so_det.styleno_prod as reff_number,
+                so.qty as qty_order
+            ")
+            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
+            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
+            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
+            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
+            ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
+            ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
+            ->where('so_det.cancel', 'N')
+            ->where('master_plan.sewing_line', Auth::user()->username)
+            ->where('act_costing.kpno', $orderInfo->ws_number)
+            ->where('master_plan.tgl_plan', $orderInfo->tgl_plan)
+            ->groupBy(
+                'master_plan.id',
+                'master_plan.tgl_plan',
+                'master_plan.color',
+                'mastersupplier.supplier',
+                'act_costing.styleno',
+                'mastersupplier.supplier',
+                'so_det.styleno_prod',
+                'so.qty'
+            )->get();
+
+        // $orderInfo = $orderSql->where('master_plan.id', $id)->first();
+        // $orderWsDetails = $orderSql->where('master_plan.sewing_line', Auth::user()->username)->where('act_costing.kpno', $orderInfo->ws_number)->get();
 
         return view('production-panel', ['orderInfo' => $orderInfo, 'orderWsDetails' => $orderWsDetails]);
     }

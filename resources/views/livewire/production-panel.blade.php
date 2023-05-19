@@ -4,6 +4,15 @@
             <div class="loading"></div>
         </div>
     </div>
+
+    @if ($loading)
+        <div class="loading-container-fullscreen">
+            <div class="loading-container">
+                <div class="loading"></div>
+            </div>
+        </div>
+    @endif
+
     {{-- Production Info --}}
     <div class="production-info row row-gap-1 align-items-center mb-3">
         <div class="col-md">
@@ -20,25 +29,25 @@
         </div>
         <div class="col-md">
             <div class="mb-1">
-                <label class="form-label mb-0">Style</label>
-                <input type="text" class="form-control form-control-sm" id="style-name" value="{{ $orderInfo->style_name }}" readonly>
-            </div>
-        </div>
-        <div class="col-md">
-            <div class="mb-1">
                 <label class="form-label mb-0">Product Type</label>
                 <input type="text" class="form-control form-control-sm" id="product-type" value="{{ $orderInfo->product_type }}" readonly>
             </div>
         </div>
         <div class="col-md">
+            <div class="mb-1">
+                <label class="form-label mb-0">Style</label>
+                <input type="text" class="form-control form-control-sm" id="style-name" value="{{ $orderInfo->style_name }}" readonly>
+            </div>
+        </div>
+        <div class="col-md">
             <div class="mb-1" wire:ignore>
                 <label class="form-label mb-0">Color</label>
-                <input type="text" class="form-control form-control-sm" id="product-color" wire:model='selectedColor' readonly>
-                {{-- <select class="select2 form-select-sm" name="state" id="product-color" wire:model='selectedColor'>
+                {{-- <input type="text" class="form-control form-control-sm" id="product-color" wire:model='selectedColor' readonly> --}}
+                <select class="select2 form-select-sm" name="state" id="product-color" wire:model='selectedColor'>
                     @foreach ($orderWsDetails as $order)
-                        <option value="{{ $order->color }}">{{ $order->color }}</option>
+                        <option value="{{ $order->id }}" data-color-name="{{ $order->color }}">{{ $order->color }}</option>
                     @endforeach
-                </select> --}}
+                </select>
             </div>
         </div>
     </div>
@@ -238,3 +247,18 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        $('#product-color').on('change', function (e) {
+            var selectedColor = $('#product-color').select2("val");
+            var selectedColorName = $('#product-color').find(':selected').data('color-name');
+
+            console.log(selectedColor);
+            console.log(selectedColorName);
+
+            @this.set('selectedColor', selectedColor);
+            @this.set('selectedColorName', selectedColorName);
+        });
+    </script>
+@endpush
