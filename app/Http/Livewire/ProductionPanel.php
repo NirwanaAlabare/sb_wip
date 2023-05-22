@@ -49,6 +49,8 @@ class ProductionPanel extends Component
     public $undoDefectType;
     public $undoDefectArea;
 
+    public $loadingPanel;
+
     // Rules
     protected $rules = [
         'undoType' => 'required',
@@ -77,6 +79,7 @@ class ProductionPanel extends Component
         'countReject' => 'countReject',
         'countRework' => 'countRework',
         'preSubmitUndo' => 'preSubmitUndo',
+        'updateOrder' => 'updateOrder',
     ];
 
     public function mount(SessionManager $session, $orderInfo, $orderWsDetails)
@@ -109,6 +112,23 @@ class ProductionPanel extends Component
         $this->undoDefectType = "";
         $this->undoDefectArea = "";
         $this->loading = false;
+
+        $this->orderWsDetailSizes = MasterPlan::selectRaw("
+                MIN(so_det.id) as so_det_id,
+                so_det.size as size
+            ")
+            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
+            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
+            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
+            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
+            ->where('master_plan.sewing_line', Auth::user()->username)
+            ->where('act_costing.kpno', $this->orderInfo->ws_number)
+            ->where('so_det.color', $this->selectedColorName)
+            ->groupBy('so_det.size')
+            ->orderBy('so_det_id')
+            ->get();
+
+        $session->put("orderWsDetailSizes", $this->orderWsDetailSizes);
     }
 
     public function toRft()
@@ -322,10 +342,14 @@ class ProductionPanel extends Component
         }
     }
 
-    public function updatedSelectedColor()
-    {
-        // get data from selected color
-        $orderInfo = MasterPlan::selectRaw("
+    public function updateOrder() {
+        if ($this->panels) {
+            $this->emit('loadingStart');
+        }
+
+        $this->selectedSize = 'all';
+
+        $this->orderInfo = MasterPlan::selectRaw("
                 master_plan.id as id,
                 master_plan.tgl_plan as tgl_plan,
                 act_costing.kpno as ws_number,
@@ -347,7 +371,7 @@ class ProductionPanel extends Component
             ->where('master_plan.id', $this->selectedColor)
             ->first();
 
-        $orderWsDetails = MasterPlan::selectRaw("
+        $this->orderWsDetails = MasterPlan::selectRaw("
                 master_plan.id as id,
                 master_plan.tgl_plan as tgl_plan,
                 master_plan.color as color,
@@ -365,8 +389,8 @@ class ProductionPanel extends Component
             ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
             ->where('so_det.cancel', 'N')
             ->where('master_plan.sewing_line', Auth::user()->username)
-            ->where('act_costing.kpno', $orderInfo->ws_number)
-            ->where('master_plan.tgl_plan', $orderInfo->tgl_plan)
+            ->where('act_costing.kpno', $this->orderInfo->ws_number)
+            ->where('master_plan.tgl_plan', $this->orderInfo->tgl_plan)
             ->groupBy(
                 'master_plan.id',
                 'master_plan.tgl_plan',
@@ -378,101 +402,6 @@ class ProductionPanel extends Component
                 'so.qty'
             )->get();
 
-        $orderWsDetailSizes = MasterPlan::selectRaw("
-                MIN(so_det.id) as so_det_id,
-                so_det.size as size
-            ")
-            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
-            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
-            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
-            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
-            ->where('master_plan.sewing_line', Auth::user()->username)
-            ->where('act_costing.kpno', $orderInfo->ws_number)
-            ->where('so_det.color', $this->selectedColorName)
-            ->groupBy('so_det.size')
-            ->orderBy('so_det_id')
-            ->get();
-
-        // Put data on session
-        session()->put("orderInfo", $orderInfo);
-        session()->put("orderWsDetails", $orderWsDetails);
-        session()->put("orderWsDetailSizes", $orderWsDetailSizes);
-
-        $this->emit('updateWsDetailSizes');
-    }
-
-    public function render(SessionManager $session)
-    {
-        // get data from selected color
-        $orderInfo = MasterPlan::selectRaw("
-                master_plan.id as id,
-                master_plan.tgl_plan as tgl_plan,
-                act_costing.kpno as ws_number,
-                act_costing.styleno as style_name,
-                mastersupplier.supplier as buyer_name,
-                so_det.styleno_prod as reff_number,
-                master_plan.color as color,
-                so_det.size as size,
-                so.qty as qty_order,
-                CONCAT(masterproduct.product_group, ' - ', masterproduct.product_item) as product_type
-            ")
-            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
-            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
-            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
-            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
-            ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
-            ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
-            ->where('so_det.cancel', 'N')
-            ->where('master_plan.id', $this->selectedColor)
-            ->first();
-
-        $orderWsDetails = MasterPlan::selectRaw("
-                master_plan.id as id,
-                master_plan.tgl_plan as tgl_plan,
-                master_plan.color as color,
-                mastersupplier.supplier as buyer_name,
-                act_costing.styleno as style_name,
-                mastersupplier.supplier as buyer_name,
-                so_det.styleno_prod as reff_number,
-                so.qty as qty_order
-            ")
-            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
-            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
-            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
-            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
-            ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
-            ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
-            ->where('so_det.cancel', 'N')
-            ->where('master_plan.sewing_line', Auth::user()->username)
-            ->where('act_costing.kpno', $orderInfo->ws_number)
-            ->where('master_plan.tgl_plan', $orderInfo->tgl_plan)
-            ->groupBy(
-                'master_plan.id',
-                'master_plan.tgl_plan',
-                'master_plan.color',
-                'mastersupplier.supplier',
-                'act_costing.styleno',
-                'mastersupplier.supplier',
-                'so_det.styleno_prod',
-                'so.qty'
-            )->get();
-
-        $orderWsDetailSizes = MasterPlan::selectRaw("
-                MIN(so_det.id) as so_det_id,
-                so_det.size as size
-            ")
-            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
-            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
-            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
-            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
-            ->where('master_plan.sewing_line', Auth::user()->username)
-            ->where('act_costing.kpno', $orderInfo->ws_number)
-            ->where('so_det.color', $this->selectedColorName)
-            ->groupBy('so_det.size')
-            ->orderBy('so_det_id')
-            ->get();
-
-        // Get size data by color
         $this->orderWsDetailSizes = MasterPlan::selectRaw("
                 MIN(so_det.id) as so_det_id,
                 so_det.size as size
@@ -488,18 +417,33 @@ class ProductionPanel extends Component
             ->orderBy('so_det_id')
             ->get();
 
-            session()->put("orderInfo", $orderInfo);
-            session()->put("orderWsDetails", $orderWsDetails);
-            session()->put("orderWsDetailSizes", $orderWsDetailSizes);
+        session()->put("orderInfo", $this->orderInfo);
+        session()->put("orderWsDetails", $this->orderWsDetails);
+        session()->put("orderWsDetailSizes", $this->orderWsDetailSizes);
 
-        $session->put("orderInfo", $orderInfo);
-        $session->put("orderWsDetails", $orderWsDetails);
-        $session->put("orderWsDetailSizes", $orderWsDetailSizes);
+        $this->emit('updateWsDetailSizes');
+    }
 
-        // Keep these data with session
-        $this->orderInfo = $session->get('orderInfo');
-        $this->orderWsDetails = $session->get('orderWsDetails');
-        $this->orderWsDetailSizes = $session->get('orderWsDetailSizes');
+    public function deleteRedundant() {
+        $redundantData = DB::select(DB::raw(
+            "select defect_id, jml from (select defect_id, COUNT(defect_id) jml from (SELECT a.* from output_reworks a inner join output_defects c on c.id = a.defect_id inner join master_plan b on b.id = c.master_plan_id where b.sewing_line = '".Auth::user()->username."' and DATE_FORMAT(a.created_at, '%Y-%m-%d') = CURRENT_DATE() order by a.defect_id asc) a GROUP BY a.defect_id) a where a.jml > 1"
+        ));
+
+        foreach ($redundantData as $redundant) {
+            $reworkData = Rework::where('defect_id', $redundant->defect_id)->limit(1)->first();
+            Rework::where('id', $reworkData->id)->limit(1)->delete();
+            RftModel::where('rework_id', $reworkData->id)->limit(1)->delete();
+        }
+
+        $this->emit('alert', 'success', 'Redundant deleted');
+    }
+
+    public function render(SessionManager $session)
+    {
+        // Keep this data with session
+        $this->orderInfo = $session->get("orderInfo", $this->orderInfo);
+        $this->orderWsDetails = $session->get("orderWsDetails", $this->orderWsDetails);
+        $this->orderWsDetailSizes = $session->get("orderWsDetailSizes", $this->orderWsDetailSizes);
 
         // Get total output
         $this->outputRft = Rft::
@@ -577,5 +521,9 @@ class ProductionPanel extends Component
     {
         $this->resetValidation();
         $this->resetErrorBag();
+
+        if ($this->panels) {
+            $this->emit('loadingComplete');
+        }
     }
 }

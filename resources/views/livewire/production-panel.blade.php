@@ -1,17 +1,15 @@
 <div wire:poll.visible>
-    <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, submitUndo">
+    <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, submitUndo, updateOrder">
         <div class="loading-container">
             <div class="loading"></div>
         </div>
     </div>
 
-    @if ($loading)
-        <div class="loading-container-fullscreen">
-            <div class="loading-container">
-                <div class="loading"></div>
-            </div>
+    <div class="loading-container-fullscreen hidden" id="loading">
+        <div class="loading-container">
+            <div class="loading"></div>
         </div>
-    @endif
+    </div>
 
     {{-- Production Info --}}
     <div class="production-info row row-gap-1 align-items-center mb-3">
@@ -259,6 +257,10 @@
 
             @this.set('selectedColor', selectedColor);
             @this.set('selectedColorName', selectedColorName);
+
+            Livewire.emit('updateOrder');
+
+            $('#loading').removeClass('hidden');
         });
     </script>
 @endpush

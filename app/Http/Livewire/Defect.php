@@ -247,6 +247,9 @@ class Defect extends Component
 
             $this->emit('alert', 'success', $this->outputInput." output DEFECT berukuran ".$this->sizeInputText." dengan jenis defect : ".$type->defect_type." dan area defect : ".$area->defect_area." berhasil terekam.");
             $this->emit('hideModal', 'defect');
+
+            $this->outputInput = 1;
+            $this->sizeInput = '';
         } else {
             $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
         }

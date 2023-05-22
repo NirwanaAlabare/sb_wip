@@ -4,6 +4,7 @@
             <div class="loading"></div>
         </div>
     </div>
+
     {{-- Production Input --}}
     <div class="production-input row row-gap-3">
         <div class="col-md-4">
@@ -85,9 +86,4 @@
             </div>
         </div>
     </footer>
-
-    {{-- <button wire:click='deleteRedundant' class="btn btn-dark">CLEAR</button>
-    {{
-        $this->redundantData;
-    }} --}}
 </div>

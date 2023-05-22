@@ -94,6 +94,9 @@ class Reject extends Component
 
         if ($insertReject) {
             $this->emit('alert', 'success', $this->outputInput." REJECT output berukuran ".$this->sizeInputText." berhasil terekam.");
+
+            $this->outputInput = 1;
+            $this->sizeInput = '';
         } else {
             $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
         }

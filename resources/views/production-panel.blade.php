@@ -320,5 +320,18 @@
                 }
             }
         });
+
+        Livewire.on('loadingStart', () => {
+            if (document.getElementById('loading')) {
+                $('#loading').removeClass('hidden');
+            }
+        });
+
+        Livewire.on('loadingComplete', () => {
+            if (document.getElementById('loading')) {
+                $('#loading').addClass('hidden');
+            }
+        });
+
     </script>
 @endsection
