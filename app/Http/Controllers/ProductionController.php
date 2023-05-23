@@ -53,8 +53,8 @@ class ProductionController extends Controller
             ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
             ->where('so_det.cancel', 'N')
             ->where('master_plan.sewing_line', Auth::user()->username)
-            ->where('act_costing.kpno', $this->orderInfo->ws_number)
-            ->where('master_plan.tgl_plan', $this->orderInfo->tgl_plan)
+            ->where('act_costing.kpno', $orderInfo->ws_number)
+            ->where('master_plan.tgl_plan', $orderInfo->tgl_plan)
             ->groupBy(
                 'master_plan.id',
                 'master_plan.tgl_plan',
