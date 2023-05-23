@@ -37,15 +37,13 @@ class ProductionController extends Controller
             ->where('master_plan.id', $id)
             ->first();
 
-        $orderWsDetails = MasterPlan::selectRaw("
+        $this->orderWsDetails = MasterPlan::selectRaw("
                 master_plan.id as id,
                 master_plan.tgl_plan as tgl_plan,
                 master_plan.color as color,
                 mastersupplier.supplier as buyer_name,
                 act_costing.styleno as style_name,
-                mastersupplier.supplier as buyer_name,
-                so_det.styleno_prod as reff_number,
-                so.qty as qty_order
+                mastersupplier.supplier as buyer_name
             ")
             ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
             ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
@@ -55,17 +53,15 @@ class ProductionController extends Controller
             ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
             ->where('so_det.cancel', 'N')
             ->where('master_plan.sewing_line', Auth::user()->username)
-            ->where('act_costing.kpno', $orderInfo->ws_number)
-            ->where('master_plan.tgl_plan', $orderInfo->tgl_plan)
+            ->where('act_costing.kpno', $this->orderInfo->ws_number)
+            ->where('master_plan.tgl_plan', $this->orderInfo->tgl_plan)
             ->groupBy(
                 'master_plan.id',
                 'master_plan.tgl_plan',
                 'master_plan.color',
                 'mastersupplier.supplier',
                 'act_costing.styleno',
-                'mastersupplier.supplier',
-                'so_det.styleno_prod',
-                'so.qty'
+                'mastersupplier.supplier'
             )->get();
 
         // $orderInfo = $orderSql->where('master_plan.id', $id)->first();
