@@ -5,7 +5,10 @@
         </div>
     </div>
     {{-- Production Input --}}
-    <div class="production-input row row-gap-3">
+    <div class="mt-5 hidden" id="loading-rework">
+        <div class="loading mx-auto"></div>
+    </div>
+    <div class="production-input row row-gap-3" id="content-rework">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header align-items-center bg-rework text-light">
@@ -48,7 +51,14 @@
                                 <tbody>
                                     @if ($allDefectList->count() < 1)
                                         <tr>
-                                            <td colspan="4" class="text-center">Defect tidak ditemukan</td>
+                                            <td colspan="4" class="text-center">
+                                                <div wire:loading>
+                                                    <div class="loading-small"></div>
+                                                </div>
+                                                <div wire:loading.remove>
+                                                    Defect tidak ditemukan
+                                                </div>
+                                            </td>
                                         </tr>
                                     @else
                                         @foreach ($allDefectList as $defectList)
@@ -57,11 +67,16 @@
                                                 <td>{{ $defectList->defect_area }}</td>
                                                 <td><b>{{$defectList->total}}</b></td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-rework fw-bold w-100"
-                                                        wire:click="preSubmitMassRework('{{ $defectList->defect_type_id }}', '{{ $defectList->defect_area_id }}', '{{ $defectList->defect_type }}', '{{ $defectList->defect_area }}')"
-                                                    >
-                                                        REWORK
-                                                    </button>
+                                                    <div wire:loading>
+                                                        <div class="loading-small"></div>
+                                                    </div>
+                                                    <div wire:loading.remove>
+                                                        <button class="btn btn-sm btn-rework fw-bold w-100"
+                                                            wire:click="preSubmitMassRework('{{ $defectList->defect_type_id }}', '{{ $defectList->defect_area_id }}', '{{ $defectList->defect_type }}', '{{ $defectList->defect_area }}')"
+                                                        >
+                                                            REWORK
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

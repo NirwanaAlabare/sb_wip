@@ -11,7 +11,10 @@
                 <input type="date" class="form-control" name="date-to" id="date-to" value="{{ date('Y-m-d') }}" wire:model='dateTo'>
             </div>
         </div>
-        <div class="row row-gap-3">
+        <div class="loading-container hidden" id="loading-profile">
+            <div class="loading mx-auto"></div>
+        </div>
+        <div class="row row-gap-3" id="content-profile">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-rft text-light fw-bold">

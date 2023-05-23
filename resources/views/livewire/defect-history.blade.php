@@ -13,7 +13,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="card-body table-responsive">
+                <div class="loading-container hidden my-3" id="loading-defect-history">
+                    <div class="loading mx-auto"></div>
+                </div>
+                <div class="card-body table-responsive" id="content-defect-history">
                     <div class="d-flex justify-content-center align-items-center">
                         <input type="text" class="form-control mb-3 rounded-0" id="search" name="search" wire:model='search' placeholder="Search here...">
                         <button class="btn btn-dark mb-3 rounded-0" data-bs-toggle="modal" data-bs-target="#filter-modal"><i class="fa-regular fa-filter"></i></button>

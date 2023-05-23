@@ -5,12 +5,6 @@
         </div>
     </div>
 
-    <div class="loading-container-fullscreen hidden" id="loading">
-        <div class="loading-container">
-            <div class="loading"></div>
-        </div>
-    </div>
-
     {{-- Production Info --}}
     <div class="production-info row row-gap-1 align-items-center mb-3">
         <div class="col-md">
@@ -244,6 +238,12 @@
             </div>
         </div>
     </div>
+
+    @if ($panels)
+        <div class="w-100">
+            <p class="mt-4 text-center opacity-50"><small><i>{{ date('Y') }} &copy; Nirwana Digital Solution</i></small></p>
+        </div>
+    @endif
 </div>
 
 @push('scripts')
@@ -258,9 +258,7 @@
             @this.set('selectedColor', selectedColor);
             @this.set('selectedColorName', selectedColorName);
 
-            Livewire.emit('updateOrder');
-
-            $('#loading').removeClass('hidden');
+            @this.updateOrder();
         });
     </script>
 @endpush

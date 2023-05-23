@@ -10,7 +10,10 @@
                 <input type="date" class="form-control" name="date-to" id="date-to" value="{{ date('Y-m-d') }}" wire:model='dateTo'>
             </div>
         </div>
-        <div class="row">
+        <div class="loading-container hidden" id="loading-history">
+            <div class="loading mx-auto"></div>
+        </div>
+        <div class="row" id="content-history">
             {{-- <div class="col-md-12 table-responsive">
                 <table class="table table-bordered w-100 mx-auto">
                     <thead>

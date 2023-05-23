@@ -1,10 +1,9 @@
 <div>
-    <div class="loading-container-fullscreen" wire:loading wire:target="submitInput">
+    <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, submitUndo, updateOrder">
         <div class="loading-container">
             <div class="loading"></div>
         </div>
     </div>
-
     {{-- Production Input --}}
     <div class="production-input row row-gap-3">
         <div class="col-md-4">
@@ -58,11 +57,14 @@
                     </div>
                 @enderror
                 <div class="card-body">
-                    <input type="hidden" class="form-control mb-3" id="size-input" value="{{ $sizeInput }}" wire:model='sizeInput'>
-                    <div class="row h-100 row-gap-3">
+                    <div class="loading-container hidden" id="loading-rft">
+                        <div class="loading mx-auto"></div>
+                    </div>
+                    <input type="hidden" class="form-control mb-3" id="size-input" value="{{ $sizeInput }}" wire:model='sizeInput' >
+                    <div class="row h-100 row-gap-3" id="content-rft">
                         @foreach ($orderWsDetailSizes as $order)
                             <div class="col-md-4">
-                                <button class="btn btn-rft w-100 h-100 fs-3 {{ $sizeInput == $order->so_det_id ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->so_det_id }}','{{ $order->size }}')">
+                                <button class="btn btn-rft w-100 h-100 fs-3 {{ $sizeInput == $order->so_det_id ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->so_det_id }}','{{ $order->size }}')"  wire:loading.attr="disabled">
                                     {{ $order->size }}
                                 </button>
                             </div>
@@ -71,6 +73,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="mt-3">
+        <p class="text-center opacity-50 my-0"><small><i>{{ date('Y') }} &copy; Nirwana Digital Solution</i></small></p>
     </div>
 
     {{-- Back --}}

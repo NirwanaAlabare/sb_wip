@@ -22,9 +22,9 @@ class ProfileContent extends Component
     public $dateFrom;
     public $dateTo;
 
-    public function mount($masterPlan)
+    public function mount()
     {
-        // dd($masterPlan);
+        $masterPlan = session()->get('orderInfo');
         $this->masterPlan = $masterPlan ? $masterPlan->id : null;
         $this->dateFrom = $this->dateFrom ? $this->dateFrom : date('Y-m-d');
         $this->dateTo = $this->dateTo ? $this->dateTo : date('Y-m-d');
@@ -32,6 +32,9 @@ class ProfileContent extends Component
 
     public function render()
     {
+        $masterPlan = session()->get('orderInfo');
+        $this->masterPlan = $masterPlan ? $masterPlan->id : null;
+
         $totalRftSql = Rft::select('output_rfts.*')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_rfts.master_plan_id')->
             where('master_plan.sewing_line', Auth::user()->username);

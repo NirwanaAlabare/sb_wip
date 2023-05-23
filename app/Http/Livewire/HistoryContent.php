@@ -21,9 +21,9 @@ class HistoryContent extends Component
     public $dateFrom;
     public $dateTo;
 
-    public function mount($masterPlan)
+    public function mount()
     {
-        // dd($masterPlan);
+        $masterPlan = session()->get('orderInfo');
         $this->masterPlan = $masterPlan ? $masterPlan->id : null;
         $this->dateFrom = $this->dateFrom ? $this->dateFrom : date('Y-m-d');
         $this->dateTo = $this->dateTo ? $this->dateTo : date('Y-m-d');
@@ -31,6 +31,8 @@ class HistoryContent extends Component
 
     public function render()
     {
+        $masterPlan = session()->get('orderInfo');
+        $this->masterPlan = $masterPlan ? $masterPlan->id : null;
         // $latestOutput = DB::select(DB::raw("
         //     SELECT output_rfts.created_at, output_rfts.updated_at FROM output_rfts
         //     LEFT JOIN master_plan ON master_plan.id = output_rfts.master_plan_id

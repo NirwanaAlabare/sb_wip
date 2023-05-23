@@ -322,16 +322,50 @@
         });
 
         Livewire.on('loadingStart', () => {
-            if (document.getElementById('loading')) {
-                $('#loading').removeClass('hidden');
+            if (document.getElementById('loading-rft')) {
+                $('#loading-rft').removeClass('hidden');
+                $('#content-rft').addClass('hidden');
+            }
+            if (document.getElementById('loading-defect')) {
+                $('#loading-defect').removeClass('hidden');
+                $('#content-defect').addClass('hidden');
+            }
+            if (document.getElementById('loading-defect-history')) {
+                $('#loading-defect-history').removeClass('hidden');
+                $('#content-defect-history').addClass('hidden');
+            }
+            if (document.getElementById('loading-reject')) {
+                $('#loading-reject').removeClass('hidden');
+                $('#content-reject').addClass('hidden');
+            }
+            if (document.getElementById('loading-rework')) {
+                $('#loading-rework').removeClass('hidden');
+                $('#content-rework').addClass('hidden');
+            }
+            if (document.getElementById('loading-profile')) {
+                $('#loading-profile').removeClass('hidden');
+                $('#content-profile').addClass('hidden');
+            }
+            if (document.getElementById('loading-history')) {
+                $('#loading-history').removeClass('hidden');
+                $('#content-history').addClass('hidden');
+            }
+            if (document.getElementById('loading-undo')) {
+                $('#loading-undo').removeClass('hidden');
+                $('#content-undo').addClass('hidden');
             }
         });
 
-        Livewire.on('loadingComplete', () => {
-            if (document.getElementById('loading')) {
-                $('#loading').addClass('hidden');
-            }
-        });
+        // Livewire.on('loadingComplete', () => {
+        //     if (document.getElementById('loading')) {
+        //         $('#loading').addClass('hidden');
+        //     }
+        // });
 
+        // Livewire.hook('message.processed', (message, component) => {
+        //     if (document.getElementById('loading')) {
+        //         $('#loading').addClass('hidden');
+        //     };
+        // })
     </script>
 @endsection

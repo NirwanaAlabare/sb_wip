@@ -43,6 +43,10 @@ class Reject extends Component
 
     public function updateWsDetailSizes()
     {
+        $this->outputInput = 1;
+        $this->sizeInput = null;
+        $this->sizeInputText = '';
+
         $this->orderInfo = session()->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = session()->get('orderWsDetailSizes', $this->orderWsDetailSizes);
     }

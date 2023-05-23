@@ -15,7 +15,7 @@
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 html, body {
@@ -524,6 +524,13 @@ input[type=number] {
 .footer {
     border-top: 1px solid #d2d2d2;
     background: rgba(255, 255, 255, 0.7);
+}
+
+.copyright {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media (max-width:768px) {

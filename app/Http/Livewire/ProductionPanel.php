@@ -49,8 +49,6 @@ class ProductionPanel extends Component
     public $undoDefectType;
     public $undoDefectArea;
 
-    public $loadingPanel;
-
     // Rules
     protected $rules = [
         'undoType' => 'required',
@@ -111,7 +109,6 @@ class ProductionPanel extends Component
         $this->undoSize = "";
         $this->undoDefectType = "";
         $this->undoDefectArea = "";
-        $this->loading = false;
 
         $this->orderWsDetailSizes = MasterPlan::selectRaw("
                 MIN(so_det.id) as so_det_id,
@@ -343,9 +340,7 @@ class ProductionPanel extends Component
     }
 
     public function updateOrder() {
-        if ($this->panels) {
-            $this->emit('loadingStart');
-        }
+        $this->emit('loadingStart');
 
         $this->selectedSize = 'all';
 
@@ -521,9 +516,5 @@ class ProductionPanel extends Component
     {
         $this->resetValidation();
         $this->resetErrorBag();
-
-        if ($this->panels) {
-            $this->emit('loadingComplete');
-        }
     }
 }

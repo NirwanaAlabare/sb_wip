@@ -19,7 +19,6 @@ class Rft extends Component
     public $sizeInput;
     public $sizeInputText;
     public $submitting;
-    public $redundantData;
 
     protected $rules = [
         'outputInput' => 'required|numeric|min:1',
@@ -34,7 +33,7 @@ class Rft extends Component
     ];
 
     protected $listeners = [
-        'updateWsDetailSizes' => 'updateWsDetailSizes'
+        'updateWsDetailSizes' => 'updateWsDetailSizes',
     ];
 
     public function mount(SessionManager $session, $orderWsDetailSizes)
@@ -50,7 +49,9 @@ class Rft extends Component
 
     public function updateWsDetailSizes()
     {
-        $this->emit('loadingStart');
+        $this->outputInput = 1;
+        $this->sizeInput = null;
+        $this->sizeInputText = '';
 
         $this->orderInfo = session()->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = session()->get('orderWsDetailSizes', $this->orderWsDetailSizes);
@@ -129,9 +130,5 @@ class Rft extends Component
     {
         $this->resetValidation();
         $this->resetErrorBag();
-    }
-
-    public function dehydrateOrderWsDetailSizes() {
-        $this->emit('loadingComplete');
     }
 }

@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    @livewire('history-content', ['masterPlan' => Session::get('orderInfo')])
+                    @livewire('history-content')
                 </div>
             </div>
             <div class="modal-footer">

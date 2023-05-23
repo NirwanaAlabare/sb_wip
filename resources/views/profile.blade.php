@@ -37,7 +37,7 @@
                     </div>
                 </form>
                 <div class="mt-5">
-                    @livewire('profile-content', ['masterPlan' => Session::get('orderInfo')])
+                    @livewire('profile-content')
                 </div>
             </div>
             <div class="modal-footer">

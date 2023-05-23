@@ -72,8 +72,11 @@
                     </div>
                 @enderror
                 <div class="card-body">
+                    <div class="loading-container hidden" id="loading-defect">
+                        <div class="loading mx-auto"></div>
+                    </div>
                     <input type="hidden" class="form-control mb-3" id="size-input" value="{{ $sizeInput }}" wire:model='sizeInput'>
-                    <div class="row h-100 row-gap-3">
+                    <div class="row h-100 row-gap-3" id="content-defect">
                         @foreach ($orderWsDetailSizes as $order)
                             <div class="col-md-4">
                                 <button class="btn btn-defect w-100 h-100 fs-3 {{ $sizeInput == $order->so_det_id ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->so_det_id }}','{{ $order->size }}')">

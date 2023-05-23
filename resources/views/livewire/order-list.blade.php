@@ -73,4 +73,8 @@
             @endforeach
         @endif
     </div>
+
+    <div class="w-100 mt-3">
+        <p class="text-center opacity-50"><small><i>{{ date('Y') }} &copy; Nirwana Digital Solution</i></small></p>
+    </div>
 </div>
