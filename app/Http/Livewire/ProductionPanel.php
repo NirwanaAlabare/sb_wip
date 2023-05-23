@@ -372,9 +372,7 @@ class ProductionPanel extends Component
                 master_plan.color as color,
                 mastersupplier.supplier as buyer_name,
                 act_costing.styleno as style_name,
-                mastersupplier.supplier as buyer_name,
-                so_det.styleno_prod as reff_number,
-                so.qty as qty_order
+                mastersupplier.supplier as buyer_name
             ")
             ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
             ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
@@ -392,9 +390,7 @@ class ProductionPanel extends Component
                 'master_plan.color',
                 'mastersupplier.supplier',
                 'act_costing.styleno',
-                'mastersupplier.supplier',
-                'so_det.styleno_prod',
-                'so.qty'
+                'mastersupplier.supplier'
             )->get();
 
         $this->orderWsDetailSizes = MasterPlan::selectRaw("
