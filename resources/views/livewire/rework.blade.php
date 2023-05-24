@@ -227,35 +227,6 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    @error('massQty')
-                        <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
-                            <small>
-                                <strong>Error</strong> {{$message}}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </small>
-                        </div>
-                    @enderror
-                    <label class="form-label">QTY</label>
-                    <input type="number" class="form-control @error('massQty') is-invalid @enderror" name="mass-qty" id="mass-qty" value="1" wire:model=massQty>
-                </div>
-                <div class="mb-3">
-                    @error('massSize')
-                        <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
-                            <small>
-                                <strong>Error</strong> {{$message}}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </small>
-                        </div>
-                    @enderror
-                    <label class="form-label">Size</label>
-                    <select class="form-select @error('massSize') is-invalid @enderror" name="mass-size" id="mass-size" wire:model='massSize'>
-                        <option value="" selected disabled>Select Size</option>
-                        @foreach ($massSelectedDefect as $defect)
-                            <option value="{{ $defect->so_det_id }}">{{ $defect->size }} ({{"qty : ".$defect->total}})</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
                     <input type="hidden" name="mass-defect-type" id="mass-defect-type" wire:model=massDefectType>
                     @error('massDefectType')
                         <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
@@ -266,7 +237,7 @@
                         </div>
                     @enderror
                     <label class="form-label">Defect Type</label>
-                    <input type="text" class="form-control @error('massDefectType') is-invalid @enderror" wire:model=massDefectTypeName readonly>
+                    <input type="text" class="form-control @error('massDefectType') is-invalid @enderror" wire:model=massDefectTypeName disabled>
                 </div>
                 <div class="mb-3">
                     <input type="hidden" name="mass-defect-area" id="mass-defect-area" wire:model=massDefectArea>
@@ -279,7 +250,42 @@
                         </div>
                     @enderror
                     <label class="form-label">Defect Area</label>
-                    <input type="text" class="form-control @error('massDefectArea') is-invalid @enderror" wire:model=massDefectAreaName readonly>
+                    <input type="text" class="form-control @error('massDefectArea') is-invalid @enderror" wire:model=massDefectAreaName disabled>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            @error('massQty')
+                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                    <small>
+                                        <strong>Error</strong> {{$message}}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </small>
+                                </div>
+                            @enderror
+                            <label class="form-label">QTY</label>
+                            <input type="number" class="form-control @error('massQty') is-invalid @enderror" name="mass-qty" id="mass-qty" value="1" wire:model=massQty>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            @error('massSize')
+                                <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                    <small>
+                                        <strong>Error</strong> {{$message}}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </small>
+                                </div>
+                            @enderror
+                            <label class="form-label">Size</label>
+                            <select class="form-select @error('massSize') is-invalid @enderror" name="mass-size" id="mass-size" wire:model='massSize'>
+                                <option value="" selected disabled>Select Size</option>
+                                @foreach ($massSelectedDefect as $defect)
+                                    <option value="{{ $defect->so_det_id }}">{{ $defect->size }} ({{"qty : ".$defect->total}})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer justify-content-center">

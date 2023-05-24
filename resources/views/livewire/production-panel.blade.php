@@ -168,46 +168,52 @@
 
         {{-- Undo --}}
         <div class="modal" tabindex="-1" id="undo-modal" wire:ignore.self>
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">UNDO <span class="bg-{{ $undoType }} fs-5 px-3 pb-1 mb-0 rounded text-center text-light fw-bold">{{ strtoupper($undoType) }}</span></h5>
+                  <h5 class="modal-title">UNDO <span class="bg-{{ $undoType }} fs-5 px-3 py-1 mb-0 rounded text-center text-light fw-bold">{{ strtoupper($undoType) }}</span></h5>
                   <button type="button" class="btn btn-light border-none pt-1 close" data-dismiss="modal" aria-label="Close" wire:click="$emit('hideModal', 'undo')">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" class="form-control" name="undo" id="undo" value="{{ $undoType }}">
-                    <div class="mb-3">
-                        @error('undoQty')
-                            <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
-                                <small>
-                                    <strong>Error</strong> {{$message}}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </small>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                @error('undoQty')
+                                    <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                        <small>
+                                            <strong>Error</strong> {{$message}}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </small>
+                                    </div>
+                                @enderror
+                                <label class="form-label">QTY</label>
+                                <input type="number" class="form-control @error('undoQty') is-invalid @enderror" name="undo-qty" id="undo-qty" value="1" wire:model=undoQty>
                             </div>
-                        @enderror
-                        <label class="form-label">QTY</label>
-                        <input type="number" class="form-control @error('undoQty') is-invalid @enderror" name="undo-qty" id="undo-qty" value="1" wire:model=undoQty>
-                    </div>
-                    <div class="mb-3">
-                        @error('undoSize')
-                            <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
-                                <small>
-                                    <strong>Error</strong> {{$message}}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </small>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                @error('undoSize')
+                                    <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
+                                        <small>
+                                            <strong>Error</strong> {{$message}}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </small>
+                                    </div>
+                                @enderror
+                                <label class="form-label">Size</label>
+                                <select class="form-select @error('undoSize') is-invalid @enderror" name="undo-size" id="undo-size" wire:model='undoSize'>
+                                    <option value="" selected disabled>Select Size</option>
+                                    @if ($undoSizes)
+                                        @foreach ($undoSizes as $size)
+                                            <option value="{{ $size->so_det_id }}">{{ $size->size }} ({{ "qty : ".$size->total }})</option>
+                                        @endforeach
+                                    @endif
+                                </select>
                             </div>
-                        @enderror
-                        <label class="form-label">Size</label>
-                        <select class="form-select @error('undoSize') is-invalid @enderror" name="undo-size" id="undo-size" wire:model='undoSize'>
-                            <option value="" selected disabled>Select Size</option>
-                            @if ($undoSizes)
-                                @foreach ($undoSizes as $size)
-                                    <option value="{{ $size->so_det_id }}">{{ $size->size }} ({{ "qty : ".$size->total }})</option>
-                                @endforeach
-                            @endif
-                        </select>
+                        </div>
                     </div>
                     @if ($undoType == 'defect' || $undoType == 'rework')
                         <div class="mb-3">

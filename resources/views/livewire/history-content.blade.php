@@ -97,7 +97,9 @@
                             <th>Ukuran</th>
                             <th>Defect Type</th>
                             <th>Defect Area</th>
-                            <th>Defect Image</th>
+                            @if ($masterPlan)
+                                <th>Defect Image</th>
+                            @endif
                             <th>Qty</th>
                         </tr>
                     </thead>
@@ -113,11 +115,13 @@
                                     <td>{{ $latestDefect->size }}</td>
                                     <td>{{ $latestDefect->defect_type }}</td>
                                     <td>{{ $latestDefect->defect_area }}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestDefect->gambar}}', {{$latestDefect->defect_area_x}}, {{$latestDefect->defect_area_y}})'">
-                                            <i class="fa-regular fa-image"></i>
-                                        </button>
-                                    </td>
+                                    @if ($masterPlan)
+                                        <td>
+                                            <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestDefect->gambar}}', {{$latestDefect->defect_area_x}}, {{$latestDefect->defect_area_y}})'">
+                                                <i class="fa-regular fa-image"></i>
+                                            </button>
+                                        </td>
+                                    @endif
                                     <td>{{ $latestDefect->total }}</td>
                                 </tr>
                             @endforeach
@@ -135,7 +139,9 @@
                             <th>Ukuran</th>
                             <th>Defect Type</th>
                             <th>Defect Area</th>
-                            <th>Defect Image</th>
+                            @if ($masterPlan)
+                                <th>Defect Image</th>
+                            @endif
                             <th>Qty</th>
                         </tr>
                     </thead>
@@ -151,11 +157,13 @@
                                     <td>{{ $latestRework->size }}</td>
                                     <td>{{ $latestRework->defect_type }}</td>
                                     <td>{{ $latestRework->defect_area }}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestRework->gambar}}', {{$latestRework->defect_area_x}}, {{$latestRework->defect_area_y}})'">
-                                            <i class="fa-regular fa-image"></i>
-                                        </button>
-                                    </td>
+                                    @if ($masterPlan)
+                                        <td>
+                                            <button type="button" class="btn btn-dark" wire:click="$emit('showDefectAreaImage', '{{$latestRework->gambar}}', {{$latestRework->defect_area_x}}, {{$latestRework->defect_area_y}})'">
+                                                <i class="fa-regular fa-image"></i>
+                                            </button>
+                                        </td>
+                                    @endif
                                     <td>{{ $latestRework->total }}</td>
                                 </tr>
                             @endforeach
