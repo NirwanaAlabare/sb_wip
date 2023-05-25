@@ -59,7 +59,8 @@ class Defect extends Component
     protected $listeners = [
         'setDefectAreaPosition' => 'setDefectAreaPosition',
         'updateWsDetailSizes' => 'updateWsDetailSizes',
-        'updateOutput' => 'updateOutput'
+        'updateOutput' => 'updateOutput',
+        'clearInput' => 'clearInput',
     ];
 
     public function mount(SessionManager $session, $orderWsDetailSizes)

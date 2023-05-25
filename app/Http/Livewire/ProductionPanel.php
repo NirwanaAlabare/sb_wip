@@ -139,6 +139,7 @@ class ProductionPanel extends Component
     {
         $this->panels = false;
         $this->defect = !($this->defect);
+        $this->emitTo('defect','clearInput');
         $this->emitTo('defect','updateOutput');
         $this->emit('toInputPanel', 'defect');
     }
