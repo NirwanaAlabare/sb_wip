@@ -393,6 +393,12 @@
                 var defectArea = $('#defect-area-select2').select2("val");
                 @this.set('defectArea', defectArea);
             });
+
+            Livewire.on('clearSelectDefectAreaPoint', () => {
+                $('#product-type-select2').val("").trigger('change');
+                $('#defect-type-select2').val("").trigger('change');
+                $('#defect-area-select2').val("").trigger('change');
+            });
         })
     </script>
 @endpush

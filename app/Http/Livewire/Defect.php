@@ -216,6 +216,14 @@ class Defect extends Component
 
     public function preSubmitInput()
     {
+        $this->emit('clearSelectDefectAreaPoint');
+
+        $this->defectType = null;
+        $this->defectArea = null;
+        $this->productType = null;
+        $this->defectAreaPositionX = null;
+        $this->defectAreaPositionY = null;
+
         $this->validateOnly('outputInput');
         $this->validateOnly('sizeInput');
 

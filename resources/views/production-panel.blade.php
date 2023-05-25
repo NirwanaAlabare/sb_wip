@@ -240,10 +240,10 @@
                 localMousePos = { x: localX, y: localY };
 
                 defectAreaImageContainer.addEventListener('click', (event) => {
-                    defectAreaImagePoint.style.width = 0.05 * rect.width+'px';
+                    defectAreaImagePoint.style.width = 0.03 * rect.width+'px';
                     defectAreaImagePoint.style.height = defectAreaImagePoint.style.width;
-                    defectAreaImagePoint.style.left =  'calc('+localMousePos.x+'% - '+0.025 * rect.width+'px)';
-                    defectAreaImagePoint.style.top =  'calc('+localMousePos.y+'% - '+0.025 * rect.width+'px)';
+                    defectAreaImagePoint.style.left =  'calc('+localMousePos.x+'% - '+0.015 * rect.width+'px)';
+                    defectAreaImagePoint.style.top =  'calc('+localMousePos.y+'% - '+0.015 * rect.width+'px)';
                     defectAreaImagePoint.style.display = 'block';
 
                     defectAreaPositionX.value = localMousePos.x;
@@ -271,6 +271,21 @@
             });
         }
 
+        Livewire.on('clearSelectDefectAreaPoint', () => {
+            let defectAreaImagePoint = document.getElementById('defect-area-img-point');
+            let defectAreaPositionX = document.getElementById('defect-area-position-x');
+            let defectAreaPositionY = document.getElementById('defect-area-position-y');
+
+            defectAreaImagePoint.style.left = '0px';
+            defectAreaImagePoint.style.top = '0px';
+            defectAreaImagePoint.style.display = 'none';
+
+            defectAreaPositionX.value = null;
+            defectAreaPositionY.value = null;
+
+            Livewire.emit('setDefectAreaPosition', defectAreaPositionX.value, defectAreaPositionY.value);
+        });
+
         function onShowDefectAreaImage(defectAreaImage, x, y) {
             Livewire.emit('showDefectAreaImage', defectAreaImage, x, y);
         }
@@ -289,7 +304,7 @@
             if (rect.width == 0) {
                 pointWidth = 35;
             } else {
-                pointWidth = 0.05 * rect.width;
+                pointWidth = 0.03 * rect.width;
             }
 
             defectAreaImagePointElement.style.width = pointWidth+'px';
@@ -313,10 +328,10 @@
                 let rect = defectAreaImage.getBoundingClientRect();
 
                 for(i = 0; i < defectAreaImagePoint.length; i++) {
-                    defectAreaImagePoint[i].style.width = 0.05 * rect.width+'px';
+                    defectAreaImagePoint[i].style.width = 0.03 * rect.width+'px';
                     defectAreaImagePoint[i].style.height = defectAreaImagePoint[i].style.width;
-                    defectAreaImagePoint[i].style.left =  'calc('+defectAreaImagePoint[i].getAttribute('data-x')+'% - '+0.025 * rect.width+'px)';
-                    defectAreaImagePoint[i].style.top =  'calc('+defectAreaImagePoint[i].getAttribute('data-y')+'% - '+0.025 * rect.width+'px)';
+                    defectAreaImagePoint[i].style.left =  'calc('+defectAreaImagePoint[i].getAttribute('data-x')+'% - '+0.015 * rect.width+'px)';
+                    defectAreaImagePoint[i].style.top =  'calc('+defectAreaImagePoint[i].getAttribute('data-y')+'% - '+0.015 * rect.width+'px)';
                 }
             }
         });
