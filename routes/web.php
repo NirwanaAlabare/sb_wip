@@ -40,24 +40,4 @@ Route::middleware('auth')->group(function () {
         // Route::get('/{id}', 'index');
         Route::put('/update/{id}', 'update')->middleware('auth');
     });
-
-    Route::get('/rft', function () {
-        return view('rft');
-    });
-
-    Route::get('/defect', function () {
-        return view('defect');
-    });
-
-    Route::get('/defect-history', function () {
-        return view('defect-history');
-    });
-
-    Route::get('/reject', function () {
-        return view('reject');
-    });
-
-    Route::get('/rework', function () {
-        return view('rework');
-    });
 });

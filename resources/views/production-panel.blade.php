@@ -96,7 +96,7 @@
 
         Livewire.on('toInputPanel', (type) => {
             $('#input-type').removeClass();
-            $('#input-type').addClass('bg-'+type+' w-100 fs-6 pb-1 mb-0 rounded text-center text-light fw-bold');
+            $('#input-type').addClass('bg-'+type+' w-100 fs-6 py-1 mb-0 rounded text-center text-light fw-bold');
             $('#input-type').html(type.toUpperCase());
             $('#input-type').show();
         });

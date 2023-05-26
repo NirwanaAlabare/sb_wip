@@ -148,65 +148,6 @@ function logout() {
     });
 }
 
-// Production Panel View Change
-function toProductionPanel(id) {
-    $(id).hide();
-    $('#input-type').hide();
-    $('#rft-input').val(1);
-    $('#defect-input').val(1);
-    $('#reject-input').val(1);
-    $('#production-panel').show();
-    $('.footer').hide();
-}
-
-function toRft() {
-    $('#input-type').removeClass()
-    $('#input-type').addClass('bg-rft w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
-    $('#input-type').html('RFT');
-    $('#input-type').show();
-    $('#production-panel').hide();
-    $('#rft-container').show();
-    $('.footer').show();
-}
-
-function toDefect() {
-    $('#input-type').removeClass()
-    $('#input-type').addClass('bg-defect w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
-    $('#input-type').html('DEFECT');
-    $('#input-type').show();
-    $('#production-panel').hide();
-    $('#defect-container').show();
-    $('.footer').show();
-}
-
-function toDefectHistory() {
-    $('#input-type').removeClass()
-    $('#input-type').addClass('bg-defect w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
-    $('#input-type').html('DEFECT');
-    $('#input-type').show();
-    $('#production-panel').hide();
-    $('#defect-history-container').show();
-}
-
-function toReject() {
-    $('#input-type').removeClass()
-    $('#input-type').addClass('bg-reject w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
-    $('#input-type').html('REJECT');
-    $('#input-type').show();
-    $('#production-panel').hide();
-    $('#reject-container').show();
-    $('.footer').show();
-}
-
-function toRework() {
-    $('#input-type').removeClass()
-    $('#input-type').addClass('bg-rework w-100 fs-5 pb-1 mb-0 rounded text-center text-light fw-bold');
-    $('#input-type').html('REWORK');
-    $('#input-type').show();
-    $('#production-panel').hide();
-    $('#rework-container').show();
-}
-
 // defect modal
 function showDefectModal() {
     $("#defect-modal").modal("show");
