@@ -24,7 +24,7 @@
                     <div class="mb-3">
                         <h3 class="text-center"><i class="fa-regular fa-shirt"></i> Piece</h3>
                     </div>
-                    <input type="number" class="qty-input" id="reject-input" value="{{ $outputInput }}" wire:model='outputInput'>
+                    <input type="number" class="qty-input" id="reject-input" value="{{ $outputInput }}" wire:model.defer='outputInput'>
                     <div class="d-flex justify-content-between gap-1 mt-3">
                         <button class="btn btn-danger w-50 fs-3" id="decrement" wire:click="outputDecrement">-1</button>
                         <button class="btn btn-success w-50 fs-3" id="increment" wire:click="outputIncrement">+1</button>
@@ -60,7 +60,7 @@
                     <div class="loading-container hidden" id="loading-reject">
                         <div class="loading mx-auto"></div>
                     </div>
-                    <input type="hidden" class="form-control mb-3" id="size-input" value="{{ $sizeInput }}" wire:model='sizeInput'>
+                    <input type="hidden" class="form-control mb-3" id="size-input" value="{{ $sizeInput }}" wire:model.defer='sizeInput'>
                     <div class="row h-100 row-gap-3" id="content-reject">
                         @foreach ($orderWsDetailSizes as $order)
                             <div class="col-md-4">
