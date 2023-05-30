@@ -16,7 +16,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-7 align-self-center">
+                        <div class="col-md-5 align-self-center">
                             <div class="w-100 h-100" wire:loading wire:target='loadReworkPage'>
                                 <div class="loading-container">
                                     <div class="loading"></div>
@@ -35,7 +35,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-5 table-responsive">
+                        <div class="col-md-7 table-responsive">
                             <div class="mb-3">
                                 <input type="text" class="form-control rounded-0" wire:model='allDefectListFilter' placeholder="Search defect">
                             </div>
