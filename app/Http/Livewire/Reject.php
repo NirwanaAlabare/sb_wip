@@ -97,7 +97,12 @@ class Reject extends Component
         $insertReject = RejectModel::insert($insertData);
 
         if ($insertReject) {
-            $this->emit('alert', 'success', $this->outputInput." REJECT output berukuran ".$this->sizeInputText." berhasil terekam.");
+            $getSize = DB::table('so_det')
+                ->select('id', 'size')
+                ->where('id', $this->sizeInput)
+                ->first();
+
+            $this->emit('alert', 'success', $this->outputInput." REJECT output berukuran ".$getSize->size." berhasil terekam.");
 
             $this->outputInput = 1;
             $this->sizeInput = '';
