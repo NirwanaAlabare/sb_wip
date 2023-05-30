@@ -11,7 +11,7 @@
                     </div>
                     <div class="col-md-4">
                         <li class="nav-item w-100">
-                            <input type="date" class="form-control form-control-sm" id="tanggal" name="tanggal">
+                            <input type="date" class="form-control form-control-sm" id="tanggal" name="tanggal" readonly>
                         </li>
                     </div>
                     <div class="col-md-3">
