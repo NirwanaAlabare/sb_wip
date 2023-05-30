@@ -11,6 +11,7 @@ use App\Models\SignalBit\DefectType;
 use App\Models\SignalBit\DefectArea;
 use App\Models\SignalBit\Defect as DefectModel;
 use Carbon\Carbon;
+use DB;
 
 class Defect extends Component
 {
@@ -21,6 +22,7 @@ class Defect extends Component
     public $output;
     public $outputInput;
     public $sizeInput;
+    public $sizeInputText;
     public $defectTypes;
     public $defectAreas;
     public $productTypes;
@@ -257,8 +259,12 @@ class Defect extends Component
         if ($insertDefect) {
             $type = DefectType::select('defect_type')->find($this->defectType);
             $area = DefectArea::select('defect_area')->find($this->defectArea);
+            $getSize = DB::table('so_det')
+                ->select('id', 'size')
+                ->where('id', $this->sizeInput)
+                ->first();
 
-            $this->emit('alert', 'success', $this->outputInput." output DEFECT berukuran ".$this->sizeInputText." dengan jenis defect : ".$type->defect_type." dan area defect : ".$area->defect_area." berhasil terekam.");
+            $this->emit('alert', 'success', $this->outputInput." output DEFECT berukuran ".$getSize->size." dengan jenis defect : ".$type->defect_type." dan area defect : ".$area->defect_area." berhasil terekam.");
             $this->emit('hideModal', 'defect');
 
             $this->outputInput = 1;

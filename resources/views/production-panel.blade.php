@@ -371,6 +371,23 @@
             }
         });
 
+        // function clearOutputInputJs() {
+        //     if (document.getElementById('rft-input')) {
+        //         let rftElement = document.getElementById('rft-input');
+        //         rftElement.value = '';
+        //     }
+
+        //     if (document.getElementById('defect-input')) {
+        //         let defectElement = document.getElementById('defect-input');
+        //         defectElement.value = '';
+        //     }
+
+        //     if (document.getElementById('reject-input')) {
+        //         let rejectElement = document.getElementById('reject-input');
+        //         rejectElement.value = '';
+        //     }
+        // }
+
         // Livewire.on('loadingComplete', () => {
         //     if (document.getElementById('loading')) {
         //         $('#loading').addClass('hidden');

@@ -103,7 +103,12 @@ class Rft extends Component
         $insertRft = RftModel::insert($insertData);
 
         if ($insertRft) {
-            $this->emit('alert', 'success', $this->outputInput." output berukuran ".$this->sizeInputText." berhasil terekam.");
+            $getSize = DB::table('so_det')
+                ->select('id', 'size')
+                ->where('id', $this->sizeInput)
+                ->first();
+
+            $this->emit('alert', 'success', $this->outputInput." output berukuran ".$getSize->size." berhasil terekam.");
 
             $this->outputInput = 1;
             $this->sizeInput = '';

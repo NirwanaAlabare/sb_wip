@@ -511,3 +511,10 @@ function hideDefectAreaImage() {
     showDefectArea.style.justifyContent = null;
     showDefectArea.style.alignItems = null;
 }
+
+function clearOutputInputJs() {
+    if (document.getElementById('rft-input')) {
+        let rftElement = document.getElementById('rft-input');
+        rftElement.value = '';
+    }
+}

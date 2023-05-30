@@ -1,5 +1,5 @@
 <div>
-    <div class="loading-container-fullscreen" wire:loading wire:target="submitInput, updateOrder">
+    <div class="loading-container-fullscreen" wire:loading wire:target="selectDefectAreaPosition, preSubmitInput, submitInput, updateOrder">
         <div class="loading-container">
             <div class="loading"></div>
         </div>
@@ -75,14 +75,17 @@
                     <div class="loading-container hidden" id="loading-defect">
                         <div class="loading mx-auto"></div>
                     </div>
-                    <input type="hidden" class="form-control mb-3" id="size-input" value="{{ $sizeInput }}" wire:model.defer='sizeInput'>
-                    <div class="row h-100 row-gap-3" id="content-defect">
+                    <div class="loading-container" wire:loading wire:target='setSizeInput'>
+                        <div class="loading mx-auto"></div>
+                    </div>
+                    <div class="row h-100 row-gap-3" id="content-defect" wire:loading.remove wire:target='setSizeInput'>
                         @foreach ($orderWsDetailSizes as $order)
-                            <div class="col-md-4">
-                                <button class="btn btn-defect w-100 h-100 fs-3 {{ $sizeInput == $order->so_det_id ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->so_det_id }}','{{ $order->size }}')">
+                            <label class="size-input col-md-4">
+                                <input type="radio" name="size-input" id="size-input" value="{{ $order->so_det_id }}"  wire:model.defer='sizeInput'>
+                                <div class="btn btn-defect btn-size w-100 h-100 fs-3 py-auto d-flex justify-content-center align-items-center">
                                     {{ $order->size }}
-                                </button>
-                            </div>
+                                </div>
+                            </label>
                         @endforeach
                     </div>
                 </div>
