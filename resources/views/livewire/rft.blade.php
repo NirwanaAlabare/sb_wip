@@ -64,7 +64,7 @@
                     <div class="row h-100 row-gap-3" id="content-rft">
                         @foreach ($orderWsDetailSizes as $order)
                             <div class="col-md-4">
-                                <button class="btn btn-rft w-100 h-100 fs-3 {{ $sizeInput == $order->so_det_id ? 'active' : '' }}" wire:click="setSizeInput('{{ $order->so_det_id }}','{{ $order->size }}')"  wire:loading.attr="disabled">
+                                <button class="btn btn-rft w-100 h-100 fs-3 {{ $sizeInput == $order->so_det_id ? 'active' : '' }}" wire:key='size-{{ $order->so_det_id }}' wire:click="setSizeInput('{{ $order->so_det_id }}','{{ $order->size }}')"  wire:loading.attr="disabled">
                                     {{ $order->size }}
                                 </button>
                             </div>
