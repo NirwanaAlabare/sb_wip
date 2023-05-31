@@ -58,6 +58,7 @@ class OrderList extends Component
                         left join
                             output_rfts on output_rfts.master_plan_id = master_plan.id
                         where
+                            master_plan.sewing_line = '".strtoupper(Auth::user()->username)."' AND
                             master_plan.tgl_plan = '".$this->date."'
                         group by
                             master_plan.id_ws
@@ -74,6 +75,7 @@ class OrderList extends Component
                         from
                             master_plan
                         where
+                            sewing_line = '".strtoupper(Auth::user()->username)."' AND
                             tgl_plan = '".$this->date."'
                         group by
                             id_ws
