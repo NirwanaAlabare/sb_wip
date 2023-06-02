@@ -8,9 +8,6 @@
                         <button type="button" class="btn btn-dark" wire:click="$emit('preSubmitUndo', 'defect')">
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
-                        <button type="button" class="btn btn-dark">
-                            <i class="fa-regular fa-gear"></i>
-                        </button>
                     </div>
                 </div>
                 <div class="loading-container hidden my-3" id="loading-defect-history">

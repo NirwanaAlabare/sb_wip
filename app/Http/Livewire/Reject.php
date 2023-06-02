@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Session\SessionManager;
 use App\Models\SignalBit\Reject as RejectModel;
 use Carbon\Carbon;
+use DB;
 
 class Reject extends Component
 {
