@@ -1,8 +1,14 @@
 <div wire:poll.visible>
-    <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, submitUndo, updateOrder, toProductionPanel">
+    <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, toProductionPanel, preSubmitUndo, submitUndo, updateOrder, toProductionPanel">
         <div class="loading-container">
             <div class="loading"></div>
         </div>
+    </div>
+
+    {{-- No Connection --}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" wire:offline>
+        <strong>Koneksi Terputus.</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
     {{-- Production Info --}}
@@ -61,7 +67,7 @@
                             <div class="d-flex flex-column justify-content-center align-items-stretch h-100 gap-1">
                                 <div class="filter multi-item upper h-50 bg-pale">
                                     <div class="d-flex flex-column justify-content-between w-100 h-100">
-                                        <select class="form-select" style="border-radius: 0 15px 0 0" wire:model='selectedSize'>
+                                        <select class="form-select" style="border-radius: 0 15px 0 0" wire:model.defer='selectedSize'>
                                             <option value="all">All Sizes</option>
                                             @foreach ($orderWsDetailSizes as $order)
                                                 <option value="{{ $order->so_det_id }}">{{ $order->size }}</option>
@@ -249,6 +255,13 @@
         <div class="w-100">
             <p class="mt-4 text-center opacity-50"><small><i>{{ date('Y') }} &copy; Nirwana Digital Solution</i></small></p>
         </div>
+    @endif
+
+    @if (!$panels)
+        {{-- Back --}}
+        <a wire:click="toProductionPanel" class="back bg-sb text-light text-center w-auto">
+            <i class="fa-regular fa-reply"></i>
+        </a>
     @endif
 </div>
 

@@ -21,6 +21,10 @@
     @include('history')
     @include('undo')
 
+    <audio controls id="alert-sound" class="d-none">
+        <source src="/assets/audio/r2d2.mp3" type="audio/mpeg">
+    </audio>
+
     <main role="main" class="main flex-shrink-0 container-fluid mt-3">
         @yield('content')
     </main>

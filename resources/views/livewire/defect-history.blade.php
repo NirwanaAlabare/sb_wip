@@ -171,9 +171,4 @@
             </div>
         </div> --}}
     </div>
-
-    {{-- Back --}}
-    <a wire:click="$emit('toProductionPanel')" class="back bg-sb text-light text-center w-auto">
-        <i class="fa-regular fa-reply"></i>
-    </a>
 </div>

@@ -11,10 +11,15 @@
                 <input type="date" class="form-control" name="date-to" id="date-to" value="{{ date('Y-m-d') }}" wire:model='dateTo'>
             </div>
         </div>
+        <div class="loading-container" wire:loading wire:target="dateFrom, dateTo">
+            <div class="loading-container">
+                <div class="loading"></div>
+            </div>
+        </div>
         <div class="loading-container hidden" id="loading-profile">
             <div class="loading mx-auto"></div>
         </div>
-        <div class="row row-gap-3" id="content-profile">
+        <div class="row row-gap-3" id="content-profile" wire:loading.remove wire:target="dateFrom, dateTo">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-rft text-light fw-bold">

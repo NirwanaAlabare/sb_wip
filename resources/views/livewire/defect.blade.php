@@ -192,7 +192,7 @@
                             @if ($errors->has('defectAreaPositionX') || $errors->has('defectAreaPositionY'))
                                 <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
                                     <small>
-                                        <strong>Error</strong> Harap tentukan posisi defect area dengan mengklik tombol <button type="button"class="btn btn-dark btn-sm" style="border-radius: 0 5px 5px 0"><i class="fa-regular fa-image fa-2xs"></i></button> di samping 'select defect area'.
+                                        <strong>Error</strong> Harap tentukan posisi defect area dengan mengklik tombol <button type="button"class="btn btn-dark btn-sm"><i class="fa-regular fa-image fa-2xs"></i></button> di samping 'select defect area'.
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </small>
                                 </div>
@@ -339,11 +339,6 @@
             </div>
         </div>
     </div>
-
-    {{-- Back --}}
-    <a wire:click="$emit('toProductionPanel')" class="back bg-sb text-light text-center w-auto">
-        <i class="fa-regular fa-reply"></i>
-    </a>
 
     {{-- Footer --}}
     <footer class="footer fixed-bottom py-3">

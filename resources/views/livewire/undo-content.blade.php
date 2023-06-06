@@ -10,10 +10,15 @@
                 <input type="date" class="form-control" name="date-to" id="date-to" value="{{ date('Y-m-d') }}" wire:model='dateTo'>
             </div>
         </div>
+        <div class="loading-container" wire:loading wire:target="dateFrom, dateTo">
+            <div class="loading-container">
+                <div class="loading"></div>
+            </div>
+        </div>
         <div class="loading-container hidden" id="loading-undo">
             <div class="loading mx-auto"></div>
         </div>
-        <div class="row" id="content-undo">
+        <div class="row" id="content-undo" wire:loading.remove wire:target="dateFrom, dateTo">
             {{-- <div class="col-md-12 table-responsive">
                 <table class="table table-bordered w-100 mx-auto">
                     <thead>

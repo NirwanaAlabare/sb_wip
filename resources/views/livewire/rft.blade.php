@@ -79,11 +79,6 @@
         <p class="text-center opacity-50 my-0"><small><i>{{ date('Y') }} &copy; Nirwana Digital Solution</i></small></p>
     </div>
 
-    {{-- Back --}}
-    <a wire:click="$emit('toProductionPanel')" class="back bg-sb text-light text-center w-auto">
-        <i class="fa-regular fa-reply"></i>
-    </a>
-
     {{-- Footer --}}
     <footer class="footer fixed-bottom py-3">
         <div class="container-fluid">
