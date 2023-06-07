@@ -286,13 +286,13 @@ class Defect extends Component
             count();
 
         // Defect types
-        $this->productTypes = ProductType::all();
+        $this->productTypes = ProductType::orderBy('product_type')->get();
 
         // Defect types
-        $this->defectTypes = DefectType::all();
+        $this->defectTypes = DefectType::orderBy('defect_type')->get();
 
         // Defect areas
-        $this->defectAreas = DefectArea::all();
+        $this->defectAreas = DefectArea::orderBy('defect_area')->get();
 
         return view('livewire.defect');
     }
