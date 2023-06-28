@@ -1,4 +1,4 @@
-<div wire:poll.visible>
+<div wire:poll.visible.30000ms>
     <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, toProductionPanel, preSubmitUndo, submitUndo, updateOrder, toProductionPanel">
         <div class="loading-container">
             <div class="loading"></div>
@@ -40,7 +40,6 @@
         <div class="col-md">
             <div class="mb-1" wire:ignore>
                 <label class="form-label mb-0">Color</label>
-                {{-- <input type="text" class="form-control form-control-sm" id="product-color" wire:model='selectedColor' readonly> --}}
                 <select class="select2 form-select-sm" name="state" id="product-color" wire:model='selectedColor'>
                     @foreach ($orderWsDetails as $order)
                         <option value="{{ $order->id }}" data-color-name="{{ $order->color }}">{{ $order->color }}</option>
@@ -66,8 +65,8 @@
                         <div class="card-custom-footer bg-light w-25 h-100">
                             <div class="d-flex flex-column justify-content-center align-items-stretch h-100 gap-1">
                                 <div class="filter multi-item upper h-50 bg-pale">
-                                    <div class="d-flex flex-column justify-content-between w-100 h-100">
-                                        <select class="form-select" style="border-radius: 0 15px 0 0" wire:model.defer='selectedSize'>
+                                    <div class="d-flex flex-column justify-content-between w-100 h-100" x-data="{ size: $wire.entangle('selectedSize') }">
+                                        <select class="form-select" style="border-radius: 0 15px 0 0" x-model="size">
                                             <option value="all">All Sizes</option>
                                             @foreach ($orderWsDetailSizes as $order)
                                                 <option value="{{ $order->so_det_id }}">{{ $order->size }}</option>
@@ -186,7 +185,7 @@
                     <input type="hidden" class="form-control" name="undo" id="undo" value="{{ $undoType }}">
                     <div class="row">
                         <div class="col">
-                            <div class="mb-3">
+                            <div class="mb-3" x-data="{ qtyUndo: $wire.entangle('undoQty') }">
                                 @error('undoQty')
                                     <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
                                         <small>
@@ -196,11 +195,11 @@
                                     </div>
                                 @enderror
                                 <label class="form-label">QTY</label>
-                                <input type="number" class="form-control @error('undoQty') is-invalid @enderror" name="undo-qty" id="undo-qty" value="1" wire:model=undoQty>
+                                <input type="number" class="form-control @error('undoQty') is-invalid @enderror" name="undo-qty" id="undo-qty" value="1" x-model='qtyUndo'>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="mb-3">
+                            <div class="mb-3" x-data="{ sizeUndo: $wire.entangle('undoSize') }">
                                 @error('undoSize')
                                     <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
                                         <small>
@@ -210,7 +209,7 @@
                                     </div>
                                 @enderror
                                 <label class="form-label">Size</label>
-                                <select class="form-select @error('undoSize') is-invalid @enderror" name="undo-size" id="undo-size" wire:model='undoSize'>
+                                <select class="form-select @error('undoSize') is-invalid @enderror" name="undo-size" id="undo-size" x-model='sizeUndo'>
                                     <option value="" selected disabled>Select Size</option>
                                     @if ($undoSizes)
                                         @foreach ($undoSizes as $size)
@@ -222,18 +221,18 @@
                         </div>
                     </div>
                     @if ($undoType == 'defect' || $undoType == 'rework')
-                        <div class="mb-3">
+                        <div class="mb-3" x-data="{ defectTypeUndo: $wire.entangle('undoDefectType') }">
                             <label class="form-label">Defect Type <small>(not required)</small></label>
-                            <select class="form-select" name="undo-defect-type" id="undo-defect-type" wire:model='undoDefectType'>
+                            <select class="form-select" name="undo-defect-type" id="undo-defect-type" x-model='defectTypeUndo'>
                                 <option value="" selected>Select Defect Type</option>
                                 @foreach ($undoDefectTypes as $defect)
                                     <option value="{{ $defect->id }}">{{ $defect->defect_type }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" x-data="{ defectAreaUndo: $wire.entangle('undoDefectArea') }">
                             <label class="form-label">Defect Area <small>(not required)</small></label>
-                            <select class="form-select" name="undo-defect-area" id="undo-defect-area" wire:model='undoDefectArea'>
+                            <select class="form-select" name="undo-defect-area" id="undo-defect-area" x-model='defectAreaUndo'>
                                 <option value="" selected>Select Defect Area</option>
                                 @foreach ($undoDefectAreas as $defect)
                                     <option value="{{ $defect->id }}">{{ $defect->defect_area }}</option>

@@ -1,4 +1,4 @@
-<div wire:poll.visible>
+<div>
     <div class="input-group mb-3">
         <input type="hidden" wire:model='date'>
         <input type="text" class="form-control" wire:model='search' placeholder="Search Order...">
@@ -43,12 +43,6 @@
                                     <td class="text-nowrap">:</td>
                                     <td class="fw-bold">{{ ucwords($order->style_name) }}</td>
                                 </tr>
-                                {{-- Color Name Temporary --}}
-                                {{-- <tr>
-                                    <td class="text-nowrap">Color</td>
-                                    <td class="text-nowrap">:</td>
-                                    <td class="fw-bold">{{ ucwords($order->color_name) }}</td>
-                                </tr> --}}
                                 <tr>
                                     <td class="text-nowrap">Plan Date</td>
                                     <td class="text-nowrap">:</td>

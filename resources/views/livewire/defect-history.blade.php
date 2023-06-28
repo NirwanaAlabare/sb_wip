@@ -1,4 +1,4 @@
-<div wire:poll.visible>
+<div wire:poll.visible.30000ms>
     <div class="production-input row row-gap-3">
         <div class="col-md-12">
             <div class="card h-100">

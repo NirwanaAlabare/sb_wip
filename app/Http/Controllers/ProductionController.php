@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SignalBit\MasterPlan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use DB;
 
 class ProductionController extends Controller
 {
@@ -63,9 +64,6 @@ class ProductionController extends Controller
                 'act_costing.styleno',
                 'mastersupplier.supplier'
             )->get();
-
-        // $orderInfo = $orderSql->where('master_plan.id', $id)->first();
-        // $orderWsDetails = $orderSql->where('master_plan.sewing_line', Auth::user()->username)->where('act_costing.kpno', $orderInfo->ws_number)->get();
 
         return view('production-panel', ['orderInfo' => $orderInfo, 'orderWsDetails' => $orderWsDetails]);
     }
