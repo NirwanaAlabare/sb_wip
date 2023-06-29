@@ -268,7 +268,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="mb-3">
+                        <div class="mb-3" x-data="{ sizeMass: $wire.entangle('massSize') }">
                             @error('massSize')
                                 <div class="alert alert-danger alert-dismissible fade show mb-0 rounded-0" role="alert">
                                     <small>
@@ -278,7 +278,7 @@
                                 </div>
                             @enderror
                             <label class="form-label">Size</label>
-                            <select class="form-select @error('massSize') is-invalid @enderror" name="mass-size" id="mass-size" wire:model='massSize'>
+                            <select class="form-select @error('massSize') is-invalid @enderror" name="mass-size" id="mass-size" x-model='sizeMass'>
                                 <option value="" selected disabled>Select Size</option>
                                 @foreach ($massSelectedDefect as $defect)
                                     <option value="{{ $defect->so_det_id }}">{{ $defect->size }} ({{"qty : ".$defect->total}})</option>

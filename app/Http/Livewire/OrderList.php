@@ -30,7 +30,8 @@ class OrderList extends Component
 
     public function render()
     {
-        $this->orders = MasterPlan::selectRaw("
+        $this->orders = DB::table('master_plan')
+            ->selectRaw("
                 MIN(master_plan.id) as id,
                 master_plan.id_ws as id_ws,
                 master_plan.tgl_plan as plan_date,
@@ -109,41 +110,6 @@ class OrderList extends Component
                 'so.id'
             )
             ->get();
-
-        // $this->orders = MasterPlan::selectRaw("
-        //         master_plan.id as id,
-        //         master_plan.tgl_plan as plan_date,
-        //         act_costing.kpno as ws_number,
-        //         mastersupplier.supplier as buyer_name,
-        //         act_costing.styleno as style_name,
-        //         master_plan.color as color_name,
-        //         master_plan.plan_target as target,
-        //         CONCAT(masterproduct.product_group, ' - ', masterproduct.product_item) as product_type
-        //     ")
-        //     ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
-        //     ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
-        //     ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
-        //     ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
-        //     ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
-        //     ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
-        //     ->where('master_plan.sewing_line', strtoupper(Auth::user()->username))
-        //     ->where('so_det.cancel', 'N')
-        //     ->where('master_plan.tgl_plan', $this->date)
-        //     ->whereRaw("
-        //         (
-        //             act_costing.kpno LIKE '%".$this->search."%'
-        //             OR
-        //             mastersupplier.supplier LIKE '%".$this->search."%'
-        //             OR
-        //             act_costing.styleno LIKE '%".$this->search."%'
-        //             OR
-        //             master_plan.color LIKE '%".$this->search."%'
-        //         )
-        //     ")
-        //     ->groupBy('master_plan.id', 'master_plan.plan_target', 'master_plan.color', 'master_plan.tgl_plan', 'act_costing.kpno', 'mastersupplier.supplier', 'act_costing.styleno', 'product_type', 'so.id')
-        //     ->orderBy('master_plan.tgl_plan',' DESC')
-        //     ->orderBy('master_plan.id', 'DESC')
-        //     ->get();
 
         return view('livewire.order-list');
     }
