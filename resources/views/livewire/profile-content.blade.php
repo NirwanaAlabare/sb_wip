@@ -28,7 +28,6 @@
                     <div class="card-body">
                         <h5 class="card-title">Total RFT</h5>
                         <p class="card-text fs-3 fw-bold text-rft" wire:poll.visible>{{ $totalRft }}</p>
-                        {{-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
                     </div>
                 </div>
             </div>
@@ -40,7 +39,6 @@
                     <div class="card-body">
                         <h5 class="card-title">Total DEFECT</h5>
                         <p class="card-text fs-3 fw-bold text-defect" wire:poll.visible>{{ $totalDefect }}</p>
-                        {{-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
                     </div>
                 </div>
             </div>
@@ -52,7 +50,6 @@
                     <div class="card-body">
                         <h5 class="card-title">Total REJECT</h5>
                         <p class="card-text fs-3 fw-bold text-reject">{{ $totalReject }}</p>
-                        {{-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
                     </div>
                 </div>
             </div>
@@ -64,7 +61,6 @@
                     <div class="card-body">
                         <h5 class="card-title">Total REWORK</h5>
                         <p class="card-text fs-3 fw-bold text-rework">{{ $totalRework }}</p>
-                        {{-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
                     </div>
                 </div>
             </div>
