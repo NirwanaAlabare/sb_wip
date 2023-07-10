@@ -63,7 +63,6 @@
                         @endif
                     </tbody>
                 </table>
-                {{ $latestRfts->links( )}}
             </div>
             <div class="col-md-6 table-responsive">
                 <p class="text-reject fw-bold mb-1"> REJECT </p>
@@ -91,7 +90,6 @@
                         @endif
                     </tbody>
                 </table>
-                {{ $latestRejects->links( )}}
             </div>
             <div class="col-md-6 table-responsive">
                 <p class="text-defect fw-bold mb-1"> DEFECT </p>
@@ -133,7 +131,6 @@
                         @endif
                     </tbody>
                 </table>
-                {{ $latestDefects->links( )}}
             </div>
             <div class="col-md-6 table-responsive">
                 <p class="text-rework fw-bold mb-1"> REWORK </p>
@@ -175,7 +172,6 @@
                         @endif
                     </tbody>
                 </table>
-                {{ $latestReworks->links( )}}
             </div>
             {{-- <div class="col-md-8">
                 <div id="daily-chart"></div>

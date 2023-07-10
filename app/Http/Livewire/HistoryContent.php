@@ -67,7 +67,7 @@ class HistoryContent extends Component
             groupBy("output_rfts.updated_at", "so_det.size")->
             orderBy("output_rfts.updated_at", "desc")->
             orderBy("output_rfts.created_at", "desc")->
-            paginate(5, ['*'], 'latestRftsPage');
+            limit("5")->get();
 
         $latestOutputDefects = Defect::selectRaw('
                 output_defects.updated_at,
@@ -101,7 +101,7 @@ class HistoryContent extends Component
             )->
             orderBy("output_defects.updated_at", "desc")->
             orderBy("output_defects.created_at", "desc")->
-            paginate(5, ['*'], 'latestDefectsPage');
+            limit("5")->get();
 
         $latestOutputRejects = Reject::selectRaw('output_rejects.updated_at, so_det.size as size, count(*) as total')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_rejects.master_plan_id')->
@@ -115,7 +115,7 @@ class HistoryContent extends Component
             groupBy("output_rejects.updated_at", "so_det.size")->
             orderBy("output_rejects.updated_at", "desc")->
             orderBy("output_rejects.created_at", "desc")->
-            paginate(5, ['*'], 'latestRejectsPage');
+            limit("5")->get();
 
         $latestOutputReworks = Rework::selectRaw('
                 output_reworks.updated_at,
@@ -150,7 +150,7 @@ class HistoryContent extends Component
             )->
             orderBy("output_reworks.updated_at", "desc")->
             orderBy("output_reworks.created_at", "desc")->
-            paginate(5, ['*'], 'latestReworksPage');
+            limit("5")->get();
 
         return view('livewire.history-content', [
             // 'latestOutput' => $latestOutput,
