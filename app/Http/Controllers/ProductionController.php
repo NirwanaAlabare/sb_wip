@@ -35,6 +35,7 @@ class ProductionController extends Controller
             ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
             ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
             ->where('so_det.cancel', 'N')
+            ->where('master_plan.cancel', 'N')
             ->where('master_plan.id', $id)
             ->first();
 
@@ -53,6 +54,7 @@ class ProductionController extends Controller
             ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
             ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
             ->where('so_det.cancel', 'N')
+            ->where('master_plan.cancel', 'N')
             ->where('master_plan.sewing_line', Auth::user()->username)
             ->where('act_costing.kpno', $orderInfo->ws_number)
             ->where('master_plan.tgl_plan', $orderInfo->tgl_plan)
