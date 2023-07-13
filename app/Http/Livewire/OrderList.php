@@ -60,7 +60,8 @@ class OrderList extends Component
                             output_rfts on output_rfts.master_plan_id = master_plan.id
                         where
                             master_plan.sewing_line = '".strtoupper(Auth::user()->username)."' AND
-                            master_plan.tgl_plan = '".$this->date."'
+                            master_plan.tgl_plan = '".$this->date."' AND
+                            master_plan.cancel = 'N'
                         group by
                             master_plan.id_ws
                     ) output"
@@ -77,7 +78,8 @@ class OrderList extends Component
                             master_plan
                         where
                             sewing_line = '".strtoupper(Auth::user()->username)."' AND
-                            tgl_plan = '".$this->date."'
+                            tgl_plan = '".$this->date."' AND
+                            master_plan.cancel = 'N'
                         group by
                             id_ws
                     ) plan"
