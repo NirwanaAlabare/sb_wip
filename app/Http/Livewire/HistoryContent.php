@@ -54,7 +54,11 @@ class HistoryContent extends Component
         //     LIMIT 10
         // "));
 
-        $latestOutputRfts = Rft::selectRaw('output_rfts.updated_at, so_det.size as size, count(*) as total')->
+        $latestOutputRfts = Rft::selectRaw('
+                output_rfts.updated_at,
+                so_det.size as size,
+                count(output_rfts.id) as total
+            ')->
             leftJoin('master_plan', 'master_plan.id', '=', 'output_rfts.master_plan_id')->
             leftJoin('so_det', 'so_det.id', '=', 'output_rfts.so_det_id')->
             where('output_rfts.status', 'normal')->
@@ -62,8 +66,8 @@ class HistoryContent extends Component
             if ($this->masterPlan) {
                 $latestOutputRfts->where('master_plan.id', $this->masterPlan);
             }
-        $latestRfts = $latestOutputRfts->whereRaw("DATE(output_rfts.created_at) >= '".$this->dateFrom."'")->
-            whereRaw("DATE(output_rfts.created_at) <= '".$this->dateTo."'")->
+        $latestRfts = $latestOutputRfts->whereRaw("DATE(output_rfts.created_at) BETWEEN '".$this->dateFrom."' AND '".$this->dateTo."'")->
+            whereRaw("master_plan.tgl_plan BETWEEN '".$this->dateFrom."' AND '".$this->dateTo."'")->
             groupBy("output_rfts.updated_at", "so_det.size")->
             orderBy("output_rfts.updated_at", "desc")->
             orderBy("output_rfts.created_at", "desc")->
@@ -88,8 +92,8 @@ class HistoryContent extends Component
             if ($this->masterPlan) {
                 $latestOutputDefects->where('master_plan.id', $this->masterPlan);
             }
-        $latestDefects = $latestOutputDefects->whereRaw("DATE(output_defects.created_at) >= '".$this->dateFrom."'")->
-            whereRaw("DATE(output_defects.created_at) <= '".$this->dateTo."'")->
+        $latestDefects = $latestOutputDefects->whereRaw("DATE(output_defects.created_at) BETWEEN '".$this->dateFrom."' AND '".$this->dateTo."'")->
+            whereRaw("master_plan.tgl_plan BETWEEN '".$this->dateFrom."' AND '".$this->dateTo."'")->
             groupBy(
                 "output_defects.updated_at",
                 "output_defect_types.defect_type",
@@ -110,8 +114,8 @@ class HistoryContent extends Component
             if ($this->masterPlan) {
                 $latestOutputRejects->where('master_plan.id', $this->masterPlan);
             }
-        $latestRejects = $latestOutputRejects->whereRaw("DATE(output_rejects.created_at) >= '".$this->dateFrom."'")->
-            whereRaw("DATE(output_rejects.created_at) <= '".$this->dateTo."'")->
+        $latestRejects = $latestOutputRejects->whereRaw("DATE(output_rejects.created_at) BETWEEN '".$this->dateFrom."' AND '".$this->dateTo."'")->
+            whereRaw("master_plan.tgl_plan BETWEEN '".$this->dateFrom."' AND '".$this->dateTo."'")->
             groupBy("output_rejects.updated_at", "so_det.size")->
             orderBy("output_rejects.updated_at", "desc")->
             orderBy("output_rejects.created_at", "desc")->
@@ -137,8 +141,8 @@ class HistoryContent extends Component
             if ($this->masterPlan) {
                 $latestOutputReworks->where('master_plan.id', $this->masterPlan);
             }
-        $latestReworks = $latestOutputReworks->whereRaw("DATE(output_reworks.created_at) >= '".$this->dateFrom."'")->
-            whereRaw("DATE(output_reworks.created_at) <= '".$this->dateTo."'")->
+        $latestReworks = $latestOutputReworks->whereRaw("DATE(output_reworks.created_at) BETWEEN '".$this->dateFrom."' AND '".$this->dateTo."'")->
+        whereRaw("master_plan.tgl_plan BETWEEN '".$this->dateFrom."' AND '".$this->dateTo."'")->
             groupBy(
                 "output_reworks.updated_at",
                 "output_defect_types.defect_type",
