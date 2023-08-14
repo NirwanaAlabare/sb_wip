@@ -73,6 +73,8 @@
                 showAddDefectAreaModal();
             } else if (type == 'massRework') {
                 showMassReworkModal();
+            } else if (type == 'allRework') {
+                showAllReworkModal();
             }
         });
 
@@ -99,6 +101,30 @@
             $('#input-type').addClass('bg-'+type+' w-100 fs-6 py-1 mb-0 rounded text-center text-light fw-bold');
             $('#input-type').html(type.toUpperCase());
             $('#input-type').show();
+        });
+
+        Livewire.on('preSubmitAllRework', () => {
+            Swal.fire({
+                icon: 'info',
+                title: 'REWORK semua DEFECT',
+                html: `Yakin akan me-REWORK semua DEFECT?`,
+                showConfirmButton: true,
+                showDenyButton: true,
+                confirmButtonText: 'Rework',
+                confirmButtonColor: '#447efa',
+                denyButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('submitAllRework');
+                } else if (result.isDenied) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Submit REWORK dibatalkan',
+                        confirmButtonText: 'Ok',
+                        confirmButtonColor: '#447efa',
+                    });
+                }
+            });
         });
 
         Livewire.on('preSubmitRework', (defectId, defectSize, defectType, defectArea, defectImage, defectX, defectY) => {

@@ -36,8 +36,9 @@
                             </div>
                         </div>
                         <div class="col-md-7 table-responsive">
-                            <div class="mb-3">
-                                <input type="text" class="form-control rounded-0" wire:model='allDefectListFilter' placeholder="Search defect">
+                            <div class="d-flex align-items-center gap-3 my-3">
+                                <button class="btn btn-rework fw-bold w-25 h-100" wire:click="$emit('preSubmitAllRework')">Rework all</button>
+                                <input type="text" class="form-control rounded-0 w-75 h-100" wire:model='allDefectListFilter' placeholder="Search defect">
                             </div>
                             <table class="table table-bordered vertical-align-center">
                                 <thead>
@@ -293,6 +294,20 @@
                 <button type="button" class="btn btn-no" data-dismiss="modal" wire:click="$emit('hideModal', 'massRework')">Batal</button>
             </div>
           </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="all-rework-modal" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5>Rework semua defect?</h5>
+                    <div class="d-flex justify-content-center align-items-center my-3">
+                        <button type="button" class="btn btn-rework" wire:click='submitAllRework()'>Rework</button>
+                        <button type="button" class="btn btn-no" data-dismiss="modal" wire:click="$emit('hideModal', 'allRework')">Batal</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

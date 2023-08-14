@@ -46,6 +46,7 @@ class Rework extends Component
 
     protected $listeners = [
         'submitRework' => 'submitRework',
+        'submitAllRework' => 'submitAllRework',
         'cancelRework' => 'cancelRework',
         'hideDefectAreaImageClear' => 'hideDefectAreaImage',
         'updateWsDetailSizes' => 'updateWsDetailSizes'
@@ -118,6 +119,47 @@ class Rework extends Component
         $this->massDefectAreaName = $defectAreaName;
 
         $this->emit('showModal', 'massRework');
+    }
+
+    public function submitAllRework() {
+        $allDefect = Defect::selectRaw('output_defects.*, so_det.size as size')->
+            leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
+            where('output_defects.defect_status', 'defect')->
+            where('output_defects.master_plan_id', $this->orderInfo->id)->
+            get();
+
+        if ($allDefect->count() > 0) {
+            foreach ($allDefect as $defect) {
+                // create rework
+                $createRework = ReworkModel::create([
+                    "defect_id" => $defect->id,
+                    "status" => "NORMAL"
+                ]);
+
+                // update defect
+                $defectSql = Defect::where('id', $defect->id)->update([
+                    "defect_status" => "reworked"
+                ]);
+
+                // create rft
+                $createRft = Rft::create([
+                    'master_plan_id' => $defect->master_plan_id,
+                    'so_det_id' => $defect->so_det_id,
+                    "status" => "REWORK",
+                    "rework_id" => $createRework->id
+                ]);
+            }
+
+            if ($allDefect->count() > 0) {
+                $this->emit('alert', 'success', "Semua DEFECT berhasil di REWORK");
+
+                $this->emit('hideModal', 'massRework');
+            } else {
+                $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT tidak berhasil di REWORK.");
+            }
+        } else {
+            $this->emit('alert', 'warning', "Data tidak ditemukan.");
+        }
     }
 
     public function submitMassRework() {

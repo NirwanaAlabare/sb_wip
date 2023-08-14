@@ -202,6 +202,15 @@ function hideMassReworkModal() {
     $("#mass-rework-modal").modal("hide");
 }
 
+// all rework modal
+function showAllReworkModal() {
+    $("#all-rework-modal").modal("show");
+}
+
+function hideAllReworkModal() {
+    $("#all-rework-modal").modal("hide");
+}
+
 // rework
 function reworkConfirmation() {
     Swal.fire({
