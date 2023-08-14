@@ -439,21 +439,91 @@ class ProductionPanel extends Component
         $this->orderWsDetailSizes = $session->get("orderWsDetailSizes", $this->orderWsDetailSizes);
 
         // Get total output
-        $this->outputRft = Rft::
-            where('master_plan_id', $this->orderInfo->id)->
-            where('status', 'NORMAL')->
-            count();
-        $this->outputDefect = Defect::
-            where('master_plan_id', $this->orderInfo->id)->
-            where('defect_status', 'defect')->
-            count();
-        $this->outputReject = Reject::
-            where('master_plan_id', $this->orderInfo->id)->
-            count();
-        $this->outputRework = Defect::
-            where('master_plan_id', $this->orderInfo->id)->
-            where('defect_status', 'reworked')->
-            count();
+        $masterPlan = MasterPlan::selectRaw("
+            GROUP_CONCAT(DISTINCT rfts.output) output_rft,
+            GROUP_CONCAT(DISTINCT defects.output) output_defect,
+            GROUP_CONCAT(DISTINCT reworks.output) output_rework,
+            GROUP_CONCAT(DISTINCT rejects.output) output_reject
+        ")->
+        leftJoin(
+            DB::raw("
+                (
+                    select
+                        master_plan.id master_plan_id,
+                        count(output_rfts.id) output
+                    from
+                        output_rfts
+                    left join
+                        master_plan on master_plan.id = output_rfts.master_plan_id
+                    where
+                        master_plan.id = '".$this->orderInfo->id."'
+                        and output_rfts.status = 'NORMAL'
+                    group by
+                        master_plan.id
+                ) rfts
+            "), 'rfts.master_plan_id', '=', 'master_plan.id'
+        )->
+        leftJoin(
+            DB::raw("
+                (
+                    select
+                        master_plan.id master_plan_id,
+                        count(output_defects.id) output
+                    from
+                        output_defects
+                    left join
+                        master_plan on master_plan.id = output_defects.master_plan_id
+                    where
+                        master_plan.id = '".$this->orderInfo->id."'
+                        and output_defects.defect_status = 'defect'
+                    group by
+                        master_plan.id
+                ) defects
+            "), 'defects.master_plan_id', '=', 'master_plan.id'
+        )->
+        leftJoin(
+            DB::raw("
+                (
+                    select
+                        master_plan.id master_plan_id,
+                        count(output_defects.id) output
+                    from
+                        output_defects
+                    left join
+                        master_plan on master_plan.id = output_defects.master_plan_id
+                    where
+                        master_plan.id = '".$this->orderInfo->id."'
+                        and output_defects.defect_status = 'reworked'
+                    group by
+                        master_plan.id
+                ) reworks
+            "), 'reworks.master_plan_id', '=', 'master_plan.id'
+        )->
+        leftJoin(
+            DB::raw("
+                (
+                    select
+                        master_plan.id master_plan_id,
+                        count(output_rejects.id) output
+                    from
+                        output_rejects
+                    left join
+                        master_plan on master_plan.id = output_rejects.master_plan_id
+                    where
+                        master_plan.id = '".$this->orderInfo->id."'
+                    group by
+                        master_plan.id
+                ) rejects
+            "), 'rejects.master_plan_id', '=', 'master_plan.id'
+        )->
+        where('master_plan.id', $this->orderInfo->id)->
+        groupBy('master_plan.id', 'rfts.master_plan_id', 'defects.master_plan_id', 'reworks.master_plan_id', 'rejects.master_plan_id')->
+        first();
+
+        $this->outputRft = $masterPlan->output_rft ? $masterPlan->output_rft : 0;
+        $this->outputDefect = $masterPlan->output_defect ? $masterPlan->output_defect : 0;
+        $this->outputRework = $masterPlan->output_rework ? $masterPlan->output_rework : 0;
+        $this->outputReject = $masterPlan->output_reject ? $masterPlan->output_reject : 0;
         $sqlFiltered = Rft::select('id')->where('master_plan_id', $this->orderInfo->id)->where('status', 'NORMAL');
         $this->outputFiltered = $this->selectedSize == 'all' ? $sqlFiltered->count() : $sqlFiltered->where('so_det_id', $this->selectedSize)->count();
 
