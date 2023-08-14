@@ -19,6 +19,7 @@ class DefectArea extends Model
         'image',
         'created_at',
         'updated_at',
+        'hidden',
     ];
 
     public function defects()

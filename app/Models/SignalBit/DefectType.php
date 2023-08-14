@@ -18,6 +18,7 @@ class DefectType extends Model
         'defect_type',
         'created_at',
         'updated_at',
+        'hidden',
     ];
 
     public function defects()

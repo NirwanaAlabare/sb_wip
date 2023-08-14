@@ -289,10 +289,10 @@ class Defect extends Component
         $this->productTypes = ProductType::orderBy('product_type')->get();
 
         // Defect types
-        $this->defectTypes = DefectType::orderBy('defect_type')->get();
+        $this->defectTypes = DefectType::whereRaw("(hidden IS NULL OR hidden != 'Y')")->orderBy('defect_type')->get();
 
         // Defect areas
-        $this->defectAreas = DefectArea::orderBy('defect_area')->get();
+        $this->defectAreas = DefectArea::whereRaw("(hidden IS NULL OR hidden != 'Y')")->orderBy('defect_area')->get();
 
         return view('livewire.defect');
     }
