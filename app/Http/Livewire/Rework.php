@@ -152,8 +152,6 @@ class Rework extends Component
 
             if ($allDefect->count() > 0) {
                 $this->emit('alert', 'success', "Semua DEFECT berhasil di REWORK");
-
-                $this->emit('hideModal', 'massRework');
             } else {
                 $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT tidak berhasil di REWORK.");
             }
