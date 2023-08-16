@@ -1,4 +1,4 @@
-<div wire:poll.visible.30000ms>
+<div>
     <div class="loading-container-fullscreen" wire:loading wire:target="toRft, toDefect, toDefectHistory, toReject, toRework, toProductionPanel, preSubmitUndo, submitUndo, updateOrder, toProductionPanel">
         <div class="loading-container">
             <div class="loading"></div>
