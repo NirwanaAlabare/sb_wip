@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="progress" role="progressbar" aria-valuenow="{{ $order->progress }}" aria-valuemin="0" aria-valuemax="{{ $order->target }}" style="height: 15px">
                                     @php
-                                        $outputProgress = $order->progress > 0 ? floatval($order->progress)/floatval($order->target) * 100 : 0;
+                                        $outputProgress = $order->target > 0 ? floatval($order->progress)/floatval($order->target) * 100 : 0;
                                     @endphp
                                     <div class="progress-bar fw-bold {{ $outputProgress > 100 ? 'bg-rft' : 'bg-sb' }}" style="width:{{  $outputProgress }}%">{{ $outputProgress > 100 ? 'TARGET TERLAMPAUI' : '' }}</div>
                                 </div>
