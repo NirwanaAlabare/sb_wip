@@ -123,7 +123,7 @@ class Rework extends Component
     }
 
     public function submitAllRework() {
-        $allDefect = Defect::selectRaw('output_defects.id defect_id, output_defects.so_det_id so_det_id')->
+        $allDefect = Defect::selectRaw('output_defects.id defect_id, output_defects.master_plan_id, output_defects.so_det_id so_det_id')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             where('output_defects.defect_status', 'defect')->
             where('output_defects.master_plan_id', $this->orderInfo->id)->get();
@@ -143,8 +143,8 @@ class Rework extends Component
                     'so_det_id' => $defect->so_det_id,
                     "status" => "REWORK",
                     "rework_id" => $createRework->id,
-                    "created_at" => Carbon::now(),
-                    "updated_at" => Carbon::now()
+                    "created_at" => Carbon::now()->toDateTimeString(),
+                    "updated_at" => Carbon::now()->toDateTimeString()
                 ]);
             }
             // update defect
