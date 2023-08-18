@@ -143,8 +143,8 @@ class Rework extends Component
                     'so_det_id' => $defect->so_det_id,
                     "status" => "REWORK",
                     "rework_id" => $createRework->id,
-                    "created_at" => Carbon::now()->toDateTimeString(),
-                    "updated_at" => Carbon::now()->toDateTimeString()
+                    "created_at" => Carbon::now(),
+                    "updated_at" => Carbon::now()
                 ]);
             }
             // update defect
