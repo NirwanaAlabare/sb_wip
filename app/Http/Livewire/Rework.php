@@ -10,6 +10,7 @@ use App\Models\SignalBit\MasterPlan;
 use App\Models\SignalBit\Rft;
 use App\Models\SignalBit\Defect;
 use App\Models\SignalBit\Rework as ReworkModel;
+use DB;
 
 class Rework extends Component
 {
@@ -52,6 +53,35 @@ class Rework extends Component
         'hideDefectAreaImageClear' => 'hideDefectAreaImage',
         'updateWsDetailSizes' => 'updateWsDetailSizes'
     ];
+
+    // public function fixMissingForeignKey() {
+        // $dataRft = DB::select("SELECT output_defects.defect_status defect_status, output_defects.id defect_id, output_defects.master_plan_id defect_mp, output_rfts.`status` rft_status, output_rfts.id rft_id, output_rfts.master_plan_id rft_mp, output_rfts.rework_id rft_rework_id FROM output_rfts
+        // left join output_reworks on output_reworks.id = output_rfts.rework_id
+        // left join output_defects on output_defects.id = output_reworks.defect_id
+        // where output_rfts.master_plan_id IS NULL and output_rfts.`status` = 'rework' and DATE(output_rfts.updated_at) = CURRENT_DATE()");
+
+        // foreach ($dataRft as $rft) {
+        //     $rftUpdate = Rft::find($rft->rft_id);
+        //     $rftUpdate->master_plan_id = $rft->defect_mp;
+        //     $rftUpdate->save();
+        //     \Log::info($rftUpdate);
+        // }
+
+        // $dataDefect = array_values($dataDefect->toArray());
+
+        // $dataRework = ReworkModel::selectRaw('output_reworks.id as id')->whereRaw("DATE(updated_at) = CURRENT_DATE() and defect_id IS NULL")->orderBy('id', 'asc')->get();
+
+        // $dataRework = array_values($dataRework->toArray());
+
+        // \Log::info($dataRework->count());
+        // \Log::info($dataDefect->count());
+
+        // for ($i = 0; $i < 165; $i++) {
+        //     $rework = ReworkModel::find($dataRework[$i]['id']);
+        //     $rework->defect_id = $dataDefect[$i]['id'];
+        //     $rework->save();
+        // }
+    // }
 
     public function updateWsDetailSizes()
     {
@@ -111,6 +141,49 @@ class Rework extends Component
         $this->resetPage('reworksPage');
     }
 
+    public function submitAllRework() {
+        // $allDefect = Defect::selectRaw('output_defects.id id, output_defects.master_plan_id master_plan_id, output_defects.so_det_id so_det_id')->
+        //     leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
+        //     where('output_defects.defect_status', 'defect')->
+        //     where('output_defects.master_plan_id', $this->orderInfo->id)->get();
+
+        // if ($allDefect->count() > 0) {
+        //     $rftArray = [];
+        //     foreach ($allDefect as $defect) {
+        //         // create rework
+        //         $createRework = ReworkModel::create([
+        //             "defect_id" => $defect->id,
+        //             "status" => "NORMAL"
+        //         ]);
+
+        //         // add rft array
+        //         array_push($rftArray, [
+        //             'master_plan_id' => $defect->master_plan_id,
+        //             'so_det_id' => $defect->so_det_id,
+        //             "status" => "REWORK",
+        //             "rework_id" => $createRework->id,
+        //             "created_at" => Carbon::now(),
+        //             "updated_at" => Carbon::now()
+        //         ]);
+        //     }
+        //     // update defect
+        //     $defectSql = Defect::where('master_plan_id', $this->orderInfo->id)->update([
+        //         "defect_status" => "reworked"
+        //     ]);
+
+        //     // create rft
+        //     $createRft = Rft::insert($rftArray);
+
+        //     if ($allDefect->count() > 0) {
+        //         $this->emit('alert', 'success', "Semua DEFECT berhasil di REWORK");
+        //     } else {
+        //         $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT tidak berhasil di REWORK.");
+        //     }
+        // } else {
+        //     $this->emit('alert', 'warning', "Data tidak ditemukan.");
+        // }
+    }
+
     public function preSubmitMassRework($defectType, $defectArea, $defectTypeName, $defectAreaName) {
         $this->massQty = 1;
         $this->massSize = '';
@@ -120,48 +193,6 @@ class Rework extends Component
         $this->massDefectAreaName = $defectAreaName;
 
         $this->emit('showModal', 'massRework');
-    }
-
-    public function submitAllRework() {
-        $allDefect = Defect::selectRaw('output_defects.id id, output_defects.master_plan_id master_plan_id, output_defects.so_det_id so_det_id')->
-            leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
-            where('output_defects.defect_status', 'defect')->
-            where('output_defects.master_plan_id', $this->orderInfo->id)->get();
-
-        if ($allDefect->count() > 0) {
-            $rftArray = [];
-            foreach ($allDefect as $defect) {
-                // create rework
-                $createRework = ReworkModel::create([
-                    "defect_id" => $defect->id,
-                    "status" => "NORMAL"
-                ]);
-
-                // add rft array
-                array_push($rftArray, [
-                    'master_plan_id' => $defect->master_plan_id,
-                    'so_det_id' => $defect->so_det_id,
-                    "status" => "REWORK",
-                    "rework_id" => $createRework->id,
-                    "created_at" => Carbon::now(),
-                    "updated_at" => Carbon::now()
-                ]);
-            }
-            // update defect
-            $defectSql = Defect::where('master_plan_id', $this->orderInfo->id)->update([
-                "defect_status" => "reworked"
-            ]);
-            // create rft
-            $createRft = Rft::insert($rftArray);
-
-            if ($allDefect->count() > 0) {
-                $this->emit('alert', 'success', "Semua DEFECT berhasil di REWORK");
-            } else {
-                $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT tidak berhasil di REWORK.");
-            }
-        } else {
-            $this->emit('alert', 'warning', "Data tidak ditemukan.");
-        }
     }
 
     public function submitMassRework() {
