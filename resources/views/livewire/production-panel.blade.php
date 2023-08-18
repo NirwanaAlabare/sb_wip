@@ -176,10 +176,10 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">UNDO <span class="bg-{{ $undoType }} fs-5 px-3 py-1 mb-0 rounded text-center text-light fw-bold">{{ strtoupper($undoType) }}</span></h5>
-                  <button type="button" class="btn btn-light border-none pt-1 close" data-dismiss="modal" aria-label="Close" wire:click="$emit('hideModal', 'undo')">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                    <h5 class="modal-title">UNDO <span class="bg-{{ $undoType }} fs-5 px-3 py-1 mb-0 rounded text-center text-light fw-bold">{{ strtoupper($undoType) }}</span></h5>
+                    <button type="button" class="btn btn-light border-none pt-1 close" data-dismiss="modal" aria-label="Close" wire:click="$emit('hideModal', 'undo')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" class="form-control" name="undo" id="undo" value="{{ $undoType }}">

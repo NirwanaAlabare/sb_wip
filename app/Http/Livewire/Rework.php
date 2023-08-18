@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Session\SessionManager;
+use Illuminate\Support\Carbon;
 use App\Models\SignalBit\MasterPlan;
 use App\Models\SignalBit\Rft;
 use App\Models\SignalBit\Defect;
@@ -147,11 +148,11 @@ class Rework extends Component
                 ]);
             }
             // update defect
-            $defectSql = Defect::where('id', $defect->id)->update([
+            $defectSql = Defect::where('master_plan_id', $this->orderInfo->id)->update([
                 "defect_status" => "reworked"
             ]);
             // create rft
-            $createRft = Rft::insert($arrayRft);
+            $createRft = Rft::insert($rftArray);
 
             if ($allDefect->count() > 0) {
                 $this->emit('alert', 'success', "Semua DEFECT berhasil di REWORK");
@@ -174,34 +175,43 @@ class Rework extends Component
             take($this->massQty)->get();
 
         if ($selectedDefect->count() > 0) {
-            // foreach ($selectedDefect as $defect) {
-            //     // create rework
-            //     $createRework = ReworkModel::create([
-            //         "defect_id" => $defect->id,
-            //         "status" => "NORMAL"
-            //     ]);
+            $rftArray = [];
+            $defectIds = [];
+            foreach ($selectedDefect as $defect) {
+                // create rework
+                $createRework = ReworkModel::create([
+                    "defect_id" => $defect->id,
+                    "status" => "NORMAL"
+                ]);
 
-            //     // update defect
-            //     $defectSql = Defect::where('id', $defect->id)->update([
-            //         "defect_status" => "reworked"
-            //     ]);
+                // add defect id array
+                array_push($defectIds, $defect->id);
 
-            //     // create rft
-            //     $createRft = Rft::create([
-            //         'master_plan_id' => $defect->master_plan_id,
-            //         'so_det_id' => $defect->so_det_id,
-            //         "status" => "REWORK",
-            //         "rework_id" => $createRework->id
-            //     ]);
-            // }
+                // add rft array
+                array_push($rftArray, [
+                    'master_plan_id' => $defect->master_plan_id,
+                    'so_det_id' => $defect->so_det_id,
+                    "status" => "REWORK",
+                    "rework_id" => $createRework->id,
+                    "created_at" => Carbon::now(),
+                    "updated_at" => Carbon::now()
+                ]);
+            }
+            // update defect
+            $defectSql = Defect::whereIn('id', $defectIds)->update([
+                "defect_status" => "reworked"
+            ]);
 
-            // if ($selectedDefect->count() > 0) {
-            //     $this->emit('alert', 'success', "DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." berhasil di REWORK sebanyak ".$selectedDefect->count()." kali.");
+            // create rft
+            $createRft = Rft::insert($rftArray);
 
-            //     $this->emit('hideModal', 'massRework');
-            // } else {
-            //     $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." tidak berhasil di REWORK.");
-            // }
+            if ($selectedDefect->count() > 0) {
+                $this->emit('alert', 'success', "DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." berhasil di REWORK sebanyak ".$selectedDefect->count()." kali.");
+
+                $this->emit('hideModal', 'massRework');
+            } else {
+                $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." tidak berhasil di REWORK.");
+            }
         } else {
             $this->emit('alert', 'warning', "Data tidak ditemukan.");
         }
