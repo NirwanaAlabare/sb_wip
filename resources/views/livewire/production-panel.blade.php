@@ -195,7 +195,7 @@
                                     </div>
                                 @enderror
                                 <label class="form-label">QTY</label>
-                                <input type="number" class="form-control @error('undoQty') is-invalid @enderror" name="undo-qty" id="undo-qty" value="1" x-model='qtyUndo'>
+                                <input type="number" class="form-control @error('undoQty') is-invalid @enderror" name="undo-qty" id="undo-qty" value="1" x-model.lazy='qtyUndo'>
                             </div>
                         </div>
                         <div class="col">
