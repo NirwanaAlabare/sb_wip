@@ -1,6 +1,6 @@
 <div>
     {{-- Latest Undo --}}
-    <div class="mt-1" wire:poll.visible>
+    <div class="mt-1" wire:poll.visible.5000ms>
         <div class="d-flex justify-content-center align-items-center">
             <div class="mb-3">
                 <input type="date" class="form-control" name="date-from" id="date-from" value="{{ date('Y-m-d') }}" wire:model='dateFrom'>
