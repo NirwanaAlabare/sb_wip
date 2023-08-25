@@ -84,3 +84,18 @@
         </div>
     </footer>
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('reject-input').addEventListener("keyup", async (event) => {
+                if (event.key === 'Enter' || event.keyCode === 13) {
+                    await @this.submitInput();
+                    let el = document.querySelector( ':focus' );
+                    if( el ) el.blur();
+                }
+            });
+        })
+    </script>
+@endpush
+

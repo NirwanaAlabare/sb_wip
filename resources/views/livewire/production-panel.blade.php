@@ -145,9 +145,12 @@
         @endif
 
         {{-- Rft --}}
-        @if ($rft)
+        {{-- @if ($rft) --}}
+        <div class="{{ $rft ? '' : 'd-none' }}">
             @livewire('rft', ["orderWsDetailSizes" => $orderWsDetailSizes])
-        @endif
+        </div>
+        {{-- @endif --}}
+
 
         {{-- Defect --}}
         {{-- @if ($defect) --}}
@@ -162,9 +165,11 @@
         @endif
 
         {{-- Reject --}}
-        @if ($reject)
+        {{-- @if ($reject) --}}
+        <div class="{{ $reject ? '' : 'd-none' }}">
             @livewire('reject', ["orderWsDetailSizes" => $orderWsDetailSizes])
-        @endif
+        </div>
+        {{-- @endif --}}
 
         {{-- Rework --}}
         @if ($rework)
