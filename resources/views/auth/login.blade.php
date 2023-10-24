@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link rel="icon" type="image/x-icon" href="/assets/images/tabicon.png">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/tabicon.png') }}">
     <title>SB WIP</title>
 
     @include('layouts.link')
@@ -16,7 +16,7 @@
     <div class="login-card card">
         <div class="row align-items-center g-0">
             <div class="col-md-6">
-                <img src="/assets/images/Frame 1.png" class="img-fluid mt-auto mb-auto" alt="...">
+                <img src="{{ asset('images/Frame 1.png') }}" class="img-fluid mt-auto mb-auto" alt="...">
             </div>
             <div class="col-md-6">
                 <div class="card-body my-5">

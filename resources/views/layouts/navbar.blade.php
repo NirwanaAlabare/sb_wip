@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar bg-body-secondary navbar-expand">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"><img src="/assets/images/Frame 1.png" alt="" width="130"></a>
+            <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('images/Frame 1.png') }}" alt="" width="130"></a>
             <ul class="navbar-nav align-items-center gap-3">
                 <div class="row justify-content-end align-items-center">
                     <div class="col-md-auto">
@@ -29,13 +29,13 @@
                                 <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#profile"><i class="fa-regular fa-gear"></i> {{ strtoupper(Auth::user()->FullName) }}</a></li>
                                 <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#history"><i class="fa-regular fa-clock-rotate-left"></i> Latest Output</a></li>
                                 <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#undo"><i class="fa-regular fa-trash"></i> Latest Undo</a></li>
-                                <li><a class="dropdown-item" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a></li>
+                                <li><a class="dropdown-item" onclick="logout('{{ url('/login/unauthenticate') }}')"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a></li>
                             </ul>
                         </li>
                     </div>
                     <div class="col-md-auto">
                         <li class="nav-item w-100">
-                            <a class="btn btn-no btn-sm" onclick="logout()">Log Out</a>
+                            <a class="btn btn-no btn-sm" onclick="logout('{{ url('/login/unauthenticate') }}')">Log Out</a>
                         </li>
                     </div>
                 </div>
