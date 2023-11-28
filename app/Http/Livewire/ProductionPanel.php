@@ -19,6 +19,7 @@ use DB;
 class ProductionPanel extends Component
 {
     // Data
+    public $orderDate;
     public $orderInfo;
     public $orderWsDetails;
     public $orderWsDetailSizes;
@@ -410,6 +411,8 @@ class ProductionPanel extends Component
             ->orderBy('so_det_id')
             ->get();
 
+        $this->orderDate = $this->orderInfo->tgl_plan;
+
         session()->put("orderInfo", $this->orderInfo);
         session()->put("orderWsDetails", $this->orderWsDetails);
         session()->put("orderWsDetailSizes", $this->orderWsDetailSizes);
@@ -437,6 +440,8 @@ class ProductionPanel extends Component
         $this->orderInfo = $session->get("orderInfo", $this->orderInfo);
         $this->orderWsDetails = $session->get("orderWsDetails", $this->orderWsDetails);
         $this->orderWsDetailSizes = $session->get("orderWsDetailSizes", $this->orderWsDetailSizes);
+
+        $this->orderDate = $this->orderInfo->tgl_plan;
 
         // Get total output
         $masterPlan = MasterPlan::selectRaw("
