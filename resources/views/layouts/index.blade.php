@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link rel="icon" type="image/x-icon" href="/assets/images/tabicon.png">
+    <link rel="icon" type="image/x-icon" href=" {{ asset('images/tabicon.png') }}">
     <title>SB WIP</title>
 
     @include('layouts.link')
 
     @yield('custom-link')
 
+<<<<<<< HEAD
     <script defer src="/assets/alpinejs/dist/cdn.min.js"></script>
+=======
+    {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
+>>>>>>> 9a3691cb45dae12c82636d86b0cf95677d1a8f0e
 </head>
 <body>
     @include('layouts.navbar')
@@ -22,7 +26,7 @@
     @include('undo')
 
     <audio controls id="alert-sound" class="d-none">
-        <source src="/assets/audio/r2d2.mp3" type="audio/mpeg">
+        <source src="{{ asset('audio/r2d2.mp3') }}" type="audio/mpeg">
     </audio>
 
     <main role="main" class="main flex-shrink-0 container-fluid mt-3">

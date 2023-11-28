@@ -123,7 +123,7 @@ function login(e, evt) {
     });
 }
 
-function logout() {
+function logout(url) {
     Swal.fire({
         title: 'Logout?',
         showConfirmButton: true,
@@ -134,7 +134,7 @@ function logout() {
       }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/login/unauthenticate',
+                url: url,
                 type: 'post',
                 data: {confirmed : result.isConfirmed},
                 success: function(res) {

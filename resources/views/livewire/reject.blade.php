@@ -63,7 +63,7 @@
                     <div class="row h-100 row-gap-3" id="content-reject">
                         @foreach ($orderWsDetailSizes as $order)
                             <label class="size-input col-md-4">
-                                <input type="radio" name="size-input" id="size-input" value="{{ $order->so_det_id }}"  wire:model.defer='sizeInput'>
+                                <input type="radio" name="size-input" id="size-input" value="{{ $order->so_det_id }}" wire:model.defer='sizeInput'>
                                 <div class="btn btn-reject btn-size w-100 h-100 fs-3 py-auto d-flex justify-content-center align-items-center">
                                     {{ $order->size }}
                                 </div>
