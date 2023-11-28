@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Models\SignalBit\UserSbWip;
+use App\Models\SignalBit\UserPassword;
+use Illuminate\Support\Facades\URL;
 
 class LoginController extends Controller
 {
@@ -67,7 +69,7 @@ class LoginController extends Controller
             return array(
                 "status" => 200,
                 "message" => "Unauthenticate Success",
-                "redirect" => "/login"
+                "redirect" => url('/login')
             );
         }
     }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link rel="icon" type="image/x-icon" href="/assets/images/tabicon.png">
+    <link rel="icon" type="image/x-icon" href=" {{ asset('images/tabicon.png') }}">
     <title>SB WIP</title>
 
     @include('layouts.link')
@@ -22,7 +22,7 @@
     @include('undo')
 
     <audio controls id="alert-sound" class="d-none">
-        <source src="/assets/audio/r2d2.mp3" type="audio/mpeg">
+        <source src="{{ asset('audio/r2d2.mp3') }}" type="audio/mpeg">
     </audio>
 
     <main role="main" class="main flex-shrink-0 container-fluid mt-3">
