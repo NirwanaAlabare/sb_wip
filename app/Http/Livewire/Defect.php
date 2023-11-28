@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Session\SessionManager;
@@ -249,6 +250,7 @@ class Defect extends Component
                 'defect_area_x' => $this->defectAreaPositionX,
                 'defect_area_y' => $this->defectAreaPositionY,
                 'status' => 'NORMAL',
+                'created_by' => Auth::user()->id,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);

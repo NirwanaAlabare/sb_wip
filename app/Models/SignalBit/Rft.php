@@ -19,6 +19,7 @@ class Rft extends Model
         'so_det_id',
         'status',
         'rework_id',
+        'created_by',
         'created_at',
         'updated_at',
     ];

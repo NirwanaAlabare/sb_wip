@@ -17,6 +17,7 @@ class Rework extends Model
         'id',
         'defect_id',
         'status',
+        'created_by',
         'created_at',
         'updated_at',
     ];

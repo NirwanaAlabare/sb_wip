@@ -22,6 +22,7 @@ class Undo extends Model
         'output_reject_id',
         'output_rework_id',
         'keterangan',
+        'created_by',
         'created_at',
         'updated_at',
     ];

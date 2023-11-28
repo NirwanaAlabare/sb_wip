@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Session\SessionManager;
 use App\Models\SignalBit\Reject as RejectModel;
@@ -90,6 +91,7 @@ class Reject extends Component
                 'master_plan_id' => $this->orderInfo->id,
                 'so_det_id' => $this->sizeInput,
                 'status' => 'NORMAL',
+                'created_by' => Auth::user()->id,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);

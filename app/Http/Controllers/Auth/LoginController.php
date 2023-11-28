@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
+use App\Models\SignalBit\UserSbWip;
 use App\Models\SignalBit\UserPassword;
 use Illuminate\Support\Facades\URL;
 
@@ -28,21 +29,17 @@ class LoginController extends Controller
 
         $remember = isset($credentials['remember']) && $credentials['remember'] == "true" ? true : false;
 
-        $userData = UserPassword::select('Groupp')->where('username', $credentials['username'])->where('password', $credentials['password'])->first();
+        if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']], $remember)) {
+            $request->session()->regenerate();
 
-        if ($userData->Groupp == 'SEWING') {
-            if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']], $remember)) {
-                $request->session()->regenerate();
+            session(['user_id' => Auth::user()->line_id, 'user_username' => Auth::user()->username, 'user_name' => Auth::user()->name]);
 
-                session(['user_id' => Auth::user()->line_id, 'user_username' => Auth::user()->username, 'user_name' => Auth::user()->FullName]);
-
-                return array(
-                    'status' => '200',
-                    'message' => 'Authenticate Success',
-                    'redirect' => url('/'),
-                    'additional' => [],
-                );
-            }
+            return array(
+                'status' => '200',
+                'message' => 'Authenticate Success',
+                'redirect' => '/',
+                'additional' => [],
+            );
         }
 
         return array(
