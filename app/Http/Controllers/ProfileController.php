@@ -75,11 +75,21 @@ class ProfileController extends Controller
     {
         $validatedRequest = $request->validated();
 
-        $updateProfile = UserSbWip::where('id', $id)->
-            update([
+        $updateData = [];
+
+        if ($validatedRequest['password'] && $validatedRequest['password'] != "") {
+            $updateData = [
                 'name' => $validatedRequest['full_name'],
                 'password' => Hash::make($validatedRequest['password'])
-            ]);
+            ];
+        } else {
+            $updateData = [
+                'name' => $validatedRequest['full_name']
+            ];
+        }
+
+        $updateProfile = UserSbWip::where('id', $id)->
+            update($updateData);
 
         if ($updateProfile) {
             session(['user_id' => Auth::user()->line_id, 'user_username' => Auth::user()->username, 'user_name' => Auth::user()->name]);
