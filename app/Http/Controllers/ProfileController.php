@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileRequest;
 use App\Models\SignalBit\UserPassword;
+use App\Models\SignalBit\UserSbWip;
 
 class ProfileController extends Controller
 {
@@ -74,15 +75,14 @@ class ProfileController extends Controller
     {
         $validatedRequest = $request->validated();
 
-        $updateProfile = UserPassword::where('line_id', $id)->
+        $updateProfile = UserSbWip::where('id', $id)->
             update([
-                'FullName' => $validatedRequest['full_name'],
-                'Password' => $validatedRequest['password'],
-                'password_encrypt' => Hash::make($validatedRequest['password']),
+                'name' => $validatedRequest['full_name'],
+                'password' => Hash::make($validatedRequest['password'])
             ]);
 
         if ($updateProfile) {
-            session(['user_id' => Auth::user()->line_id, 'user_username' => Auth::user()->username, 'user_name' => Auth::user()->FullName]);
+            session(['user_id' => Auth::user()->line_id, 'user_username' => Auth::user()->username, 'user_name' => Auth::user()->name]);
 
             return array(
                 'status' => '200',

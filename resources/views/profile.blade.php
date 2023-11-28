@@ -8,12 +8,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ url('profile/update/'.Auth::user()->line_id ) }}" method="post" id="profile-form" onsubmit="submitForm(this, event)">
+                <form action="{{ url('profile/update/'.Auth::user()->id ) }}" method="post" id="profile-form" onsubmit="submitForm(this, event)">
                     {{ method_field('PUT') }}
                     <div class="mb-3">
                         <div class="input-group">
-                            <span class="input-group-text">Nama Line</span>
-                            <input type="text" class="form-control fs-6" id="full-name" name="full_name" value="{{ Auth::user()->FullName }}" disabled>
+                            <span class="input-group-text">Nama</span>
+                            <input type="text" class="form-control fs-6" id="full-name" name="full_name" value="{{ Auth::user()->name }}" disabled>
                         </div>
                     </div>
                     {{-- <div class="mb-3">

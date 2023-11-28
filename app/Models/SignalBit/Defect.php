@@ -24,6 +24,7 @@ class Defect extends Model
         'defect_area_y',
         'defect_status',
         'status',
+        'created_by',
         'created_at',
         'updated_at',
     ];

@@ -18,6 +18,7 @@ class Reject extends Model
         'master_plan_id',
         'so_det_id',
         'status',
+        'created_by',
         'created_at',
         'updated_at',
     ];
