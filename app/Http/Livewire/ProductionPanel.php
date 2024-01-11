@@ -19,6 +19,7 @@ use DB;
 class ProductionPanel extends Component
 {
     // Data
+    public $orderDate;
     public $orderInfo;
     public $orderWsDetails;
     public $orderWsDetailSizes;
@@ -118,7 +119,7 @@ class ProductionPanel extends Component
             ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
             ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
             ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
-            ->where('master_plan.sewing_line', Auth::user()->username)
+            ->where('master_plan.sewing_line', Auth::user()->line->username)
             ->where('act_costing.kpno', $this->orderInfo->ws_number)
             ->where('so_det.color', $this->selectedColorName)
             ->where('master_plan.cancel', 'N')
@@ -383,7 +384,7 @@ class ProductionPanel extends Component
             ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
             ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
             ->where('so_det.cancel', 'N')
-            ->where('master_plan.sewing_line', Auth::user()->username)
+            ->where('master_plan.sewing_line', Auth::user()->line->username)
             ->where('act_costing.kpno', $this->orderInfo->ws_number)
             ->where('master_plan.tgl_plan', $this->orderInfo->tgl_plan)
             ->groupBy(
@@ -403,12 +404,14 @@ class ProductionPanel extends Component
             ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
             ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
             ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
-            ->where('master_plan.sewing_line', Auth::user()->username)
+            ->where('master_plan.sewing_line', Auth::user()->line->username)
             ->where('act_costing.kpno', $this->orderInfo->ws_number)
             ->where('so_det.color', $this->selectedColorName)
             ->groupBy('so_det.size')
             ->orderBy('so_det_id')
             ->get();
+
+        $this->orderDate = $this->orderInfo->tgl_plan;
 
         session()->put("orderInfo", $this->orderInfo);
         session()->put("orderWsDetails", $this->orderWsDetails);
@@ -419,7 +422,7 @@ class ProductionPanel extends Component
 
     public function deleteRedundant() {
         $redundantData = DB::select(DB::raw(
-            "select defect_id, jml from (select defect_id, COUNT(defect_id) jml from (SELECT a.* from output_reworks a inner join output_defects c on c.id = a.defect_id inner join master_plan b on b.id = c.master_plan_id where b.sewing_line = '".Auth::user()->username."' and DATE_FORMAT(a.created_at, '%Y-%m-%d') = CURRENT_DATE() order by a.defect_id asc) a GROUP BY a.defect_id) a where a.jml > 1"
+            "select defect_id, jml from (select defect_id, COUNT(defect_id) jml from (SELECT a.* from output_reworks a inner join output_defects c on c.id = a.defect_id inner join master_plan b on b.id = c.master_plan_id where b.sewing_line = '".Auth::user()->line->username."' and DATE_FORMAT(a.created_at, '%Y-%m-%d') = CURRENT_DATE() order by a.defect_id asc) a GROUP BY a.defect_id) a where a.jml > 1"
         ));
 
         foreach ($redundantData as $redundant) {
@@ -437,6 +440,8 @@ class ProductionPanel extends Component
         $this->orderInfo = $session->get("orderInfo", $this->orderInfo);
         $this->orderWsDetails = $session->get("orderWsDetails", $this->orderWsDetails);
         $this->orderWsDetailSizes = $session->get("orderWsDetailSizes", $this->orderWsDetailSizes);
+
+        $this->orderDate = $this->orderInfo->tgl_plan;
 
         // Get total output
         $masterPlan = MasterPlan::selectRaw("
