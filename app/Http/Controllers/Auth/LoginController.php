@@ -37,7 +37,7 @@ class LoginController extends Controller
             return array(
                 'status' => '200',
                 'message' => 'Authenticate Success',
-                'redirect' => '/',
+                'redirect' => url('/'),
                 'additional' => [],
             );
         }
