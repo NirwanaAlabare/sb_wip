@@ -530,15 +530,17 @@ function clearOutputInputJs() {
 
 // Reminder
 function showReminder(hoursminutes) {
-    Swal.fire({
-        icon: 'info',
-        title: 'Reminder',
-        html: 'Waktu saat ini : <b>'+hoursminutes+'</b><br class="mb-3">Harap sempatkan untuk menginput data di setiap jam jika memungkinkan<br class="mb-3"><small>Jika ada kendala dalam penggunaan aplikasi tolong di infokan</small>',
-        showConfirmButton: true,
-        showDenyButton: false,
-        confirmButtonText: 'Oke',
-        confirmButtonColor: '#6531a0',
-    });
+    if (!swal.isVisible()) {
+        Swal.fire({
+            icon: 'info',
+            title: 'Reminder',
+            html: 'Waktu saat ini : <b>'+hoursminutes+'</b><br class="mb-3">Harap sempatkan untuk menginput data di setiap jam jika memungkinkan<br class="mb-3"><small>Jika ada kendala dalam penggunaan aplikasi tolong di infokan</small>',
+            showConfirmButton: true,
+            showDenyButton: false,
+            confirmButtonText: 'Oke',
+            confirmButtonColor: '#6531a0',
+        });
+    }
 }
 
 if (document.getElementById("alert-sound")) {
