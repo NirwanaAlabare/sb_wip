@@ -74,7 +74,7 @@
                         @endif
                     </tbody>
                 </table>
-                {{ $latestUndo->links( )}}
+                {{ $latestUndo->links()}}
             </div>
         </div>
     </div>

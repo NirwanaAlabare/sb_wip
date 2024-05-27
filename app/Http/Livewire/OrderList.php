@@ -59,7 +59,7 @@ class OrderList extends Component
                         left join
                             output_rfts on output_rfts.master_plan_id = master_plan.id
                         where
-                            master_plan.sewing_line = '".strtoupper(Auth::user()->line->username)."' AND
+                            master_plan.sewing_line = '".strtoupper(Auth::user()->username)."' AND
                             master_plan.tgl_plan = '".$this->date."' AND
                             master_plan.cancel = 'N'
                         group by
@@ -77,7 +77,7 @@ class OrderList extends Component
                         from
                             master_plan
                         where
-                            sewing_line = '".strtoupper(Auth::user()->line->username)."' AND
+                            sewing_line = '".strtoupper(Auth::user()->username)."' AND
                             tgl_plan = '".$this->date."' AND
                             master_plan.cancel = 'N'
                         group by
@@ -86,7 +86,7 @@ class OrderList extends Component
                 ),
                 "plan.id_ws", "=", "master_plan.id_ws"
             )
-            ->where('master_plan.sewing_line', strtoupper(Auth::user()->line->username))
+            ->where('master_plan.sewing_line', strtoupper(Auth::user()->username))
             ->where('so_det.cancel', 'N')
             ->where('master_plan.cancel', 'N')
             ->where('master_plan.tgl_plan', $this->date)
