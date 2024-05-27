@@ -290,12 +290,12 @@
             let day = pad(date.getDate());
             let month = pad(date.getMonth() + 1);
             let year = date.getFullYear();
-            
+
             // This arrangement can be altered based on how we want the date's format to appear.
             let currentDate = `${year}-${month}-${day}`;
-            
+
             console.log(@this.orderDate, currentDate);
-            
+
             if (@this.orderDate != currentDate) {
                 Swal.fire({
                     icon: 'warning',
