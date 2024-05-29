@@ -193,8 +193,8 @@
                                     <td>{{ $reworks->firstItem() + $loop->index }}</td>
                                     <td>{{ $rework->defect->id }}</td>
                                     <td>{{ $rework->so_det_size }}</td>
-                                    <td>{{ $rework->defect->defectType->defect_type}}</td>
-                                    <td>{{ $rework->defect->defectArea->defect_area }}</td>
+                                    <td>{{ $rework->defect->defectType ? $rework->defect->defectType->defect_type : '-' }}</td>
+                                    <td>{{ $rework->defect->defectArea ? $rework->defect->defectArea->defect_area : '-' }}</td>
                                     <td class="text-rework fw-bold">{{ strtoupper($rework->defect->defect_status) }}</td>
                                     <td>
                                         <button type="button" class="btn btn-dark" wire:click="showDefectAreaImage('{{$rework->defect->masterPlan->gambar}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})'">
@@ -206,7 +206,7 @@
                                             <div class="loading-small"></div>
                                         </div>
                                         <div wire:loading.remove>
-                                            <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $rework->so_det_size }}', '{{ $rework->defect->defectType->defect_type }}', '{{ $rework->defect->defectArea->defect_area }}', '{{$rework->defect->masterPlan->gambar}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})">CANCEL</button>
+                                            <button class="btn btn-sm btn-defect fw-bold w-100" wire:click="$emit('preCancelRework', '{{ $rework->id }}', '{{ $rework->defect->id }}', '{{ $rework->so_det_size }}', '{{ $rework->defect->defectType ? $rework->defect->defectType->defect_type : '-' }}', '{{ ($rework->defect->defectArea ? $rework->defect->defectArea->defect_area : '-') }}', '{{$rework->defect->masterPlan->gambar}}', {{$rework->defect->defect_area_x}}, {{$rework->defect->defect_area_y}})">CANCEL</button>
                                         </div>
                                     </td>
                                 </tr>
