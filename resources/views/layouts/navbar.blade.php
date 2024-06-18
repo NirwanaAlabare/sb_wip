@@ -1,3 +1,11 @@
+@php
+    $thisOrderDate = date('Y-m-d');
+    $disableDate = false;
+    if (isset($orderDate) && $orderDate) {
+        $thisOrderDate = $orderDate;
+        $disableDate = true;
+    }
+@endphp
 <header>
     <nav class="navbar bg-body-secondary navbar-expand">
         <div class="container-fluid">
@@ -11,7 +19,7 @@
                     </div>
                     <div class="col-md-auto">
                         <li class="nav-item w-100">
-                            <input type="date" class="form-control form-control-sm" id="tanggal" name="tanggal" readonly>
+                            <input type="date" class="form-control form-control-sm" id="tanggal" name="tanggal" value="{{ $thisOrderDate }}" {{ $disableDate == true ? "readonly" : "" }}>
                         </li>
                     </div>
                     <div class="col-md-auto">
@@ -23,10 +31,10 @@
                         <li class="nav-item dropdown w-100">
                             <button class="btn btn-sm bg-white dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-regular fa-gear"></i>
-                                <span>{{ strtoupper(substr(Auth::user()->FullName, 0, 5)).(strlen(Auth::user()->FullName) > 5 ? '...' : '') }}</span>
+                                <span>{{ strtoupper(substr(str_replace("_", " ", Auth::user()->username), 0, 7)).(strlen(str_replace("_", " ", Auth::user()->username)) > 7 ? '...' : '') }}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#profile"><i class="fa-regular fa-gear"></i> {{ strtoupper(Auth::user()->FullName) }}</a></li>
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#profile"><i class="fa-regular fa-gear"></i> {{ strtoupper(str_replace("_", " ", Auth::user()->username)) }} </span></a></li>
                                 <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#history"><i class="fa-regular fa-clock-rotate-left"></i> Latest Output</a></li>
                                 <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#undo"><i class="fa-regular fa-trash"></i> Latest Undo</a></li>
                                 <li><a class="dropdown-item" onclick="logout('{{ url('/login/unauthenticate') }}')"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a></li>
@@ -44,7 +52,7 @@
     </nav>
 </header>
 
-@section('custom-script')
+@push('scripts')
     <script>
         // Set Date Event
         let tanggal = document.getElementById("tanggal");
@@ -66,4 +74,4 @@
             });
         }
     </script>
-@endsection
+@endpush
