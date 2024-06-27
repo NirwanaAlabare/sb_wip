@@ -149,6 +149,7 @@ class Rework extends Component
             where('output_defects.master_plan_id', $this->orderInfo->id)->get();
 
         if ($allDefect->count() > 0) {
+            $defectIds = [];
             $rftArray = [];
             foreach ($allDefect as $defect) {
                 // create rework
@@ -157,6 +158,9 @@ class Rework extends Component
                     "status" => "NORMAL",
                     'created_by' => Auth::user()->id
                 ]);
+
+                // add defect ids
+                array_push($defectIds, $defect->id);
 
                 // add rft array
                 array_push($rftArray, [
@@ -170,7 +174,7 @@ class Rework extends Component
                 ]);
             }
             // update defect
-            $defectSql = Defect::where('master_plan_id', $this->orderInfo->id)->update([
+            $defectSql = Defect::where('id', $defectIds)->update([
                 "defect_status" => "reworked"
             ]);
 
