@@ -122,6 +122,7 @@ class OrderList extends Component
                 'plan.target',
                 'so.id'
             )
+            ->orderBy('master_plan.tgl_plan', 'desc')
             ->get();
 
         return view('livewire.order-list');
