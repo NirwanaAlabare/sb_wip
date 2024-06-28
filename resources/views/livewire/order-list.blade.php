@@ -51,8 +51,8 @@
                             </table>
                             <div class="mx-2">
                                 <div class="d-flex justify-content-between w-100">
-                                    <p class="mb-1">Output : <b>{{ $order->progress ? $order->progress : 0  }}</b></p>
-                                    <p class="mb-1">Target : <b>{{ $order->target ? $order->target : 0  }}</b></p>
+                                    <p class="mb-1">Output : <b>{{ $order->progress ? $order->progress : 0 }}</b></p>
+                                    <p class="mb-1">Target : <b>{{ $order->target ? $order->target : 0 }}</b></p>
                                 </div>
                                 <div class="progress" role="progressbar" aria-valuenow="{{ $order->progress }}" aria-valuemin="0" aria-valuemax="{{ $order->target }}" style="height: 15px">
                                     @php
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                </a href="{{ url('/production-panel/'.$order->id) }}">
+                </a href="/production-panel/{{ $order->id }}">
             @endforeach
         @endif
     </div>
