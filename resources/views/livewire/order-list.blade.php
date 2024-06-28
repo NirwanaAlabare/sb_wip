@@ -19,7 +19,7 @@
             <h5 class="text-center text-muted mt-3"><i class="fa-solid fa-circle-exclamation"></i> Order tidak ditemukan</h5>
         @else
             @foreach ($orders as $order)
-                <a href="{{ url('/production-panel/'.$order->id) }}" class="order col-md-6 h-100">
+                <a href="{{ url($baseUrl.'/production-panel/index/'.$order->id) }}" class="order col-md-6 h-100">
                     <div class="card h-100">
                         <div class="card-body justify-content-start">
                             <table class="table table-responsive mb-1">
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                </a href="/production-panel/{{ $order->id }}">
+                </a href="{{ $baseUrl }}/production-panel/index/{{ $order->id }}">
             @endforeach
         @endif
     </div>
