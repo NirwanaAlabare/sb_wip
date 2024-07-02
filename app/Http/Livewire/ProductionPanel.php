@@ -123,6 +123,7 @@ class ProductionPanel extends Component
             ->where('act_costing.kpno', $this->orderInfo->ws_number)
             ->where('so_det.color', $this->selectedColorName)
             ->where('master_plan.cancel', 'N')
+            ->where('so_det.cancel', "N")
             ->groupBy('so_det.size')
             ->orderBy('so_det_id')
             ->get();
@@ -407,6 +408,8 @@ class ProductionPanel extends Component
             ->where('master_plan.sewing_line', Auth::user()->username)
             ->where('act_costing.kpno', $this->orderInfo->ws_number)
             ->where('so_det.color', $this->selectedColorName)
+            ->where('master_plan.cancel', "N")
+            ->where('so_det.cancel', "N")
             ->groupBy('so_det.size')
             ->orderBy('so_det_id')
             ->get();
