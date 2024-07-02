@@ -112,7 +112,7 @@ class ProductionPanel extends Component
         $this->undoDefectArea = "";
 
         $this->orderWsDetailSizes = MasterPlan::selectRaw("
-                MIN(so_det.id) as so_det_id,
+                MAX(so_det.id) as so_det_id,
                 so_det.size as size
             ")
             ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
