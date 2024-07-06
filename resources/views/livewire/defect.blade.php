@@ -392,6 +392,10 @@
                 @this.set('defectArea', defectArea);
             });
 
+            $(document).on('select2:open', () => {
+                document.querySelector('.select2-search__field').focus();
+            });
+
             Livewire.on('clearSelectDefectAreaPoint', () => {
                 $('#product-type-select2').val("").trigger('change');
                 $('#defect-type-select2').val("").trigger('change');
