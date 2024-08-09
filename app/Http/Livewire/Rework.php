@@ -146,7 +146,7 @@ class Rework extends Component
         $availableRework = 0;
         $externalRework = 0;
 
-        $allDefect = Defect::selectRaw('output_defects.id id, output_defects.master_plan_id master_plan_id, output_defects.so_det_id so_det_id, output_defect_types.allocation, output_defect_in_out.status in_out_status')->
+        $allDefect = Defect::selectRaw('output_defects.id id, output_defects.master_plan_id master_plan_id, output_defects.so_det_id so_det_id, output_defects.kode_numbering, output_defects.no_cut_size, output_defect_types.allocation, output_defect_in_out.status in_out_status')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             leftJoin('output_defect_in_out', 'output_defect_in_out.defect_id', '=', 'output_defects.id')->
             leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
@@ -174,6 +174,8 @@ class Rework extends Component
                         'so_det_id' => $defect->so_det_id,
                         "status" => "REWORK",
                         "rework_id" => $createRework->id,
+                        "kode_numbering" => $defect->kode_numbering,
+                        "no_cut_size" => $defect->no_cut_size,
                         'created_by' => Auth::user()->id,
                         "created_at" => Carbon::now(),
                         "updated_at" => Carbon::now()
@@ -222,7 +224,7 @@ class Rework extends Component
         $availableRework = 0;
         $externalRework = 0;
 
-        $selectedDefect = Defect::selectRaw('output_defects.id id, output_defects.master_plan_id master_plan_id, output_defects.so_det_id so_det_id, output_defect_types.allocation, so_det.size, output_defect_in_out.status in_out_status')->
+        $selectedDefect = Defect::selectRaw('output_defects.id id, output_defects.master_plan_id master_plan_id, output_defects.so_det_id so_det_id, output_defects.kode_numbering, output_defects.no_cut_size, output_defect_types.allocation, so_det.size, output_defect_in_out.status in_out_status')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             leftJoin('output_defect_in_out', 'output_defect_in_out.defect_id', '=', 'output_defects.id')->
             leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
@@ -254,6 +256,8 @@ class Rework extends Component
                         'so_det_id' => $defect->so_det_id,
                         "status" => "REWORK",
                         "rework_id" => $createRework->id,
+                        "kode_numbering" => $defect->kode_numbering,
+                        "no_cut_size" => $defect->no_cut_size,
                         'created_by' => Auth::user()->id,
                         "created_at" => Carbon::now(),
                         "updated_at" => Carbon::now()
@@ -315,6 +319,8 @@ class Rework extends Component
                     'master_plan_id' => $getDefect->master_plan_id,
                     'so_det_id' => $getDefect->so_det_id,
                     "status" => "REWORK",
+                    "kode_numbering" => $getDefect->kode_numbering,
+                    "no_cut_size" => $getDefect->no_cut_size,
                     "rework_id" => $createRework->id,
                     'created_by' => Auth::user()->id
                 ]);
