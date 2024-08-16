@@ -47,6 +47,7 @@ class ProductionPanel extends Component
     public $undoType;
     public $undoQty;
     public $undoSize;
+    public $undoSizeText;
     public $undoDefectType;
     public $undoDefectArea;
 
@@ -108,6 +109,7 @@ class ProductionPanel extends Component
         $this->undoType = "";
         $this->undoQty = 1;
         $this->undoSize = "";
+        $this->undoSizeText = "";
         $this->undoDefectType = "";
         $this->undoDefectArea = "";
 
@@ -183,9 +185,17 @@ class ProductionPanel extends Component
     {
         $this->undoQty = 1;
         $this->undoSize = '';
+        $this->undoSizeText = '';
         $this->undoType = $undoType;
 
         $this->emit('showModal', 'undo');
+    }
+
+    public function updatedUndoSize()
+    {
+        $size = DB::select(DB::raw("SELECT * FROM so_det WHERE id = '".$this->undoSize."'"));
+
+        $this->undoSizeText = $size ? $size[0]->size : 0;
     }
 
     public function submitUndo()

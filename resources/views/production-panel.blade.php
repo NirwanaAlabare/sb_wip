@@ -54,6 +54,19 @@
                 width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
                 placeholder: $( this ).data( 'placeholder' ),
             });
+
+            $('.select2bold').select2({
+                theme: "bootstrap-5",
+                width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+                placeholder: $( this ).data( 'placeholder' ),
+                templateResult: formatOutput
+            });
+
+            function formatOutput (optionElement) {
+                if (!optionElement.id) { return optionElement.text; }
+                var $state = $('<span><strong>' + optionElement.text + '</strong></span>');
+                return $state;
+            };
         });
 
         Livewire.on('alert', (type, message) => {
