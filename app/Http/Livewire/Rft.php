@@ -34,6 +34,7 @@ class Rft extends Component
 
     protected $listeners = [
         'updateWsDetailSizes' => 'updateWsDetailSizes',
+        'updateOutputRft' => 'updateOutput'
     ];
 
     public function mount(SessionManager $session, $orderWsDetailSizes)
@@ -55,6 +56,15 @@ class Rft extends Component
 
         $this->orderInfo = session()->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = session()->get('orderWsDetailSizes', $this->orderWsDetailSizes);
+    }
+
+    public function updateOutput()
+    {
+        $this->output = RftModel::
+            leftJoin("so_det", "so_det.id", "=", "output_rfts.so_det_id")->
+            where('master_plan_id', $this->orderInfo->id)->
+            where('status', 'normal')->
+            get();
     }
 
     public function clearInput()
@@ -125,9 +135,10 @@ class Rft extends Component
 
         // Get total output
         $this->output = RftModel::
+            leftJoin("so_det", "so_det.id", "=", "output_rfts.so_det_id")->
             where('master_plan_id', $this->orderInfo->id)->
             where('status', 'normal')->
-            count();
+            get();
 
         return view('livewire.rft');
     }

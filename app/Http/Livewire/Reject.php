@@ -31,7 +31,8 @@ class Reject extends Component
     ];
 
     protected $listeners = [
-        'updateWsDetailSizes' => 'updateWsDetailSizes'
+        'updateWsDetailSizes' => 'updateWsDetailSizes',
+        'updateOutputReject' => 'updateOutput'
     ];
 
     public function mount(SessionManager $session, $orderWsDetailSizes)
@@ -51,6 +52,14 @@ class Reject extends Component
 
         $this->orderInfo = session()->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = session()->get('orderWsDetailSizes', $this->orderWsDetailSizes);
+    }
+
+    public function updateOutput()
+    {
+        $this->output = RejectModel::
+            leftJoin("so_det", "so_det.id", "=", "output_rejects.so_det_id")->
+            where('master_plan_id', $this->orderInfo->id)->
+            get();
     }
 
     public function clearInput()
@@ -121,8 +130,9 @@ class Reject extends Component
 
         // Get total output
         $this->output = RejectModel::
+            leftJoin("so_det", "so_det.id", "=", "output_rejects.so_det_id")->
             where('master_plan_id', $this->orderInfo->id)->
-            count();
+            get();
 
         return view('livewire.reject');
     }

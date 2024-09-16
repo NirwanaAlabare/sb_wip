@@ -63,6 +63,7 @@ class Defect extends Component
         'setDefectAreaPosition' => 'setDefectAreaPosition',
         'updateWsDetailSizes' => 'updateWsDetailSizes',
         'updateOutput' => 'updateOutput',
+        'updateOutputDefect' => 'updateOutput',
         'clearInput' => 'clearInput',
     ];
 
@@ -99,9 +100,10 @@ class Defect extends Component
     public function updateOutput()
     {
         $this->output = DefectModel::
+            leftJoin("so_det", "so_det.id", "=", "output_defects.so_det_id")->
             where('master_plan_id', $this->orderInfo->id)->
             where('defect_status', 'defect')->
-            count();
+            get();
     }
 
     public function updatedproductTypeImageAdd()
@@ -283,9 +285,10 @@ class Defect extends Component
 
         // Get total output
         $this->output = DefectModel::
+            leftJoin("so_det", "so_det.id", "=", "output_defects.so_det_id")->
             where('master_plan_id', $this->orderInfo->id)->
             where('defect_status', 'defect')->
-            count();
+            get();
 
         // Defect types
         $this->productTypes = ProductType::orderBy('product_type')->get();
