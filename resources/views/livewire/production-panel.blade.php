@@ -53,7 +53,7 @@
     <div class="production-panel row row-gap-3" id="production-panel">
         @if ($panels)
             <div class="row row-gap-3">
-                @if ($orderDate == date('Y-m-d'))
+                {{-- @if ($orderDate == date('Y-m-d')) --}}
                     <div class="col-md-6" id="rft-panel">
                         <div class="d-flex h-100">
                             <div class="card-custom bg-rft d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toRft()" --}} wire:click='toRft'>
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                {{-- @endif --}}
                 @if ($orderDate == date('Y-m-d'))
                     <div class="col-md-6" id="reject-panel">
                         <div class="d-flex h-100">
