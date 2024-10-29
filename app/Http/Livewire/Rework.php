@@ -157,7 +157,7 @@ class Rework extends Component
             $defectIds = [];
             $rftArray = [];
             foreach ($allDefect as $defect) {
-                // if ($defect->in_out_status != "defect") {
+                if ($defect->in_out_status != "defect") {
                     // create rework
                     $createRework = ReworkModel::create([
                         "defect_id" => $defect->id,
@@ -182,9 +182,9 @@ class Rework extends Component
                     ]);
 
                     $availableRework += 1;
-                // } else {
-                //     $externalRework += 1;
-                // }
+                } else {
+                    $externalRework += 1;
+                }
             }
             // update defect
             $defectSql = Defect::whereIn('id', $defectIds)->update([
@@ -239,7 +239,7 @@ class Rework extends Component
             $rftArray = [];
             $defectIds = [];
             foreach ($selectedDefect as $defect) {
-                // if ($defect->in_out_status != "defect") {
+                if ($defect->in_out_status != "defect") {
                     // create rework
                     $createRework = ReworkModel::create([
                         "defect_id" => $defect->id,
@@ -264,9 +264,9 @@ class Rework extends Component
                     ]);
 
                     $availableRework += 1;
-                // } else {
-                //     $externalRework += 1;
-                // }
+                } else {
+                    $externalRework += 1;
+                }
             }
             // update defect
             $defectSql = Defect::whereIn('id', $defectIds)->update([
