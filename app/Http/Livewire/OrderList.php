@@ -33,12 +33,12 @@ class OrderList extends Component
 
     public function render()
     {
-        $masterPlanBefore = MasterPlan::selectRaw("max(id) as id")->where("sewing_line", strtoupper(Auth::user()->line->username))->where("master_plan.cancel", "N")->where("tgl_plan", "<", $this->date)->groupBy("master_plan.id_ws", "master_plan.color")->orderBy("tgl_plan", "desc")->first();
+        // $masterPlanBefore = MasterPlan::selectRaw("max(id) as id")->where("sewing_line", strtoupper(Auth::user()->line->username))->where("master_plan.cancel", "N")->where("tgl_plan", "<", $this->date)->groupBy("master_plan.id_ws", "master_plan.color")->orderBy("tgl_plan", "desc")->first();
 
         $additionalQuery = "";
-        if ($masterPlanBefore) {
-            $additionalQuery = "OR master_plan.id = '".$masterPlanBefore->id."'";
-        }
+        // if ($masterPlanBefore) {
+        //     $additionalQuery = "OR master_plan.id = '".$masterPlanBefore->id."'";
+        // }
 
         $this->orders = DB::table('master_plan')
             ->selectRaw("
