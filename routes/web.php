@@ -29,7 +29,7 @@ Route::controller(LoginController::class)->prefix('login')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('index');
-    });
+    })->name('index');
 
     Route::controller(ProductionController::class)->prefix('production-panel')->group(function () {
         Route::get('/{id}', 'index');
