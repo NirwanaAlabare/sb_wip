@@ -57,7 +57,7 @@
                             <p class="mb-1 fs-5">:</p>
                             <p id="defect-qty" class="mb-1 fs-5">{{ $output->count() }}</p>
                         </div>
-                        <button class="btn btn-dark" wire:click="$emit('preSubmitUndo', 'defect')">
+                        <button class="btn btn-dark" wire:click="$emit('preSubmitUndo', 'defect')" disabled>
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
                         {{-- <button class="btn btn-dark">
