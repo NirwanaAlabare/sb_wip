@@ -240,41 +240,45 @@ class Defect extends Component
     {
         $validatedData = $this->validate();
 
-        $insertData = [];
-        for ($i = 0; $i < $this->outputInput; $i++)
-        {
-            array_push($insertData, [
-                'master_plan_id' => $this->orderInfo->id,
-                'so_det_id' => $this->sizeInput,
-                // 'product_type_id' => $this->productType,
-                'defect_type_id' => $this->defectType,
-                'defect_area_id' => $this->defectArea,
-                'defect_area_x' => $this->defectAreaPositionX,
-                'defect_area_y' => $this->defectAreaPositionY,
-                'status' => 'NORMAL',
-                'created_by' => Auth::user()->id,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]);
-        }
+        if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {
+            $insertData = [];
+            for ($i = 0; $i < $this->outputInput; $i++)
+            {
+                array_push($insertData, [
+                    'master_plan_id' => $this->orderInfo->id,
+                    'so_det_id' => $this->sizeInput,
+                    // 'product_type_id' => $this->productType,
+                    'defect_type_id' => $this->defectType,
+                    'defect_area_id' => $this->defectArea,
+                    'defect_area_x' => $this->defectAreaPositionX,
+                    'defect_area_y' => $this->defectAreaPositionY,
+                    'status' => 'NORMAL',
+                    'created_by' => Auth::user()->id,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+            }
 
-        $insertDefect = DefectModel::insert($insertData);
+            $insertDefect = DefectModel::insert($insertData);
 
-        if ($insertDefect) {
-            $type = DefectType::select('defect_type')->find($this->defectType);
-            $area = DefectArea::select('defect_area')->find($this->defectArea);
-            $getSize = DB::table('so_det')
-                ->select('id', 'size')
-                ->where('id', $this->sizeInput)
-                ->first();
+            if ($insertDefect) {
+                $type = DefectType::select('defect_type')->find($this->defectType);
+                $area = DefectArea::select('defect_area')->find($this->defectArea);
+                $getSize = DB::table('so_det')
+                    ->select('id', 'size')
+                    ->where('id', $this->sizeInput)
+                    ->first();
 
-            $this->emit('alert', 'success', $this->outputInput." output DEFECT berukuran ".$getSize->size." dengan jenis defect : ".$type->defect_type." dan area defect : ".$area->defect_area." berhasil terekam.");
-            $this->emit('hideModal', 'defect');
+                $this->emit('alert', 'success', $this->outputInput." output DEFECT berukuran ".$getSize->size." dengan jenis defect : ".$type->defect_type." dan area defect : ".$area->defect_area." berhasil terekam.");
+                $this->emit('hideModal', 'defect');
 
-            $this->outputInput = 1;
-            $this->sizeInput = '';
+                $this->outputInput = 1;
+                $this->sizeInput = '';
+            } else {
+                $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
+            }
         } else {
-            $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
+            $this->emit('alert', 'error', "Tidak dapat input backdate.");
         }
     }
 

@@ -93,33 +93,37 @@ class Reject extends Component
     {
         $validatedData = $this->validate();
 
-        $insertData = [];
-        for ($i = 0; $i < $this->outputInput; $i++)
-        {
-            array_push($insertData, [
-                'master_plan_id' => $this->orderInfo->id,
-                'so_det_id' => $this->sizeInput,
-                'status' => 'NORMAL',
-                'created_by' => Auth::user()->id,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]);
-        }
+        if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {
+            $insertData = [];
+            for ($i = 0; $i < $this->outputInput; $i++)
+            {
+                array_push($insertData, [
+                    'master_plan_id' => $this->orderInfo->id,
+                    'so_det_id' => $this->sizeInput,
+                    'status' => 'NORMAL',
+                    'created_by' => Auth::user()->id,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+            }
 
-        $insertReject = RejectModel::insert($insertData);
+            $insertReject = RejectModel::insert($insertData);
 
-        if ($insertReject) {
-            $getSize = DB::table('so_det')
-                ->select('id', 'size')
-                ->where('id', $this->sizeInput)
-                ->first();
+            if ($insertReject) {
+                $getSize = DB::table('so_det')
+                    ->select('id', 'size')
+                    ->where('id', $this->sizeInput)
+                    ->first();
 
-            $this->emit('alert', 'success', $this->outputInput." REJECT output berukuran ".$getSize->size." berhasil terekam.");
+                $this->emit('alert', 'success', $this->outputInput." REJECT output berukuran ".$getSize->size." berhasil terekam.");
 
-            $this->outputInput = 1;
-            $this->sizeInput = '';
+                $this->outputInput = 1;
+                $this->sizeInput = '';
+            } else {
+                $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
+            }
         } else {
-            $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
+            $this->emit('alert', 'error', "Tidak dapat input backdate.");
         }
     }
 
