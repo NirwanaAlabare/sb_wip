@@ -111,7 +111,7 @@
                         <tr>
                             <th>No.</th>
                             <th>Waktu</th>
-                            <th>ID</th>
+                            <th>QR</th>
                             <th>Size</th>
                             <th>Defect Type</th>
                             <th>Defect Area</th>
@@ -128,7 +128,7 @@
                                 <tr>
                                     <td>{{ $defects->firstItem() + $loop->index }}</td>
                                     <td>{{ $defect->updated_at ? $defect->created_at : $defect->updated_at }}</td>
-                                    <td>{{ $defect->id }}</td>
+                                    <td>{{ $defect->kode_numbering }}</td>
                                     <td>{{ $defect->so_det_size }}</td>
                                     <td>{{ $defect->defectType->defect_type}}</td>
                                     <td>{{ $defect->defectArea->defect_area }}</td>
@@ -162,7 +162,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center bg-rework text-light">
                     <p class="mb-0 fs-5">Data Rework</p>
                     <div class="d-flex justify-content-end align-items-center gap-1">
-                        <button type="button" class="btn btn-dark" wire:click="$emit('preSubmitUndo', 'rework')">
+                        <button type="button" class="btn btn-dark" wire:click="$emit('preSubmitUndo', 'rework')" disabled>
                             <i class="fa-regular fa-rotate-left"></i>
                         </button>
                         {{-- <button type="button" class="btn btn-dark">
@@ -178,7 +178,7 @@
                         <tr>
                             <th>No.</th>
                             <th>Waktu</th>
-                            <th>ID</th>
+                            <th>QR</th>
                             <th>Size</th>
                             <th>Defect Type</th>
                             <th>Defect Area</th>
@@ -195,7 +195,7 @@
                                 <tr>
                                     <td>{{ $reworks->firstItem() + $loop->index }}</td>
                                     <td>{{ $rework->updated_at ? $rework->created_at : $rework->updated_at }}</td>
-                                    <td>{{ $rework->defect->id }}</td>
+                                    <td>{{ $rework->defect->kode_numbering }}</td>
                                     <td>{{ $rework->so_det_size }}</td>
                                     <td>{{ $rework->defect->defectType ? $rework->defect->defectType->defect_type : '-' }}</td>
                                     <td>{{ $rework->defect->defectArea ? $rework->defect->defectArea->defect_area : '-' }}</td>
