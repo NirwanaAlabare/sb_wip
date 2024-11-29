@@ -213,6 +213,7 @@ class ProductionPanel extends Component
                     $rftSql = Rft::where('master_plan_id', $this->orderInfo->id)->
                         where('so_det_id', $this->undoSize)->
                         where('status', 'NORMAL')->
+                        whereNull('kode_numbering')->
                         orderBy('updated_at', 'DESC')->
                         orderBy('created_at', 'DESC')->
                         take($this->undoQty);
@@ -225,6 +226,7 @@ class ProductionPanel extends Component
                             'so_det_id' => $getRft->so_det_id,
                             'output_rft_id' => $getRft->id,
                             'kode_numbering' => $getRft->kode_numbering,
+                            'created_by' => Auth::user()->id,
                             'keterangan' => 'rft',
                         ]);
                     }
@@ -249,6 +251,7 @@ class ProductionPanel extends Component
                         leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
                         where('master_plan_id', $this->orderInfo->id)->
                         where('so_det_id', $this->undoSize)->
+                        whereNull('kode_numbering')->
                         where('defect_status', 'defect');
                     if ($this->undoDefectType) {
                         $defectQuery->where('output_defects.defect_type_id', $this->undoDefectType);
@@ -268,6 +271,7 @@ class ProductionPanel extends Component
                             'so_det_id' => $getDefect->so_det_id,
                             'output_defect_id' => $getDefect->defect_id,
                             'kode_numbering' => $getDefect->kode_numbering,
+                            'created_by' => Auth::user()->id,
                             'keterangan' => 'defect',
                         ]);
 
@@ -292,6 +296,7 @@ class ProductionPanel extends Component
                     // Undo REJECT
                     $rejectSql = Reject::where('master_plan_id', $this->orderInfo->id)->
                         where('so_det_id', $this->undoSize)->
+                        whereNull('kode_numbering')->
                         orderBy('updated_at', 'DESC')->
                         orderBy('created_at', 'DESC')->
                         take($this->undoQty);
@@ -304,6 +309,7 @@ class ProductionPanel extends Component
                             'so_det_id' => $reject->so_det_id,
                             'output_reject_id' => $reject->id,
                             'kode_numbering' => $reject->kode_numbering,
+                            'created_by' => Auth::user()->id,
                             'keterangan' => 'reject',
                         ]);
                     }
@@ -328,6 +334,7 @@ class ProductionPanel extends Component
                         leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
                         where('master_plan_id', $this->orderInfo->id)->
                         where('so_det_id', $this->undoSize)->
+                        whereNull('kode_numbering')->
                         where('defect_status', 'reworked');
                     if ($this->undoDefectType) {
                         $defectQuery->where('output_defects.defect_type_id', $this->undoDefectType);
@@ -342,7 +349,7 @@ class ProductionPanel extends Component
 
                     // update defect & delete rework
                     foreach ($getDefects as $defect) {
-                        Undo::create(['master_plan_id' => $defect->master_plan_id, 'so_det_id' => $defect->so_det_id, 'output_rework_id' => $defect->rework->id, 'kode_numbering' => $defect->kode_numbering, 'keterangan' => 'rework',]);
+                        Undo::create(['master_plan_id' => $defect->master_plan_id, 'so_det_id' => $defect->so_det_id, 'output_rework_id' => $defect->rework->id, 'kode_numbering' => $defect->kode_numbering, 'created_by' => Auth::user()->id, 'keterangan' => 'rework']);
                         Defect::where('id', $defect->defect_id)->update(['defect_status' => 'defect']);
                         Rft::leftJoin('output_reworks', 'output_reworks.id', '=', 'output_rfts.rework_id')->where('output_reworks.defect_id', $defect->defect_id)->delete();
                         Rework::where('defect_id', $defect->defect_id)->delete();

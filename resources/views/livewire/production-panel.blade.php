@@ -53,7 +53,7 @@
     <div class="production-panel row row-gap-3" id="production-panel">
         @if ($panels)
             <div class="row row-gap-3">
-                @if ($orderDate == date('Y-m-d'))
+                {{-- @if ($orderDate == date('Y-m-d')) --}}
                     <div class="col-md-6" id="rft-panel">
                         <div class="d-flex h-100">
                             <div class="card-custom bg-rft d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toRft()" --}} wire:click='toRft'>
@@ -76,7 +76,7 @@
                                             <p class="text-center fs-3 mt-auto mb-auto">{{ $outputFiltered }}</p>
                                         </div>
                                     </div>
-                                    <button type="button" class="reset multi-item lower btn btn-pale h-50" wire:click="preSubmitUndo('rft')" disabled>
+                                    <button type="button" class="reset multi-item lower btn btn-pale h-50" wire:click="preSubmitUndo('rft')" >
                                         <i class="fa-regular fa-rotate-left fa-2xl"></i>
                                     </button>
                                 </div>
@@ -100,7 +100,7 @@
                                             <p class="mb-0"><i class="fa-regular fa-clock-rotate-left fa-xl"></i></p>
                                         </div>
                                     </button>
-                                    <button type="button" class="reset multi-item lower btn btn-pale h-50" wire:click="preSubmitUndo('defect')" disabled>
+                                    <button type="button" class="reset multi-item lower btn btn-pale h-50" wire:click="preSubmitUndo('defect')" >
                                         <div class="d-flex flex-column justify-content-center align-items-center w-100 h-100">
                                             <p class="mb-1">UNDO</p>
                                             <p class="mb-0"><i class="fa-regular fa-rotate-left fa-xl"></i></p>
@@ -120,13 +120,13 @@
                                 <p class="text-light fs-1">{{ $outputReject }}</p>
                             </div>
                             <div class="card-custom-footer bg-light w-25 h-100">
-                                <button class="reset single-item btn btn-pale w-100 h-100" wire:click="preSubmitUndo('reject')" disabled>
+                                <button class="reset single-item btn btn-pale w-100 h-100" wire:click="preSubmitUndo('reject')" >
                                     <i class="fa-regular fa-rotate-left fa-2xl"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                @endif
+                {{-- @endif --}}
                 <div class="col-md-6" id="rework-panel">
                     <div class="d-flex h-100">
                         <div class="card-custom bg-rework d-flex justify-content-between align-items-center w-75 h-100" {{-- onclick="toRework()" --}} wire:click='toRework'>
@@ -137,7 +137,7 @@
                             <p class="text-light fs-1">{{ $outputRework }}</p>
                         </div>
                         <div class="card-custom-footer bg-light w-25 h-100">
-                            <button class="reset single-item btn btn-pale w-100 h-100" wire:click="preSubmitUndo('rework')" disabled>
+                            <button class="reset single-item btn btn-pale w-100 h-100" wire:click="preSubmitUndo('rework')">
                                 <i class="fa-regular fa-rotate-left fa-2xl"></i>
                             </button>
                         </div>
