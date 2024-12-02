@@ -151,7 +151,9 @@ class Rework extends Component
             leftJoin('output_defect_in_out', 'output_defect_in_out.defect_id', '=', 'output_defects.id')->
             leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
             where('output_defects.defect_status', 'defect')->
-            where('output_defects.master_plan_id', $this->orderInfo->id)->get();
+            where('output_defects.master_plan_id', $this->orderInfo->id)->
+            whereNull('output_defects.kode_numbering')->
+            get();
 
         if ($allDefect->count() > 0) {
             $defectIds = [];
@@ -233,6 +235,7 @@ class Rework extends Component
             where('output_defects.defect_type_id', $this->massDefectType)->
             where('output_defects.defect_area_id', $this->massDefectArea)->
             where('output_defects.so_det_id', $this->massSize)->
+            whereNull('output_defects.kode_numbering')->
             take($this->massQty)->get();
 
         if ($selectedDefect->count() > 0) {
