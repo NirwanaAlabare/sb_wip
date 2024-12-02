@@ -253,7 +253,7 @@
                         </tr>
                         @if ($rejects->count() < 1)
                             <tr>
-                                <td colspan='8'>Rework tidak ditemukan</td>
+                                <td colspan='8'>Reject tidak ditemukan</td>
                             </tr>
                         @else
                             @foreach ($rejects as $reject)

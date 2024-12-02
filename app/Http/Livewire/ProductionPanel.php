@@ -320,9 +320,9 @@ class ProductionPanel extends Component
 
                     $deleteReject = $rejectSql->delete();
 
-                    $updateDefect = Defect::where('id', $defectIds)->update(['defect_status' => 'defect']);
+                    $updateDefect = Defect::whereIn('id', $defectIds)->update(['defect_status' => 'defect']);
 
-                    if ($deleteReject && $updateDefect) {
+                    if ($deleteReject) {
                         $this->emit('updateOutputReject');
 
                         $this->emit('alert', 'success', 'Output REJECT dengan ukuran '.$size[0]->size.' berhasil di UNDO sebanyak '.$deleteReject.' kali.');
