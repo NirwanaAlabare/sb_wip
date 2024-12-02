@@ -69,6 +69,11 @@ class Reject extends Component
         $this->sizeInputText = null;
     }
 
+    public function loadRejectPage()
+    {
+        $this->emit('loadRejectPageJs');
+    }
+
     public function updateWsDetailSizes()
     {
         $this->outputInput = 1;
@@ -375,6 +380,8 @@ class Reject extends Component
 
     public function render(SessionManager $session)
     {
+        $this->emit('loadRejectPageJs');
+
         $this->orderInfo = $session->get('orderInfo', $this->orderInfo);
         $this->orderWsDetailSizes = $session->get('orderWsDetailSizes', $this->orderWsDetailSizes);
 

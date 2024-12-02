@@ -1,4 +1,4 @@
-<div>
+<div wire:init="loadRejectPage">
     <div class="loading-container-fullscreen" wire:loading wire:target="submitInput, updateOrder">
         <div class="loading-container">
             <div class="loading"></div>
