@@ -292,7 +292,7 @@ class Reject extends Component
 
                     $availableReject += 1;
                 } else {
-                    $externalRework += 1;
+                    $externalReject += 1;
                 }
             }
             // update defect
@@ -303,7 +303,7 @@ class Reject extends Component
             if ($availableReject > 0) {
                 $this->emit('alert', 'success', "DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." berhasil di REJECT sebanyak ".$selectedDefect->count()." kali.");
 
-                $this->emit('hideModal', 'massRework');
+                $this->emit('hideModal', 'massReject');
             } else {
                 $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." tidak berhasil di REJECT.");
             }
@@ -331,7 +331,7 @@ class Reject extends Component
                     "defect_status" => "rejected"
                 ]);
 
-                // add to rework
+                // add to reject
                 $createReject = RejectModel::create([
                     "master_plan_id" => $getDefect->master_plan_id,
                     "so_det_id" => $getDefect->so_det_id,
@@ -356,7 +356,7 @@ class Reject extends Component
     }
 
     public function cancelReject($rejectId, $defectId) {
-        // delete from rework
+        // delete from reject
         $deleteReject = RejectModel::where('id', $rejectId)->delete();
 
         // add to defect

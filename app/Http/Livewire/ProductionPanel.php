@@ -294,6 +294,8 @@ class ProductionPanel extends Component
                     break;
                 case 'reject' :
                     // Undo REJECT
+                    $defectIds = [];
+
                     $rejectSql = Reject::where('master_plan_id', $this->orderInfo->id)->
                         where('so_det_id', $this->undoSize)->
                         whereNull('kode_numbering')->
@@ -312,11 +314,15 @@ class ProductionPanel extends Component
                             'created_by' => Auth::user()->id,
                             'keterangan' => 'reject',
                         ]);
+
+                        array_push($defectIds, $reject->defect_id);
                     }
 
                     $deleteReject = $rejectSql->delete();
 
-                    if ($deleteReject) {
+                    $updateDefect = Defect::where('id', $defectIds)->update(['defect_status' => 'defect']);
+
+                    if ($deleteReject && $updateDefect) {
                         $this->emit('updateOutputReject');
 
                         $this->emit('alert', 'success', 'Output REJECT dengan ukuran '.$size[0]->size.' berhasil di UNDO sebanyak '.$deleteReject.' kali.');
