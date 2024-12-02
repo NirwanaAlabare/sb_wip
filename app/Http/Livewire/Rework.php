@@ -380,6 +380,7 @@ class Rework extends Component
             leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
             where('output_defects.defect_status', 'defect')->
             where('output_defects.master_plan_id', $this->orderInfo->id)->
+            whereNull('output_defects.kode_numbering')->
             whereRaw("
                 (
                     output_defect_types.defect_type LIKE '%".$this->allDefectListFilter."%' OR
@@ -396,6 +397,7 @@ class Rework extends Component
             leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
             where('output_defects.defect_status', 'defect')->
             where('output_defects.master_plan_id', $this->orderInfo->id)->
+            whereNull('output_defects.kode_numbering')->
             whereRaw("(
                 output_defects.id LIKE '%".$this->searchDefect."%' OR
                 so_det.size LIKE '%".$this->searchDefect."%' OR
@@ -412,6 +414,7 @@ class Rework extends Component
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             where('output_defects.defect_status', 'reworked')->
             where('output_defects.master_plan_id', $this->orderInfo->id)->
+            whereNull('output_defects.kode_numbering')->
             whereRaw("(
                 output_reworks.id LIKE '%".$this->searchRework."%' OR
                 output_defects.id LIKE '%".$this->searchRework."%' OR
