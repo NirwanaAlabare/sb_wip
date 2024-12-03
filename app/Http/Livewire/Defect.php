@@ -294,7 +294,7 @@ class Defect extends Component
             where('defect_status', 'defect')->
             get();
 
-        // Defect types
+        // Product types
         $this->productTypes = ProductType::orderBy('product_type')->get();
 
         // Defect types

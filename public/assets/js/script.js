@@ -157,6 +157,15 @@ function hideDefectModal() {
     $("#defect-modal").modal("hide");
 }
 
+// reject modal
+function showRejectModal() {
+    $("#reject-modal").modal("show");
+}
+
+function hideRejectModal() {
+    $("#reject-modal").modal("hide");
+}
+
 // undo modal
 function showUndoModal() {
     $("#undo-modal").modal("show");
@@ -555,6 +564,34 @@ function hideSelectDefectArea() {
     selectDefectArea.style.flexDirection = null;
     selectDefectArea.style.justifyContent = null;
     selectDefectArea.style.alignItems = null;
+}
+
+// Select Reject Area
+function showSelectRejectArea(rejectAreaImage) {
+    document.body.style.maxHeight = '100%';
+    document.body.style.overflow = 'hidden';
+
+    let rejectAreaImageElement = document.getElementById('reject-area-img');
+    rejectAreaImageElement.src = 'http://10.10.5.62:8080/erp/pages/prod_new/upload_files/'+rejectAreaImage;
+
+    let selectRejectArea = document.getElementById('select-reject-area');
+    selectRejectArea.style.display = 'flex';
+    selectRejectArea.style.flexDirection = 'column';
+    selectRejectArea.style.alignItems = 'center';
+}
+
+function hideSelectRejectArea() {
+    document.body.style.maxHeight = null;
+    document.body.style.overflow = null;
+
+    let rejectAreaImageElement = document.getElementById('reject-area-img');
+    rejectAreaImageElement.src = '';
+
+    let selectRejectArea = document.getElementById('select-reject-area');
+    selectRejectArea.style.display = 'none';
+    selectRejectArea.style.flexDirection = null;
+    selectRejectArea.style.justifyContent = null;
+    selectRejectArea.style.alignItems = null;
 }
 
 // Show Defect Area Image

@@ -167,9 +167,11 @@
         @endif
 
         {{-- Reject --}}
-        @if ($reject)
+        {{-- @if ($reject) --}}
+        <div class="{{ $reject ? '' : 'd-none' }}">
             @livewire('reject', ["orderWsDetailSizes" => $orderWsDetailSizes])
-        @endif 
+        </div>
+        {{-- @endif --}}
 
         {{-- Rework --}}
         @if ($rework)
