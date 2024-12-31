@@ -416,9 +416,12 @@ class ProductionPanel extends Component
                 act_costing.styleno as style_name,
                 mastersupplier.supplier as buyer_name
             ")
-            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
-            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
-            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
+            ->join('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
+            ->join('so', 'so.id_cost', '=', 'act_costing.id')
+            ->join('so_det', function ($join) {
+                $join->on('so_det.id_so', "=", "so.id");
+                $join->on('so_det.color', "=", "master_plan.color");
+            })
             ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
             ->leftJoin('master_size_new', 'master_size_new.size', '=', 'so_det.size')
             ->leftJoin('masterproduct', 'masterproduct.id', '=', 'act_costing.id_product')
@@ -439,10 +442,13 @@ class ProductionPanel extends Component
                 MIN(so_det.id) as so_det_id,
                 so_det.size as size
             ")
-            ->leftJoin('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
-            ->leftJoin('so', 'so.id_cost', '=', 'act_costing.id')
-            ->leftJoin('so_det', 'so_det.id_so', '=', 'so.id')
-            ->leftJoin('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
+            ->join('act_costing', 'act_costing.id', '=', 'master_plan.id_ws')
+            ->join('so', 'so.id_cost', '=', 'act_costing.id')
+            ->join('so_det', function ($join) {
+                $join->on('so_det.id_so', "=", "so.id");
+                $join->on('so_det.color', "=", "master_plan.color");
+            })
+            ->join('mastersupplier', 'mastersupplier.id_supplier', '=', 'act_costing.id_buyer')
             ->where('master_plan.sewing_line', Auth::user()->line->username)
             ->where('act_costing.kpno', $this->orderInfo->ws_number)
             ->where('so_det.color', $this->selectedColorName)
