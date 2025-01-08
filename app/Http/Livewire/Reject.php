@@ -419,6 +419,8 @@ class Reject extends Component
 
                 if ($createReject && $updateDefect) {
                     $this->emit('alert', 'success', "DEFECT dengan ID : ".$defectId." berhasil di REJECT.");
+
+                    $this->emit('triggerDashboard', Auth::user()->line->username, Carbon::now()->format('Y-m-d'));
                 } else {
                     $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT dengan ID : ".$defectId." tidak berhasil di REJECT.");
                 }

@@ -376,6 +376,8 @@ class ProductionPanel extends Component
 
                     break;
             }
+
+            $this->emit('triggerDashboard', Auth::user()->line->username, Carbon::now()->format('Y-m-d'));
         } else {
             $this->emit('alert', 'error', "Tidak dapat input backdate.");
         }

@@ -198,6 +198,8 @@ class Rework extends Component
 
             if ($availableRework > 0) {
                 $this->emit('alert', 'success', $availableRework." DEFECT berhasil di REWORK");
+
+                $this->emit('triggerDashboard', Auth::user()->line->username, Carbon::now()->format('Y-m-d'));
             } else {
                 $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT tidak berhasil di REWORK.");
             }

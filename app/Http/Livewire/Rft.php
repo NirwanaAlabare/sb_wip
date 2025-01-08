@@ -124,6 +124,8 @@ class Rft extends Component
 
                 $this->outputInput = 1;
                 $this->sizeInput = '';
+
+                $this->emit('triggerDashboard', Auth::user()->line->username, Carbon::now()->format('Y-m-d'));
             } else {
                 $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
             }

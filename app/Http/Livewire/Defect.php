@@ -271,6 +271,7 @@ class Defect extends Component
 
                 $this->emit('alert', 'success', $this->outputInput." output DEFECT berukuran ".$getSize->size." dengan jenis defect : ".$type->defect_type." dan area defect : ".$area->defect_area." berhasil terekam.");
                 $this->emit('hideModal', 'defect');
+                $this->emit('triggerDashboard', Auth::user()->line->username, Carbon::now()->format('Y-m-d'));
 
                 $this->outputInput = 1;
                 $this->sizeInput = '';
