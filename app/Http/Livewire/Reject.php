@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Illuminate\Session\SessionManager;
 use App\Models\SignalBit\DefectType;
 use App\Models\SignalBit\DefectArea;
@@ -15,6 +16,10 @@ use DB;
 
 class Reject extends Component
 {
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $orderInfo;
     public $orderWsDetailSizes;
     public $output;
