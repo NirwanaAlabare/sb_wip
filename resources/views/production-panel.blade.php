@@ -713,7 +713,8 @@
         }
 
         Livewire.on('triggerDashboard', (line, tanggal) => {
-            triggerDashboard(line, tanggal);
+            // triggerDashboard(line, tanggal);
+            console.log("trigger paused by interval");
         });
 
         // function clearOutputInputJs() {
