@@ -204,7 +204,7 @@ class ProductionPanel extends Component
     {
         $validatedData = $this->validate();
 
-        if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {
+        // if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {
             $size = DB::select(DB::raw("SELECT * FROM so_det WHERE id = '".$this->undoSize."'"));
             $defectType = DefectType::select('defect_type')->find($this->undoDefectType);
             $defectArea = DefectArea::select('defect_area')->find($this->undoDefectArea);
@@ -378,9 +378,9 @@ class ProductionPanel extends Component
             }
 
             $this->emit('triggerDashboard', Auth::user()->line->username, Carbon::now()->format('Y-m-d'));
-        } else {
-            $this->emit('alert', 'error', "Tidak dapat input backdate.");
-        }
+        // } else {
+        //     $this->emit('alert', 'error', "Tidak dapat input backdate.");
+        // }
     }
 
     public function updateOrder() {
