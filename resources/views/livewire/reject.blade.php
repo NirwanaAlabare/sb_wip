@@ -175,8 +175,7 @@
                     <table class="table table-bordered text-center align-middle">
                         <tr>
                             <th>No.</th>
-                            <th>Waktu</th>
-                            <th>QR</th>
+                            <th>ID</th>
                             <th>Size</th>
                             <th>Defect Type</th>
                             <th>Defect Area</th>
@@ -192,8 +191,7 @@
                             @foreach ($defects as $defect)
                                 <tr>
                                     <td>{{ $defects->firstItem() + $loop->index }}</td>
-                                    <td>{{ $defect->updated_at ? $defect->created_at : $defect->updated_at }}</td>
-                                    <td>{{ $defect->kode_numbering }}</td>
+                                    <td>{{ $defect->id }}</td>
                                     <td>{{ $defect->so_det_size }}</td>
                                     <td>{{ $defect->defectType->defect_type}}</td>
                                     <td>{{ $defect->defectArea->defect_area }}</td>
@@ -242,8 +240,7 @@
                     <table class="table table-bordered text-center align-middle">
                         <tr>
                             <th>No.</th>
-                            <th>Waktu</th>
-                            <th>QR</th>
+                            <th>ID</th>
                             <th>Size</th>
                             <th>Defect Type</th>
                             <th>Defect Area</th>
@@ -259,8 +256,7 @@
                             @foreach ($rejects as $reject)
                                 <tr>
                                     <td>{{ $rejects->firstItem() + $loop->index }}</td>
-                                    <td>{{ $reject->updated_at ? $reject->created_at : $reject->updated_at }}</td>
-                                    <td>{{ $reject->kode_numbering }}</td>
+                                    <td>{{ $reject->id }}</td>
                                     <td>{{ $reject->so_det_size }}</td>
                                     <td>{{ $reject->defect ? ($reject->defect->defectType ? $reject->defect->defectType->defect_type : '-') : ($reject->defectType ? $reject->defectType->defect_type : '-') }}</td>
                                     <td>{{ $reject->defect ? ($reject->defect->defectArea ? $reject->defect->defectArea->defect_area : '-') : ($reject->defectArea ? $reject->defectArea->defect_area : '-') }}</td>
