@@ -60,11 +60,7 @@ class Rft extends Component
 
     public function updateOutput()
     {
-        $this->output = RftModel::
-            leftJoin("so_det", "so_det.id", "=", "output_rfts.so_det_id")->
-            where('master_plan_id', $this->orderInfo->id)->
-            where('status', 'normal')->
-            get();
+        $this->output = collect(DB::select("select output_rfts.*, so_det.size, COUNT(output_rfts.id) output from `output_rfts` left join `so_det` on `so_det`.`id` = `output_rfts`.`so_det_id` where `master_plan_id` = '".$this->orderInfo->id."' and `status` = 'NORMAL' group by so_det.id"));
     }
 
     public function clearInput()
@@ -140,11 +136,7 @@ class Rft extends Component
         $this->orderWsDetailSizes = $session->get('orderWsDetailSizes', $this->orderWsDetailSizes);
 
         // Get total output
-        $this->output = RftModel::
-            leftJoin("so_det", "so_det.id", "=", "output_rfts.so_det_id")->
-            where('master_plan_id', $this->orderInfo->id)->
-            where('status', 'normal')->
-            get();
+        $this->output = collect(DB::select("select output_rfts.*, so_det.size, COUNT(output_rfts.id) output from `output_rfts` left join `so_det` on `so_det`.`id` = `output_rfts`.`so_det_id` where `master_plan_id` = '".$this->orderInfo->id."' and `status` = 'NORMAL' group by so_det.id"));
 
         return view('livewire.rft');
     }
