@@ -74,7 +74,7 @@ class OrderList extends Component
                             output_rfts on output_rfts.master_plan_id = master_plan.id
                         where
                             master_plan.sewing_line = '".strtoupper(Auth::user()->line->username)."' AND
-                            DATE(output_rfts.updated_at) = '".$this->date."' AND
+                            output_rfts.updated_at BETWEEN '".$this->date." 00:00:00' AND '".$this->date." 23:59:59' and
                             master_plan.cancel = 'N'
                         group by
                             master_plan.id_ws,
