@@ -303,16 +303,16 @@
             console.log(@this.orderDate, currentDate);
 
             if (@this.orderDate != currentDate) {
-                // Swal.fire({
-                //     icon: 'warning',
-                //     title: 'Anda sedang mengakses Master Plan yang sudah berlalu',
-                //     html: `Master Plan yang anda akses berasal dari tanggal <br> <b>'`+ document.getElementById('tanggal').value +`'</b> <br> `,
-                //     showConfirmButton: true,
-                //     confirmButtonText: 'Oke',
-                //     confirmButtonColor: '#6531a0'
-                // }).then((result) => {
-                //     // window.location.href = '{{ route('index') }}';
-                // });
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Anda sedang mengakses Master Plan yang sudah berlalu',
+                    html: `Master Plan yang anda akses berasal dari tanggal <br> <b>'`+ document.getElementById('tanggal').value +`'</b> <br> `,
+                    showConfirmButton: true,
+                    confirmButtonText: 'Oke',
+                    confirmButtonColor: '#6531a0'
+                }).then((result) => {
+                    // window.location.href = '{{ route('index') }}';
+                });
             }
         }
 
