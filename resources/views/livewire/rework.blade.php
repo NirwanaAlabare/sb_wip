@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-evenly gap-3" style="max-width:100%; overflow: auto;">
+                    <div class="d-flex justify-content-start gap-3" style="max-width:100%; overflow: auto;">
                         @foreach ($orderWsDetailSizes->groupBy("size") as $key => $order)
                             <div class="w-auto">
                                 <div class="card w-100">
