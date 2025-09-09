@@ -204,7 +204,7 @@ class ProductionPanel extends Component
     {
         $validatedData = $this->validate();
 
-        // if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {
+        if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {
             $size = DB::select(DB::raw("SELECT * FROM so_det WHERE id = '".$this->undoSize."'"));
             $defectType = DefectType::select('defect_type')->find($this->undoDefectType);
             $defectArea = DefectArea::select('defect_area')->find($this->undoDefectArea);
@@ -228,8 +228,9 @@ class ProductionPanel extends Component
                             'so_det_id' => $getRft->so_det_id,
                             'output_rft_id' => $getRft->id,
                             'kode_numbering' => $getRft->kode_numbering,
-                            'created_by' => Auth::user()->id,
                             'keterangan' => 'rft',
+                            'created_by' => $getRft->created_by,
+                            'undo_by' => Auth::user()->line_id,
                         ]);
                     }
 
@@ -273,8 +274,13 @@ class ProductionPanel extends Component
                             'so_det_id' => $getDefect->so_det_id,
                             'output_defect_id' => $getDefect->defect_id,
                             'kode_numbering' => $getDefect->kode_numbering,
-                            'created_by' => Auth::user()->id,
                             'keterangan' => 'defect',
+                            'defect_type_id' => $getDefect->defect_type_id,
+                            'defect_area_id' => $getDefect->defect_area_id,
+                            'defect_area_x' => $getDefect->defect_area_x,
+                            'defect_area_y' => $getDefect->defect_area_y,
+                            'created_by' => $getDefect->created_by,
+                            'undo_by' => Auth::user()->line_id,
                         ]);
 
                         $deleteDefect = Defect::find($getDefect->id)->delete();
@@ -311,10 +317,16 @@ class ProductionPanel extends Component
                         $addUndoHistory = Undo::create([
                             'master_plan_id' => $reject->master_plan_id,
                             'so_det_id' => $reject->so_det_id,
+                            'output_defect_id' => $reject->defect_id,
                             'output_reject_id' => $reject->id,
+                            'defect_type_id' => $reject->reject_type_id,
+                            'defect_area_id' => $reject->reject_area_id,
+                            'defect_area_x' => $reject->reject_area_x,
+                            'defect_area_y' => $reject->reject_area_y,
                             'kode_numbering' => $reject->kode_numbering,
-                            'created_by' => Auth::user()->id,
                             'keterangan' => 'reject',
+                            'created_by' => $reject->created_by,
+                            'undo_by' => Auth::user()->line_id,
                         ]);
 
                         array_push($defectIds, $reject->defect_id);
@@ -357,7 +369,7 @@ class ProductionPanel extends Component
 
                     // update defect & delete rework
                     foreach ($getDefects as $defect) {
-                        Undo::create(['master_plan_id' => $defect->master_plan_id, 'so_det_id' => $defect->so_det_id, 'output_rework_id' => $defect->rework->id, 'kode_numbering' => $defect->kode_numbering, 'created_by' => Auth::user()->id, 'keterangan' => 'rework']);
+                        Undo::create(['master_plan_id' => $defect->master_plan_id, 'so_det_id' => $defect->so_det_id, 'output_rework_id' => $defect->rework->id, 'output_rft_id' => $defect->rework->rft->id, 'kode_numbering' => $defect->kode_numbering, 'created_by' => $defect->created_by, 'undo_by' => Auth::user()->line_id, 'keterangan' => 'rework']);
                         Defect::where('id', $defect->defect_id)->update(['defect_status' => 'defect']);
                         Rft::leftJoin('output_reworks', 'output_reworks.id', '=', 'output_rfts.rework_id')->where('output_reworks.defect_id', $defect->defect_id)->delete();
                         Rework::where('defect_id', $defect->defect_id)->delete();
@@ -378,9 +390,9 @@ class ProductionPanel extends Component
             }
 
             $this->emit('triggerDashboard', Auth::user()->line->username, Carbon::now()->format('Y-m-d'));
-        // } else {
-        //     $this->emit('alert', 'error', "Tidak dapat input backdate.");
-        // }
+        } else {
+            $this->emit('alert', 'error', "Tidak dapat input backdate.");
+        }
     }
 
     public function updateOrder() {

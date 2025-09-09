@@ -22,8 +22,13 @@ class Undo extends Model
         'output_reject_id',
         'output_rework_id',
         'kode_numbering',
+        'defect_type_id',
+        'defect_area_id',
+        'defect_area_x',
+        'defect_area_y',
         'keterangan',
         'created_by',
+        'undo_by',
         'created_at',
         'updated_at',
     ];
