@@ -352,5 +352,9 @@
                 }
             });
         })
+
+        Livewire.on('reloadPage', () => {
+            location.reload();
+        })
     </script>
 @endpush
