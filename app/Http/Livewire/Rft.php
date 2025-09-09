@@ -94,7 +94,7 @@ class Rft extends Component
     {
         $validatedData = $this->validate();
 
-        if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {
+        // if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {
             $insertData = [];
             for ($i = 0; $i < $this->outputInput; $i++)
             {
@@ -125,9 +125,9 @@ class Rft extends Component
             } else {
                 $this->emit('alert', 'error', "Terjadi kesalahan. Output tidak berhasil direkam.");
             }
-        } else {
-            $this->emit('alert', 'error', "Tidak dapat input backdate.");
-        }
+        // } else {
+        //     $this->emit('alert', 'error', "Tidak dapat input backdate.");
+        // }
     }
 
     public function render(SessionManager $session)
