@@ -81,7 +81,6 @@ class Reject extends Component
         'submitAllReject' => 'submitAllReject',
         'cancelReject' => 'cancelReject',
         'hideDefectAreaImageClear' => 'hideDefectAreaImage',
-        'updateWsDetailSizes' => 'updateWsDetailSizes',
 
         'setRejectAreaPosition' => 'setRejectAreaPosition',
         'clearInput' => 'clearInput',
@@ -285,6 +284,10 @@ class Reject extends Component
                         "master_plan_id" => $defect->master_plan_id,
                         "so_det_id" => $defect->so_det_id,
                         "defect_id" => $defect->id,
+                        "reject_type_id" => $defect->defect_type_id,
+                        "reject_area_id" => $defect->defect_area_id,
+                        "reject_area_x" => $defect->defect_area_x,
+                        "reject_area_y" => $defect->defect_area_y,
                         "status" => "NORMAL",
                         "kode_numbering" => $defect->kode_numbering,
                         "no_cut_size" => $defect->no_cut_size,
@@ -335,7 +338,7 @@ class Reject extends Component
         $availableReject = 0;
         $externalReject = 0;
 
-        $selectedDefect = Defect::selectRaw('output_defects.id id, output_defects.master_plan_id master_plan_id, output_defects.so_det_id so_det_id, output_defects.kode_numbering, output_defects.no_cut_size, output_defect_types.allocation, so_det.size, output_defect_in_out.status in_out_status')->
+        $selectedDefect = Defect::selectRaw('output_defects.id id, output_defects.master_plan_id master_plan_id, output_defects.so_det_id so_det_id, output_defects.kode_numbering, output_defects.no_cut_size, output_defect_types.allocation, so_det.size, output_defect_in_out.status in_out_status, output_defects.defect_type_id, output_defects.defect_area_id, output_defects.defect_area_x, output_defects.defect_area_y')->
             leftJoin('so_det', 'so_det.id', '=', 'output_defects.so_det_id')->
             leftJoin('output_defect_in_out', 'output_defect_in_out.defect_id', '=', 'output_defects.id')->
             leftJoin('output_defect_types', 'output_defect_types.id', '=', 'output_defects.defect_type_id')->
@@ -357,6 +360,10 @@ class Reject extends Component
                         "so_det_id" => $defect->so_det_id,
                         "defect_id" => $defect->id,
                         "status" => "NORMAL",
+                        "reject_type_id" => $defect->defect_type_id,
+                        "reject_area_id" => $defect->defect_area_id,
+                        "reject_area_x" => $defect->defect_area_x,
+                        "reject_area_y" => $defect->defect_area_y,
                         "kode_numbering" => $defect->kode_numbering,
                         "no_cut_size" => $defect->no_cut_size,
                         "reject_status" => 'defect',
@@ -414,6 +421,10 @@ class Reject extends Component
                     "defect_id" => $defectId,
                     "kode_numbering" => $getDefect->kode_numbering,
                     "no_cut_size" => $getDefect->no_cut_size,
+                    "reject_type_id" => $defect->defect_type_id,
+                    "reject_area_id" => $defect->defect_area_id,
+                    "reject_area_x" => $defect->defect_area_x,
+                    "reject_area_y" => $defect->defect_area_y,
                     'created_by' => Auth::user()->id,
                     "status" => "NORMAL",
                     "reject_status" => 'defect'
