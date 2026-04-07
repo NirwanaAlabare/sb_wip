@@ -174,9 +174,11 @@
         {{-- @endif --}}
 
         {{-- Rework --}}
-        @if ($rework)
+        {{-- @if ($rework) --}}
+        <div class="{{ $rework ? '' : 'd-none' }}">
             @livewire('rework', ["orderWsDetailSizes" => $orderWsDetailSizes])
-        @endif
+        </div>
+        {{-- @endif --}}
 
         {{-- Undo --}}
         <div class="modal" tabindex="-1" id="undo-modal" wire:ignore.self>

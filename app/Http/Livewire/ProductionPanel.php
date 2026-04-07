@@ -169,6 +169,7 @@ class ProductionPanel extends Component
     {
         $this->panels = false;
         $this->rework = !($this->rework);
+        $this->emitTo('rework','updateWsDetailSizes');
         $this->emit('toInputPanel', 'rework');
     }
 

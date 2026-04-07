@@ -90,7 +90,7 @@
                             <div class="scroll-defect-area-img" wire:loading.remove wire:target='loadRejectPage'>
                                 <div class="all-defect-area-img-container">
                                     @foreach ($allDefectPosition as $defectPosition)
-                                        <div class="all-defect-area-img-point" data-x="{{ floatval($defectPosition->defect_area_x) }}" data-y="{{ floatval($defectPosition->defect_area_y) }}"></div>
+                                        <div class="all-defect-area-img-point all-defect-area-img-point-reject" data-x="{{ floatval($defectPosition->defect_area_x) }}" data-y="{{ floatval($defectPosition->defect_area_y) }}"></div>
                                     @endforeach
                                     @if ($allDefectImage)
                                         <img src="http://10.10.5.62:8080/erp/pages/prod_new/upload_files/{{ $allDefectImage->gambar }}" class="all-defect-area-img" id="all-defect-area-img-reject" alt="defect image">
@@ -99,7 +99,7 @@
                                     @endif
                                 </div>
                             </div>
-                        </div>
+                    </div>
                         <div class="col-md-7 table-responsive">
                             <div class="d-flex align-items-center gap-3 my-3">
                                 <button class="btn btn-reject fw-bold rounded-0 w-25 h-100" wire:click="$emit('preSubmitAllReject')">Reject all</button>
