@@ -11,6 +11,7 @@ use App\Models\SignalBit\MasterPlan;
 use App\Models\SignalBit\Rft;
 use App\Models\SignalBit\Defect;
 use App\Models\SignalBit\Rework as ReworkModel;
+use App\Services\SewingService;
 use DB;
 
 class Rework extends Component
@@ -198,6 +199,9 @@ class Rework extends Component
             // create rft
             $createRft = Rft::insert($rftArray);
 
+            // create rft packing
+            $createRftPacking = SewingService::insertRftPackingArr($rftArray);
+
             if ($availableRework > 0) {
                 $this->emit('alert', 'success', $availableRework." DEFECT berhasil di REWORK");
 
@@ -283,6 +287,9 @@ class Rework extends Component
             // create rft
             $createRft = Rft::insert($rftArray);
 
+            // create rft packing
+            $createRftPacking = SewingService::insertRftPackingArr($rftArray);
+
             if ($availableRework > 0) {
                 $this->emit('alert', 'success', "DEFECT dengan Ukuran : ".$selectedDefect[0]->size.", Tipe : ".$this->massDefectTypeName." dan Area : ".$this->massDefectAreaName." berhasil di REWORK sebanyak ".$selectedDefect->count()." kali.");
 
@@ -333,6 +340,13 @@ class Rework extends Component
                 ]);
 
                 if ($createRework && $updateDefect && $createRft) {
+                    // Insert Finishline RFT
+                    SewingService::insertRftPacking(
+                        $masterPlanId = $getDefect->master_plan_id,
+                        $soDetId = $getDefect->so_det_id,
+                        $totalInput = 1
+                    );
+
                     $this->emit('alert', 'success', "DEFECT dengan ID : ".$defectId." berhasil di REWORK.");
                 } else {
                     $this->emit('alert', 'error', "Terjadi kesalahan. DEFECT dengan ID : ".$defectId." tidak berhasil di REWORK.");

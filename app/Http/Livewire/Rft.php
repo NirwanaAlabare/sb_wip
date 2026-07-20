@@ -7,6 +7,7 @@ use Illuminate\Session\SessionManager;
 use App\Models\SignalBit\Rft as RftModel;
 use App\Models\SignalBit\Rework;
 use Illuminate\Support\Facades\Auth;
+use App\Services\SewingService;
 use Carbon\Carbon;
 use DB;
 
@@ -111,6 +112,13 @@ class Rft extends Component
             $insertRft = RftModel::insert($insertData);
 
             if ($insertRft) {
+                // Insert Finishline RFT
+                SewingService::insertRftPacking(
+                    $masterPlanId = $this->orderInfo->id,
+                    $soDetId = $this->sizeInput,
+                    $totalInput = $this->outputInput
+                );
+
                 $getSize = DB::table('so_det')
                     ->select('id', 'size')
                     ->where('id', $this->sizeInput)
