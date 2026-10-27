@@ -12,11 +12,13 @@ use App\Models\SignalBit\DefectType;
 use App\Models\SignalBit\DefectArea;
 use App\Models\SignalBit\Defect as DefectModel;
 use Carbon\Carbon;
+use App\Traits\ChecksMasterPlanCancel;
 use DB;
 
 class Defect extends Component
 {
     use WithFileUploads;
+    use ChecksMasterPlanCancel;
 
     public $orderInfo;
     public $orderWsDetailSizes;
@@ -234,6 +236,10 @@ class Defect extends Component
 
     public function submitInput(SessionManager $session)
     {
+        if ($this->masterPlanCancelled()) {
+            return;
+        }
+
         $validatedData = $this->validate();
 
         if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {

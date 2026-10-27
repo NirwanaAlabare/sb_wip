@@ -12,11 +12,13 @@ use App\Models\SignalBit\Rft;
 use App\Models\SignalBit\Defect;
 use App\Models\SignalBit\Rework as ReworkModel;
 use App\Services\SewingService;
+use App\Traits\ChecksMasterPlanCancel;
 use DB;
 
 class Rework extends Component
 {
     use WithPagination;
+    use ChecksMasterPlanCancel;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -146,6 +148,10 @@ class Rework extends Component
     }
 
     public function submitAllRework() {
+        if ($this->masterPlanCancelled()) {
+            return;
+        }
+
         $availableRework = 0;
         $externalRework = 0;
 
@@ -231,6 +237,10 @@ class Rework extends Component
     }
 
     public function submitMassRework() {
+        if ($this->masterPlanCancelled()) {
+            return;
+        }
+
         $availableRework = 0;
         $externalRework = 0;
 
@@ -307,6 +317,10 @@ class Rework extends Component
     }
 
     public function submitRework($defectId) {
+        if ($this->masterPlanCancelled()) {
+            return;
+        }
+
         $externalRework = 0;
 
         $thisDefectRework = ReworkModel::where('defect_id', $defectId)->count();

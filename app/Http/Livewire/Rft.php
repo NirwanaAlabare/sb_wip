@@ -9,10 +9,13 @@ use App\Models\SignalBit\Rework;
 use Illuminate\Support\Facades\Auth;
 use App\Services\SewingService;
 use Carbon\Carbon;
+use App\Traits\ChecksMasterPlanCancel;
 use DB;
 
 class Rft extends Component
 {
+    use ChecksMasterPlanCancel;
+
     public $orderInfo;
     public $orderWsDetailSizes;
     public $output;
@@ -93,6 +96,10 @@ class Rft extends Component
 
     public function submitInput()
     {
+        if ($this->masterPlanCancelled()) {
+            return;
+        }
+
         $validatedData = $this->validate();
 
         // if ($this->orderInfo->tgl_plan == Carbon::now()->format('Y-m-d')) {
